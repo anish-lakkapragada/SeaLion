@@ -7,9 +7,9 @@ Through this library we newer students will learn common algorithms and those mo
 ## Installation
 The package is available on PyPi. 
 Install like such : 
-'''shell
+```shell
 pip install sealion
-'''
+```
 
 
 
