@@ -7,7 +7,7 @@ setup(
   author = 'Anish Lakkapragada',
   author_email = 'anish.lakkapragada@gmail.com',
   url = 'https://github.com/anish-lakkapragada/SeaLion',
-  download_url = 'https://github.com/anish-lakkapragada/SeaLion/archive/v2.1.2.tar.gz',
+  download_url = 'https://github.com/anish-lakkapragada/SeaLion/archive/2.1.3.tar.gz',
   keywords = ['Machine Learning', 'Data Science', 'Python'],
   install_requires=[
           'numpy',
