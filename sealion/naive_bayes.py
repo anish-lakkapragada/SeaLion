@@ -1,5 +1,5 @@
 import numpy as np
-from cython_python_testing import cython_naive_bayes
+from sealion.cython_models import cython_naive_bayes
 
 
 class MultinomialNaiveBayes() :
