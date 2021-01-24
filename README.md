@@ -11,6 +11,14 @@ Install like such :
 pip install sealion
 ```
 
+## Documentation
+All documentation is available with the pydoc module. However useful they may be, I highly recommend you check the examples posted on GitHub here and seeing how the classes work. 
+
+
+
+
+
+
 
 
 
