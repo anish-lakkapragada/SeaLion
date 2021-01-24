@@ -2,7 +2,6 @@ from distutils.core import setup
 setup(
   name = 'sealion',
   packages = ['sealion'],
-  version = '2.1.2',
   license='MIT',
   description = 'SeaLion is a simple machine learning and data science library for beginners and ml-engineers alike.',
   author = 'Anish Lakkapragada',
