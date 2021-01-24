@@ -23,7 +23,7 @@ class PCA() :
     transform(X) :
         ->> give your data in X, which must be a 2D numpy array or python list. 2D meaning [[]] not [] (1D.)
         ->> we will return each data point to X in new_ndims (passed in __init__) space
-        ->> all code (5 lines) for this method comes from Hands On Machine Learning (Edition 2) by Aurélien Géron
+        ->> all code (5 lines) for this method comes from Hands On Machine Learning (Edition 2) by Aurelien Geron
     inverse_transform(X) :
         ->> reverts each point in X to its original size
         ->> keep in mind that it is very hard to get the exact same X as you originally had as PCA naturally loses
