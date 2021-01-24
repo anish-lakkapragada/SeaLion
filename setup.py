@@ -11,7 +11,6 @@ setup(
   download_url = 'https://github.com/anish-lakkapragada/SeaLion/archive/1.0.tar.gz',
   keywords = ['Machine Learning', 'Data Science', 'Python'],
   install_requires=[
-          'sealion',
           'numpy',
           'joblib',
           'pandas',
