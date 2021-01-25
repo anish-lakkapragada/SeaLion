@@ -32,6 +32,8 @@ from sealion.cython_knn import CythonKNN
 from sealion.cython_naive_bayes import cy_MultinomialNaiveBayes, cy_GaussianNaiveBayes
 from sealion.cython_tsne import cy_tSNE
 from sealion.cython_unsupervised_clustering import CythonDBSCAN, CythonKMeans
-from sealion.cython_decision_tree_functions import CythonTrainDecisionTraining
+from sealion.cython_decision_tree_functions import CythonTrainDecisionTraining as cython_training
+from sealion.cython_decision_tree_functions import gini_impurity, probabilities, find_best_split, branch_data, tuplelize, anti_tupelize, chunk_predict, go_down_the_tree
+
 
 __all__ = ['neural_networks', 'decision_trees', 'DimensionalityReduction', 'ensemble_learning', 'regression', 'unsupervised_clustering', 'utils', 'nearest_neighbors', 'cython_models']
