@@ -23,7 +23,7 @@ class PCA() :
     transform(X) :
         ->> give your data in X, which must be a 2D numpy array or python list. 2D meaning [[]] not [] (1D.)
         ->> we will return each data point to X in new_ndims (passed in __init__) space
-        ->> all code (5 lines) for this method comes from Hands On Machine Learning (Edition 2) by Aurélien Géron
+        ->> all code (5 lines) for this method comes from Hands On Machine Learning (Edition 2) by Aurelien Geron
     inverse_transform(X) :
         ->> reverts each point in X to its original size
         ->> keep in mind that it is very hard to get the exact same X as you originally had as PCA naturally loses
@@ -31,9 +31,10 @@ class PCA() :
     visualize_variance(X, representation_dims) :
         ->> X is the data you want to be transformed in new_ndims space
         ->> representation_dims is a list of all the dimensions you want to try your data in. For example if you give
-        [3, 4, 5, 6] your data will be tried in 3, 4, 5, animen xsions. The data dimension will be plotted on the
-        x-axis and the variance will be on the y-axis. This is to help you find which dimension you should turn your
-        data into (probably the one which has a good variance and is the lowest dimension.)
+        [3, 4, 5, 6] your data will be tried in 3, 4, 5, and 6 dimensions. The data dimension (number) will be plotted on the
+        x-axis and the variance (of that projection to 3, 4, 5, and 6 dimensions here) will be on the y-axis. 
+        This is to help you find which dimension you should turn your data into (probably the one which has a good 
+        variance and is the lowest dimension.)
 
     """
     def __init__(self, new_ndims):
