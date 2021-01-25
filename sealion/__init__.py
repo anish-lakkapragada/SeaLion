@@ -20,8 +20,6 @@ from sealion.unsupervised_clustering import KMeans, DBSCAN
 from sealion.regression import LinearRegression, LogisticRegression, SoftmaxRegression, RidgeRegression, LassoRegression, ElasticNet, PolynomialRegression, ExponentialRegression
 from sealion.nearest_neighbors import KNearestNeighbors
 
-from sealion import cython_tsne, cython_ensemble_learning, cython_knn, cython_naive_bayes, cython_unsupervised_clustering, cython_decision_tree_functions
-
 from sealion.cython_ensemble_learning import CythonEnsembleClassifier
 from sealion.cython_knn import CythonKNN
 from sealion.cython_naive_bayes import cy_MultinomialNaiveBayes, cy_GaussianNaiveBayes
@@ -30,5 +28,3 @@ from sealion.cython_unsupervised_clustering import CythonDBSCAN, CythonKMeans
 from sealion.cython_decision_tree_functions import CythonTrainDecisionTraining as cython_training
 from sealion.cython_decision_tree_functions import gini_impurity, probabilities, find_best_split, branch_data, tuplelize, anti_tupelize, chunk_predict, go_down_the_tree
 
-
-__all__ = ['neural_networks', 'decision_trees', 'DimensionalityReduction', 'ensemble_learning', 'regression', 'unsupervised_clustering', 'utils', 'nearest_neighbors', 'cython_models']
