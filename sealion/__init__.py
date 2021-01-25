@@ -25,5 +25,10 @@ from sealion.neural_networks.models import NeuralNetwork, NeuralNetwork_MapReduc
 from sealion.neural_networks.loss import CrossEntropy, MSE
 
 from sealion import cython_models
+from sealion.cython_models.cython_ensemble_learning import CythonEnsembleClassifier
+from sealion.cython_models.cython_knn import CythonKNN
+from sealion.cython_models.cython_naive_bayes import cy_MultinomialNaiveBayes, cy_GaussianNaiveBayes
+from sealion.cython_models.cython_tsne import cy_tSNE
+from sealion.cython_models.cython_unsupervised_clustering import CythonDBSCAN, CythonKMeans
 
 __all__ = ['neural_networks', 'decision_trees', 'DimensionalityReduction', 'ensemble_learning', 'regression', 'unsupervised_clustering', 'utils', 'nearest_neighbors', 'cython_models']
