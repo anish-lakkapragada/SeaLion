@@ -15,15 +15,6 @@ import numpy as np
 import math
 import warnings
 
-gini_impurity = cython_decision_tree_functions.gini_impurity
-probabilities = cython_decision_tree_functions.probabilities
-find_best_split = cython_decision_tree_functions.find_best_split
-branch_data = cython_decision_tree_functions.branch_data
-tuplelize, anti_tupelize = cython_decision_tree_functions.tuplelize, cython_decision_tree_functions.anti_tupelize
-chunk_predict = cython_decision_tree_functions.chunk_predict
-go_down_the_tree = cython_decision_tree_functions.go_down_the_tree
-cython_training = cython_decision_tree_functions.CythonTrainDecisionTraining
-
 
 class DecisionTree() :
     """
