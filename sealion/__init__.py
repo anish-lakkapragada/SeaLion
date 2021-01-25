@@ -24,6 +24,8 @@ from sealion.neural_networks.layers import Dense, Flatten, Dropout, ReLU, ELU, S
 from sealion.neural_networks.models import NeuralNetwork, NeuralNetwork_MapReduce
 from sealion.neural_networks.loss import CrossEntropy, MSE
 
+from sealion import cython_tsne, cython_ensemble_learning, cython_knn, cython_naive_bayes, cython_unsupervised_clustering
+
 from sealion.cython_ensemble_learning import CythonEnsembleClassifier
 from sealion.cython_knn import CythonKNN
 from sealion.cython_naive_bayes import cy_MultinomialNaiveBayes, cy_GaussianNaiveBayes
