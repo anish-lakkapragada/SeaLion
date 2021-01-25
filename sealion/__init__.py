@@ -20,11 +20,6 @@ from sealion.unsupervised_clustering import KMeans, DBSCAN
 from sealion.regression import LinearRegression, LogisticRegression, SoftmaxRegression, RidgeRegression, LassoRegression, ElasticNet, PolynomialRegression, ExponentialRegression
 from sealion.nearest_neighbors import KNearestNeighbors
 
-from sealion.neural_networks.optimizers import GD, Momentum, SGD, AdaGrad, RMSProp, Adam
-from sealion.neural_networks.layers import Dense, Flatten, Dropout, ReLU, ELU, SELU, LeakyReLU, Sigmoid, Tanh, Swish
-from sealion.neural_networks.models import NeuralNetwork, NeuralNetwork_MapReduce
-from sealion.neural_networks.loss import CrossEntropy, MSE
-
 from sealion import cython_tsne, cython_ensemble_learning, cython_knn, cython_naive_bayes, cython_unsupervised_clustering, cython_decision_tree_functions
 
 from sealion.cython_ensemble_learning import CythonEnsembleClassifier
