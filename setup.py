@@ -2,13 +2,13 @@ from distutils.core import setup
 setup(
   name = 'sealion',
   packages = ['sealion'],
-  version = '2.1.5.5',
+  version = '2.2',
   license='MIT',
   description = 'SeaLion is a simple machine learning and data science library for beginners and ml-engineers alike.',
   author = 'Anish Lakkapragada',
   author_email = 'anish.lakkapragada@gmail.com',
   url = 'https://github.com/anish-lakkapragada/SeaLion',
-  download_url = 'https://github.com/anish-lakkapragada/SeaLion/archive/v2.1.5.5.tar.gz',
+  download_url = 'https://github.com/anish-lakkapragada/SeaLion/archive/v2.2.tar.gz',
   keywords = ['Machine Learning', 'Data Science', 'Python'],
   install_requires=[
           'numpy',
