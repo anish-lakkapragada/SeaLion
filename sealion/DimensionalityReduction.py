@@ -8,7 +8,6 @@ so PCA is usually better for big data and you can tSNE is for the toy datasets.
 """
 
 import numpy as np
-from sealion import cython_tsne
 
 class PCA() :
     """
