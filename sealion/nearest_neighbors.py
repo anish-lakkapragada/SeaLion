@@ -8,7 +8,7 @@ KNearestNeighbors is another powerful ML algorithm. Easy to understand, but rema
 
 import numpy as np
 
-from sealion.cython_models import cython_knn
+from sealion import cython_knn
 
 class KNearestNeighbors():
     """

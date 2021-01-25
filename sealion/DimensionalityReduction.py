@@ -2,13 +2,13 @@
 @author : Anish Lakkapragada
 @date : 1/9/2021
 
-Contains PCA and tSNE, two great dimensionality reduction algorithms. PCA can deal with around 1000 - 10000 data points 
+Contains PCA and tSNE, two great dimensionality reduction algorithms. PCA can deal with around 1000 - 10000 data points
 (obviously depending on the number of dimensions.) tSNE is better for visualizations but struggles past five hundred points,
 so PCA is usually better for big data and you can tSNE is for the toy datasets.
 """
 
 import numpy as np
-from sealion.cython_models import cython_tsne
+from sealion import cython_tsne
 
 class PCA() :
     """
@@ -32,8 +32,8 @@ class PCA() :
         ->> X is the data you want to be transformed in new_ndims space
         ->> representation_dims is a list of all the dimensions you want to try your data in. For example if you give
         [3, 4, 5, 6] your data will be tried in 3, 4, 5, and 6 dimensions. The data dimension (number) will be plotted on the
-        x-axis and the variance (of that projection to 3, 4, 5, and 6 dimensions here) will be on the y-axis. 
-        This is to help you find which dimension you should turn your data into (probably the one which has a good 
+        x-axis and the variance (of that projection to 3, 4, 5, and 6 dimensions here) will be on the y-axis.
+        This is to help you find which dimension you should turn your data into (probably the one which has a good
         variance and is the lowest dimension.)
 
     """

@@ -11,7 +11,7 @@ from sealion.decision_trees import DecisionTree
 import pandas as pd
 import numpy as np
 from multiprocessing import cpu_count
-from sealion.cython_models import cython_ensemble_learning
+from sealion import cython_ensemble_learning
 from joblib import parallel_backend, delayed, Parallel
 import random
 import math
@@ -218,7 +218,7 @@ class EnsembleClassifier() :
 
     Example :
     >>> from sealion.regression import SoftmaxRegression
-    >>> from naive_bayes import GaussianNaiveBayes
+    >>> from sealion.naive_bayes import GaussianNaiveBayes
     >>> from sealion.nearest_neighbors import KNearestNeighbors
     >>> ec = EnsembleClassifier({'algo1' : SoftmaxRegression(num_classes = 3), 'algo2' : GaussianNaiveBayes(), 'algo3' : KNearestNeighbors()}, classification = True)
     >>> ec.fit(X_train, y_train)

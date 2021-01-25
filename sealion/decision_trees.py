@@ -15,7 +15,7 @@ import numpy as np
 import math
 import warnings
 
-from sealion.cython_models import cython_decision_tree_functions
+from sealion import cython_decision_tree_functions
 gini_impurity = cython_decision_tree_functions.gini_impurity
 probabilities = cython_decision_tree_functions.probabilities
 find_best_split = cython_decision_tree_functions.find_best_split

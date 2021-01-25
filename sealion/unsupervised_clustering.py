@@ -7,7 +7,7 @@ performance.
 """
 
 import numpy as np
-from sealion.cython_models import cython_unsupervised_clustering
+from sealion import cython_unsupervised_clustering
 
 def indexOf(listy, element):
     indice = -1

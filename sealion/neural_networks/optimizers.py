@@ -12,7 +12,6 @@ https://ruder.io/optimizing-gradient-descent/
 """
 
 import numpy as np
-from collections import defaultdict
 
 class Optimizer :
     def __init__(self):
