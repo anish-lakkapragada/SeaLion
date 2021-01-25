@@ -20,7 +20,10 @@ from sealion.unsupervised_clustering import KMeans, DBSCAN
 from sealion.regression import LinearRegression, LogisticRegression, SoftmaxRegression, RidgeRegression, LassoRegression, ElasticNet, PolynomialRegression, ExponentialRegression
 from sealion.nearest_neighbors import KNearestNeighbors
 
-from cython_ensemble_learning import CythonEnsembleClassifier
+
+from sealion import cython_ensemble_learning, cython_knn, cython_naive_bayes, cython_tsne, cython_unsupervised_clustering, cython_decision_tree_functions
+
+from sealion.cython_ensemble_learning import CythonEnsembleClassifier
 from sealion.cython_knn import CythonKNN
 from sealion.cython_naive_bayes import cy_MultinomialNaiveBayes, cy_GaussianNaiveBayes
 from sealion.cython_tsne import cy_tSNE
