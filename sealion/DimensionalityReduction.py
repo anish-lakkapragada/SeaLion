@@ -7,7 +7,7 @@ Contains PCA and tSNE, two great dimensionality reduction algorithms. PCA can de
 so PCA is usually better for big data and you can tSNE is for the toy datasets.
 """
 
-from sealion import cython_tsne
+from . import cython_tsne
 import numpy as np
 
 class PCA() :

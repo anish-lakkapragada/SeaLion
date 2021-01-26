@@ -6,7 +6,7 @@ Contains DBSCAN and KMeans, two unsupervised clustering algorithms. Both use Cyt
 performance.
 """
 
-from sealion import CythonKMeans, CythonDBSCAN
+from . import CythonKMeans, CythonDBSCAN
 import numpy as np
 
 def indexOf(listy, element):

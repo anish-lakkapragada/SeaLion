@@ -19,6 +19,7 @@ from sealion.cython_knn import CythonKNN
 from sealion.cython_naive_bayes import cy_MultinomialNaiveBayes, cy_GaussianNaiveBayes
 from sealion.cython_tsne import cy_tSNE
 from sealion.cython_unsupervised_clustering import CythonDBSCAN, CythonKMeans
+
 cython_training = cython_decision_tree_functions.CythonTrainDecisionTraining
 gini_impurity = cython_decision_tree_functions.gini_impurity
 probabilities = cython_decision_tree_functions.probabilities
@@ -29,8 +30,7 @@ anti_tupelize = cython_decision_tree_functions.anti_tupelize
 chunk_predict = cython_decision_tree_functions.chunk_predict
 go_down_the_tree = cython_decision_tree_functions.go_down_the_tree
 
-from sealion import DimensionalityReduction, utils, decision_trees, ensemble_learning
-from sealion import unsupervised_clustering, regression, nearest_neighbors, neural_networks
+from sealion import DimensionalityReduction, utils, decision_trees, ensemble_learning, unsupervised_clustering, regression, nearest_neighbors, neural_networks
 
 from sealion.DimensionalityReduction import tSNE, PCA
 from sealion.utils import one_hot, revert_one_hot, revert_softmax, confusion_matrix

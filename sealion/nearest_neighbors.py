@@ -5,7 +5,8 @@
 KNearestNeighbors is another powerful ML algorithm. Easy to understand, but remarkably useful. Pretty fast, too.
 
 """
-from sealion import CythonKNN
+
+from . import CythonKNN
 import numpy as np
 
 class KNearestNeighbors():

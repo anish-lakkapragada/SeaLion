@@ -7,7 +7,7 @@ central to the game - random forests and ensemble/voting classifier. Random Fore
 with parallel processing to fit multiple decision trees at the same time.
 """
 
-import DecisionTree
+from . import DecisionTree,  CythonEnsembleClassifier
 import pandas as pd
 import numpy as np
 from multiprocessing import cpu_count
