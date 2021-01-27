@@ -16,15 +16,69 @@ All documentation is available with the pydoc module. However useful they may be
 
 ## Machine Learning Algorithms
 
-We have a bunch of machine learning models and functions to use on real-world data. Of course, new ones are under way!
+The machine learning algorithms of SeaLion are listed below. Please note that the stucture of the listing isn't meant to resemble that of SeaLion's. Of course, 
+new algorithms are being made right now. 
 
-4. **Neural networks**
-    * Layers / Layer-wise ops
-        - Add
-        - Flatten
-        - Multiply
+1. **Neural networks**
+    * Optimizers
+        - Gradient Descent (and mini-batch gradient descent)
+        - Momentum Optimization w/ Nesterov Accelerated Gradient
+        - Stochastic gradient descent (w/ momentum + nesterov)
+        - AdaGrad 
+        - RMSprop
+        - Adam
+        - Nadam
+    * Layers
+        - Flatten (turn 2D+ data to 2D matrices)
+        - Dense (fully-connected layers) 
+    * Regularization
+        - Dropout
+    * Activations
+        - ReLU
+        - Tanh
+        - Sigmoid
         - Softmax
-        - Fully-connected/Dense
+        - Leaky ReLU
+        - ELU
+        - SELU
+        - Swish
+    * Loss Functions
+        - MSE (for regression)
+        - CrossEntropy (for classification)
+2. **Regression**
+   - Linear Regression (Normal Equation, closed-form) 
+   - Ridge Regression (closed-form solution)
+   - Lasso Regression
+   - Elastic-Net Regression
+   - Logistic Regression
+   - Softmax Regression
+   - Exponential Regression 
+   - Polynomial Regression
+3. **Dimensionality Reduction**
+    - Principal Component Analysis (PCA)
+    - t-distributed Stochastic Neighbor Embedding (tSNE)
+4. **Unsupervised Clustering**
+    - KMeans
+    - DBSCAN
+5. **Naive Bayes**
+    - Multinomial Naive Bayes
+    - Gaussian Naive Bayes
+6. **Trees**
+    - Decision Tree (with max_branches, min_samples regularization)
+7. **Ensemble Learning**
+    - Random Forests
+    - Ensemble/Voting Classifier
+8. **Nearest Neighbors**
+    - k-nearest neighbors
+9. **Utils**
+    - one_hot encoder function (one_hot())
+    - plot confusion matrix function (confusion_matrix())
+    - revert one hot encoding to 1D Array (revert_one_hot())
+    - revert softmax predictions to 1D Array (revert_softmax())
+
+
+ 
+    
 
 
 
