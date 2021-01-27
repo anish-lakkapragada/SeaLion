@@ -18,12 +18,13 @@ All documentation is available with the pydoc module. However useful they may be
 
 We have a bunch of machine learning models and functions to use on real-world data. Of course, new ones are under way!
 
-1. **Neural Networks**
-  * Layers
-  * Optimizers
-  * Loss functions
-  * Models
- 
+4. **Neural networks**
+    * Layers / Layer-wise ops
+        - Add
+        - Flatten
+        - Multiply
+        - Softmax
+        - Fully-connected/Dense
 
 
 
