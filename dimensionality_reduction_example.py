@@ -70,5 +70,5 @@ plt.xlabel("x-axis")
 plt.ylabel("y-axis")
 plt.title("Swiss Roll tSNE")
 
-# Which one do you like more? tSNE gives the better projection, but takes longer. PCA does it much quicker, but does it much worse. These are the choices you will 
-# learn to make. 
+# Which one do you like more? tSNE gives the better projection, but takes longer. PCA does it much quicker, but does it much worse. These are the choices you 
+# will learn to make. 
