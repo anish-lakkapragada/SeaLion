@@ -37,5 +37,8 @@ jobs:
     #     flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        cp sealion/sealion.py benchmarks/tests/sealion.py
+        cp sealion/decision_trees.py benchmarks/tests/decision_trees.py
+        cp sealion/DimensionalityReduction.py benchmarks/tests/DimensionalityReduction.py
+        cp sealion/ensemble_learning.py benchmarks/tests/ensemble_learning.py
+        cp sealion/unsupervised_clustering.py benchmarks/tests/unsupervised_clustering.py
         pytest
