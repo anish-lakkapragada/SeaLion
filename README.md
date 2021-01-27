@@ -87,6 +87,17 @@ Some of the algorithms we are working on right now.
 1. **Batch Normalization**
 2. **Binomial Naive Bayes**
 3. **Gaussian Mixture Models**
+4. **Barnes Hut t-SNE** (please, please contribute for this one)
+
+## Contributing
+If you feel you can do something better than how it is right now in SeaLion, please do! Believe me, you will find great joy in simplifying my code (probably using numpy) and speeding it up. The major problem right now is speed, some algorithms like PCA can handle 10000+ data points, whereas tSNE is unscalable with O(n^2) time complexity. We have solved this problem with Cython + parallel processing (thanks joblib), so algorithms (aside from neural networks) are working well with <1000 points. Getting to the next level will need some help. 
+
+Most of the modules I use are numpy, pandas, joblib, and tqdm. I prefer using less dependencies in the code, so please keep it down to a minimum. 
+
+Other than that, thanks for contributing!
+
+## Acknowledgements
+Plenty of articles and people helped me a long way. Some of the tougher questions I dealt with were Automatic Differentiation in neural networks, in which this tutorial[https://www.youtube.com/watch?v=o64FV-ez6Gw] helped me. I also got some help on the O(n^2) time complexity problem of the denominator of t-SNE from this article[https://nlml.github.io/in-raw-numpy/in-raw-numpy-t-sne/] and understood the mathematical derivation for the gradients (original paper didn't go over it) from here[http://pages.di.unipi.it/errica/assets/files/sne_tsne.pdf]. Lastly special thanks to Evan M. Kim and Peter Washington for helping make the normal equation and cauchy distribution in tSNE make sense. 
 
 ## Feedback, comments, or questions
 If you have any feedback or something you would like to tell me, please do not hesitate to share! Feel free to comment here on github or reach out to me through
