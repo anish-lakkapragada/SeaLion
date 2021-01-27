@@ -176,13 +176,6 @@ class RandomForest():
         evaluations = {decision_tree.evaluate(x_test, y_test): decision_tree for decision_tree in self.decision_trees}
         return evaluations[max(evaluations)].tree  # tree with best score
 
-    def _evaluate_decision_tree(data_labels_tree):
-        '''give the decision tree'''
-        x_test, y_test, decision_tree = data_labels_tree
-        dt = self.DecisionTree()
-        dt.give_tree(decision_tree)
-        return dt.evaluate(x_test, y_test)
-
     def visualize_evaluation(self, y_pred, y_test):
         """
         :param y_pred: predictions from the predict() method
