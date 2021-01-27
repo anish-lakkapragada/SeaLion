@@ -8,11 +8,16 @@ Through this library we hope newer students will learn common algorithms and tho
 The package is available on PyPi. 
 Install like such : 
 ```shell
-pip install sealion
+pip3 install sealion
 ```
+
+SeaLion can only support python 3, so make sure you are updated to the newest version. 
 
 ## Documentation
 All documentation is available with the pydoc module. However useful they may be, I highly recommend you check the examples posted on GitHub here and seeing how the classes work. 
+
+## General Information
+SeaLion was built by Anish Lakkapragada starting in Thanksgiving of 2020 and has continued onto early 2021. The library is meant for beginners to use when solving the standard libraries like iris, breast cancer, swiss roll, the moons dataset, MNIST, etc. The source code is not as much as most other ML libraries (only 4000 lines) so feel free to read it or contribute. I am open to any suggestions. 
 
 ## Machine Learning Algorithms
 
@@ -64,7 +69,7 @@ new algorithms are being made right now.
     - Multinomial Naive Bayes
     - Gaussian Naive Bayes
 6. **Trees**
-    - Decision Tree (with max_branches, min_samples regularization)
+    - Decision Tree (with max_branches, min_samples regularization + CART training)
 7. **Ensemble Learning**
     - Random Forests
     - Ensemble/Voting Classifier
@@ -75,6 +80,19 @@ new algorithms are being made right now.
     - plot confusion matrix function (confusion_matrix())
     - revert one hot encoding to 1D Array (revert_one_hot())
     - revert softmax predictions to 1D Array (revert_softmax())
+    
+## Algorithms in progress
+Some of the algorithms we are working on right now. 
+
+1. **Batch Normalization**
+2. **Binomial Naive Bayes**
+3. **Gaussian Mixture Models**
+
+## Feedback, comments, or questions
+If you have any feedback or something you would like to tell me, please do not hesitate to share! Feel free to comment here on github or reach out to me through
+anish.lakkapragada@gmail.com
+
+
 
 
  
