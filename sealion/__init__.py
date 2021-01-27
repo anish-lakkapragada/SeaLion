@@ -12,8 +12,6 @@ I hope you enjoy it!
 - Anish Lakkapragada 2021
 """
 
-
-from . import neural_networks
 from . import cython_decision_tree_functions
 from . import cython_knn
 from . import cython_ensemble_learning
@@ -28,3 +26,4 @@ from . import nearest_neighbors
 from . import regression
 from . import unsupervised_clustering
 from . import utils
+from . import neural_networks
