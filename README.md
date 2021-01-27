@@ -50,6 +50,10 @@ new algorithms are being made right now.
     * Loss Functions
         - MSE (for regression)
         - CrossEntropy (for classification)
+    * Transfer Learning
+        - Save weights (in a pickle file) 
+        - reload them and then enter them into the same neural network
+        - this is so you don't have to start training from scratch
 2. **Regression**
    - Linear Regression (Normal Equation, closed-form) 
    - Ridge Regression (closed-form solution)
