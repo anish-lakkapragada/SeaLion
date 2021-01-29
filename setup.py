@@ -21,7 +21,7 @@ setup(
           'tqdm',
           'multiprocess'
       ],
-  long_description=open('README.txt', 'r').read(),
+  long_description=open('README.md', 'r').read(),
   python_requires='>=3.0',
   classifiers=[
     'Development Status :: 3 - Alpha',
