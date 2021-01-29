@@ -106,26 +106,4 @@ dbscan.visualize_clustering(color_dict)
 # than KMeans, but did a better job. That's because its looking for the nearby points, so
 # more points increases runtime exponentially. KMeans is a lot more
 # practical and scalable, but DBSCAN is much more interesting (especially to build.)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# I hope that helps you understand more about unsupervised clustering by looking at those beautiful plots!
