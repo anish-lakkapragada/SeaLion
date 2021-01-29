@@ -1,7 +1,10 @@
+import setuptools
 from distutils.core import setup
+
 setup(
   name = 'sealion',
-  packages = ['sealion'],
+  packages = setuptools.find_packages(),  
+  include_package_data=True,  
   version = '2.8.1',
   license='MIT',
   description = 'SeaLion is a simple machine learning and data science library for beginners and ml-engineers alike.',
@@ -18,7 +21,8 @@ setup(
           'tqdm',
           'multiprocess'
       ],
-  long_description=open('README.md', 'r').read(),
+  long_description=open('README.txt', 'r').read(),
+  python_requires='>=3.0',
   classifiers=[
     'Development Status :: 3 - Alpha',
     'Intended Audience :: Developers',
