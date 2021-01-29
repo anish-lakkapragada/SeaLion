@@ -56,7 +56,7 @@ model.finalize(loss=CrossEntropy(), optimizer=SGD(lr=0.3, momentum=0.2, nesterov
 
 '''To see how complex our model is we can do : '''
 num_parameters = model.num_parameters()
-print("Number of parameters for the 1st : ", num_parameters)
+print("Number of parameters for the 1st model : ", num_parameters)
 
 # Step 3 : Training!
 
