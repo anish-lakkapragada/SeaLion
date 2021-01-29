@@ -14,7 +14,7 @@ pip3 install sealion
 SeaLion can only support python 3, so make sure you are updated to the newest version. 
 
 ## Documentation
-All documentation is available with the pydoc module. However useful they may be, I highly recommend you check the examples posted on GitHub here and seeing how the classes work. 
+All documentation is available with the pydoc module. However useful they may be, I highly recommend you check the examples posted on GitHub here and seeing how the classes work. I am currently working on taking the pydoc HTML files and putting them on a website. 
 
 ## General Information
 SeaLion was built by Anish Lakkapragada starting in Thanksgiving of 2020 and has continued onto early 2021. The library is meant for beginners to use when solving the standard libraries like iris, breast cancer, swiss roll, the moons dataset, MNIST, etc. The source code is not as much as most other ML libraries (only 4000 lines) and has much more relaxed security with the MIT license so feel free to read it or contribute. I am open to any suggestions. 
@@ -56,8 +56,8 @@ new algorithms are being made right now.
         - this is so you don't have to start training from scratch
 2. **Regression**
    - Linear Regression (Normal Equation, closed-form) 
-   - Ridge Regression (closed-form solution)
-   - Lasso Regression
+   - Ridge Regression (L2 regularization, closed-form solution)
+   - Lasso Regression (L1 regularization)
    - Elastic-Net Regression
    - Logistic Regression
    - Softmax Regression
@@ -67,7 +67,7 @@ new algorithms are being made right now.
     - Principal Component Analysis (PCA)
     - t-distributed Stochastic Neighbor Embedding (tSNE)
 4. **Unsupervised Clustering**
-    - KMeans
+    - KMeans (w/ Kmeans++)
     - DBSCAN
 5. **Naive Bayes**
     - Multinomial Naive Bayes
