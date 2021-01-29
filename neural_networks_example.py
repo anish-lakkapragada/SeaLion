@@ -1,6 +1,6 @@
 """
-Example for the MNIST dataset, which is composed of 70000 28 * 28 grayscale images from 1 - 10. Here we will be
-teaching a neural network to learn.
+Example of neural networks using the MNIST dataset, which is composed of 70000 28 * 28 grayscale images from 1 - 10. Here we will be
+teaching a neural network to learn how to recognize digits.
 """
 import sealion as sl  # first import this, under sl alias
 from sealion.neural_networks.optimizers import SGD, Adam  # we'll use these 2, but feel free to try some more
@@ -143,9 +143,3 @@ model.pickle_params(file_name)
 # any noticeable results that's because this is MNIST. Either way we hope
 # you enjoyed this tutorial and neural networks make a bit more sense
 # with SeaLion.
-
-
-
-
-
-
