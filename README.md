@@ -67,7 +67,7 @@ new algorithms are being made right now.
     - Principal Component Analysis (PCA)
     - t-distributed Stochastic Neighbor Embedding (tSNE)
 4. **Unsupervised Clustering**
-    - KMeans (w/ Kmeans++)
+    - KMeans (w/ KMeans++)
     - DBSCAN
 5. **Naive Bayes**
     - Multinomial Naive Bayes
