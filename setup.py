@@ -6,14 +6,14 @@ non_python_files = ['cython_ensemble_learning.cpython-38-darwin.so', 'cython_dec
 setup(
   name = 'sealion',
   packages = setuptools.find_packages(),
-  package_data = {'' : non_python_files}, 
-  version = '3.0',
+  package_data = {'' : non_python_files},
+  version = '3.0.0',
   license='MIT',
   description = 'SeaLion is a simple machine learning and data science library for beginners and ml-engineers alike.',
   author = 'Anish Lakkapragada',
   author_email = 'anish.lakkapragada@gmail.com',
   url = 'https://github.com/anish-lakkapragada/SeaLion',
-  download_url = 'https://github.com/anish-lakkapragada/SeaLion/archive/v3.0.tar.gz',
+  download_url = 'https://github.com/anish-lakkapragada/SeaLion/archive/v3.0.0.tar.gz',
   keywords = ['Machine Learning', 'Data Science', 'Python'],
   install_requires=[
           'numpy',
@@ -24,9 +24,9 @@ setup(
           'multiprocess'
       ],
   long_description=open('README.md', 'r').read(),
-  python_requires='>=3.0',
+  python_requires='>=3.8',
   classifiers=[
-    'Development Status :: 3 - Alpha',
+    'Development Status :: 3.8 - Alpha',
     'Intended Audience :: Developers',
     'Topic :: Software Development :: Build Tools',
     'License :: OSI Approved :: MIT License',
