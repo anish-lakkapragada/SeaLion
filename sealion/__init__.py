@@ -1,0 +1,30 @@
+"""
+SeaLion is a simple machine learning and data science library.
+
+=============================================================
+
+Designed with beginners in mind, it has rich documentation via Pydoc and algorithms that span from the most basic
+to more modern approaches. It is meant to help beginners navigate it all, and the documentation not only explains t
+he models and their respective functions but also what they are and when to use them. Emphasis was also put on creating
+new functions to make it interesting for those who are just getting started and seasoned ml-engineers alike.
+
+I hope you enjoy it!
+- Anish Lakkapragada 2021
+"""
+
+from . import regression #passed
+from . import decision_trees
+from . import DimensionalityReduction
+from . import ensemble_learning
+from . import naive_bayes
+from . import nearest_neighbors
+from . import unsupervised_clustering
+from . import utils
+
+from . import neural_networks
+from . import cython_decision_tree_functions
+from . import cython_knn
+from . import cython_ensemble_learning
+from . import cython_naive_bayes
+from . import cython_tsne
+from . import cython_unsupervised_clustering
