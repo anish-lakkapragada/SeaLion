@@ -7,6 +7,7 @@ setup(
   name = 'sealion',
   packages = setuptools.find_packages(),
   package_data = {'' : non_python_files},
+  include_package_data=True,
   version = '3.0.4',
   license='MIT',
   description = 'SeaLion is a simple machine learning and data science library for beginners and ml-engineers alike.',
