@@ -8,20 +8,20 @@ Through this library we hope newer students will learn common algorithms and tho
 The package is available on PyPi. 
 Install like such : 
 ```shell
-pip3 install sealion
+pip install sealion
 ```
 
 SeaLion can only support python 3, so make sure you are updated to the newest version. 
 
 ## Documentation
-All documentation is available with the pydoc module. However useful they may be, I highly recommend you check the examples posted on GitHub here and seeing how the classes work. I am currently working on taking the pydoc HTML files and putting them on a website. 
+All documentation is currently being put on a website. However useful it may be, I highly recommend you check the examples posted on GitHub here to see the usage of the APIs and how it works. 
 
 ## General Information
 SeaLion was built by Anish Lakkapragada starting in Thanksgiving of 2020 and has continued onto early 2021. The library is meant for beginners to use when solving the standard libraries like iris, breast cancer, swiss roll, the moons dataset, MNIST, etc. The source code is not as much as most other ML libraries (only 4000 lines) and has much more relaxed security with the MIT license so feel free to read it or contribute. I am open to any suggestions. 
 
 ## Machine Learning Algorithms
 
-The machine learning algorithms of SeaLion are listed below. Please note that the stucture of the listing isn't meant to resemble that of SeaLion's. Of course, 
+The machine learning algorithms of SeaLion are listed below. Please note that the stucture of the listing isn't meant to resemble that of SeaLion's APIs. Of course, 
 new algorithms are being made right now. 
 
 1. **Neural networks**
