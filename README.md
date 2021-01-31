@@ -19,7 +19,16 @@ All documentation is currently being put on a website. However useful it may be,
 ## General Information
 SeaLion was built by Anish Lakkapragada starting in Thanksgiving of 2020 and has continued onto early 2021. The library is meant for beginners to use when solving the standard libraries like iris, breast cancer, swiss roll, the moons dataset, MNIST, etc. The source code is not as much as most other ML libraries (only 4000 lines) and has much more relaxed security with the MIT license so feel free to read it or contribute. I am open to any suggestions. 
 
-## What Tools We Used
+
+## Updates for v3.0.0!
+SeaLion v3.0 and up has had a lot of major milestones. 
+
+I have started to add some examples via jupyter notebooks with some pretty plots. Github thinks that more than 75% of this repo is jupyter notebooks, so be don't be fooled by that. 
+
+Perhaps the biggest change in v3.0 is how we have changed the Cython compilation. A quick primer on Cython if you are unfamiliar  - you take your python code (in .py files), change it and add some return types and type declarations, put that in a .pyx file, and compile it to a .so file. The .so file is then imported in the python module which you use. 
+
+The main bug fixed was that the .so file was actually specific to the architecture of the user. I use macOS and compiled all my files in .so, so prior v3.0 I would just give those .so files to anybody else. However other architectures and OSs like Ubuntu would not be able to recognize those files. Instead what we do know is just store the .pyx files (universal for all computers) in the source code, and the first time you import sealion all of those 
+.pyx files will get compiled into .so files (so they will work for whatever you are using.) This means the first import will take about 40 seconds, but after that it will be as quick as any other import. 
 
 ## Machine Learning Algorithms
 
