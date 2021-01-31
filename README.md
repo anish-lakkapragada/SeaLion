@@ -19,6 +19,8 @@ All documentation is currently being put on a website. However useful it may be,
 ## General Information
 SeaLion was built by Anish Lakkapragada starting in Thanksgiving of 2020 and has continued onto early 2021. The library is meant for beginners to use when solving the standard libraries like iris, breast cancer, swiss roll, the moons dataset, MNIST, etc. The source code is not as much as most other ML libraries (only 4000 lines) and has much more relaxed security with the MIT license so feel free to read it or contribute. I am open to any suggestions. 
 
+## What Tools We Used
+
 ## Machine Learning Algorithms
 
 The machine learning algorithms of SeaLion are listed below. Please note that the stucture of the listing isn't meant to resemble that of SeaLion's APIs. Of course, 
