@@ -1,8 +1,8 @@
 # SeaLion
 
-SeaLion is designed to teach programmers the popular machine learning concepts of today in a way that gives both intution and ways of application. 
+SeaLion is designed to teach aspiring data scientists the popular machine learning concepts of today in a way that gives both intution and ways of application. 
 We do this through documentation that explains the models, how they work, and how to use them with examples on familiar datasets like iris, breast cancer, MNIST, etc. 
-Through this library we hope newer students will learn common algorithms and those more experienced will appreciate the extra morsels of functionality. 
+Through this library we hope new students will learn common algorithms and ways of implementation for things like regression, unsupervised clusering, dimensionality reduction, ensemble learning, bayesian models, and even deep neural networks. Those more experienced will appreciate the extra morsels of functionality. 
 
 ## Installation
 The package is available on PyPi. 
