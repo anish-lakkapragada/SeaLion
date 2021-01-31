@@ -3,8 +3,6 @@ from distutils.core import setup
 import pathlib
 from setuptools import setup
 
-readme_path = pathlib.Path(__file__).parent
-README_path = (readme_path / "README.md").read_text()
 
 non_python_files = ['cython_decision_tree_functions.pyx', 'cython_tsne.pyx', 'cython_unsupervised_clustering.pyx',  'cython_naive_bayes.pyx',  'cython_ensemble_learning.pyx',  'cython_knn.pyx']
 
@@ -29,7 +27,7 @@ setup(
           'tqdm',
           'multiprocess'
       ],
-  long_description=README_path,
+  long_description="README.md",
   python_requires='>=3',
   classifiers=[
     'Development Status :: 3 - Alpha',
