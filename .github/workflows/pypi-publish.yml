@@ -19,8 +19,8 @@ jobs:
       run: echo "$GITHUB_CONTEXT" 
     - name: Install dependencies
       run: |
-        python3 -m pip3 install --upgrade pip
-        pip3 install setuptools wheel twine
+        python3 -m pip install --upgrade pip
+        pip install setuptools wheel twine
     - name: Build and publish
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
