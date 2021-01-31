@@ -24,7 +24,7 @@ SeaLion was built by Anish Lakkapragada starting in Thanksgiving of 2020 and has
 The machine learning algorithms of SeaLion are listed below. Please note that the stucture of the listing isn't meant to resemble that of SeaLion's APIs. Of course, 
 new algorithms are being made right now. 
 
-1. **Neural networks**
+1. **Deep Neural Networks**
     * Optimizers
         - Gradient Descent (and mini-batch gradient descent)
         - Momentum Optimization w/ Nesterov Accelerated Gradient
