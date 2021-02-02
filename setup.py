@@ -30,7 +30,7 @@ setup(
           'multiprocess'
       ],
   long_description=read_me_description,
-  long_description_content_type = "text/markdown"
+  long_description_content_type = "text/markdown",
   python_requires='>=3',
   classifiers=[
     'Development Status :: 3 - Alpha',
