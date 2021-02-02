@@ -3,9 +3,8 @@ from distutils.core import setup
 import pathlib
 from setuptools import setup
 from os import path
-this_directory = path.abspath(path.dirname(__file__))
 
-with open(path.join(this_directory, 'README.md'),  encoding='utf-8') as fh:
+with open('README.md', 'r') as fh:
     read_me_description = fh.read()
 
 non_python_files = ['cython_decision_tree_functions.pyx', 'cython_tsne.pyx', 'cython_unsupervised_clustering.pyx',
@@ -16,13 +15,13 @@ setup(
     packages=setuptools.find_packages(),
     package_data={'': non_python_files},
     include_package_data=True,
-    version='3.7',
+    version='3.6',
     license='MIT',
     description='SeaLion is a comprehensive machine learning and data science library for beginners and ml-engineers alike.',
     author='Anish Lakkapragada',
     author_email='anish.lakkapragada@gmail.com',
     url='https://github.com/anish-lakkapragada/SeaLion',
-    download_url='https://github.com/anish-lakkapragada/SeaLion/archive/v3.7.tar.gz',
+    download_url='https://github.com/anish-lakkapragada/SeaLion/archive/v3.6.tar.gz',
     keywords=['Machine Learning', 'Data Science', 'Python'],
     install_requires=[
         'numpy',
