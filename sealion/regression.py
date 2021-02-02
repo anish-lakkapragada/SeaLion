@@ -1076,6 +1076,7 @@ class PolynomialRegression():
 
         x_test = np.array(x_test)
         if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
+        x_test = _poly_transform(x_test)
         return self.inner_linear_model.predict(x_test)  # just use the prediction method
 
     def evaluate(self, x_test, y_test):
