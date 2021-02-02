@@ -24,7 +24,7 @@ SeaLion was built by Anish Lakkapragada starting in Thanksgiving of 2020 and has
 SeaLion v3.0 and up has had a lot of major milestones. 
 
 The first thing is that all the code examples (in jupyter notebooks) for basically all of the modules in sealion are put into the examples directory. Most of them 
-go over using actual datasets like iris, breast cancer, moons, blobs, MNIST, etc. I hope they are useful. 
+go over using actual datasets like iris, breast cancer, moons, blobs, MNIST, etc. These were all built using v3.0.8 - hopefully that clears up any confusion. I hope you enjoy them. 
 
 Perhaps the biggest change in v3.0 is how we have changed the Cython compilation. A quick primer on Cython if you are unfamiliar  - you take your python code (in .py files), change it and add some return types and type declarations, put that in a .pyx file, and compile it to a .so file. The .so file is then imported in the python module which you use. 
 
