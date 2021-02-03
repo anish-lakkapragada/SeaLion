@@ -4,6 +4,9 @@ SeaLion is designed to teach aspiring data scientists the popular machine learni
 We do this through documentation that explains the models, how they work, and how to use them with examples on familiar datasets like iris, breast cancer, MNIST, etc. 
 Through this library we hope new students will learn common algorithms and ways of implementation for things like regression, unsupervised clusering, dimensionality reduction, ensemble learning, bayesian models, and even deep neural networks. Those more experienced will appreciate the extra morsels of functionality.
 
+"Super Expansive Python ML Library"
+   - [Peter Washington](https://twitter.com/peter_washing/status/1356766327541616644), Stanford PHD candidate in BioEngineering
+
 ## Installation
 The package is available on PyPi. 
 Install like such : 
