@@ -7,7 +7,7 @@ Through this library we hope new students will learn common algorithms and ways 
 ## Testimonials 
 
 "Super Expansive Python ML Library"
-   - [Peter Washington](https://twitter.com/peter_washing/status/1356766327541616644), Stanford PHD candidate in BioEngineering
+   - [@Peter Washington](https://twitter.com/peter_washing/status/1356766327541616644), Stanford PHD candidate in BioEngineering
 
 "Don't use sklearn, use this."
    - [@KentoNishi](https://github.com/KentoNishi), GitHub Pro + Developer of LiveTL
