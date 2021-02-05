@@ -261,7 +261,7 @@ Also I used the PCA method from handsonml so thanks for that too
 Aurélien Géron. Lastly special thanks to Evan M. Kim and Peter
 Washington for helping make the normal equation and cauchy distribution
 in tSNE make sense. Also thanks to
-[@KentoNishi](https://github.com/KentoNishi) for helping me understand
+`@Kento Nishi <http://github.com/KentoNishi>`__ for helping me understand
 open-source.
 
 Feedback, comments, or questions
