@@ -16,7 +16,7 @@ Install like such :
 pip install sealion
 ```
 
-SeaLion can only support Python 3 (preferable 3.8), so please make sure you are on the newest version. 
+SeaLion can only support Python 3, so please make sure you are on the newest version. 
 
 ## Documentation
 All documentation is currently being put on a website. However useful it may be, I highly recommend you check the examples posted on GitHub here to see the usage of the APIs and how it works. 
