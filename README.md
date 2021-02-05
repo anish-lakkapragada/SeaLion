@@ -18,6 +18,37 @@ pip install sealion
 
 SeaLion can only support Python 3, so please make sure you are on the newest version. 
 
+## General Usage
+
+For most classifiers you can just do (we'll use Linear Regression as an example here) : 
+
+```shell
+from sealion.regression import LinearRegression
+lin_reg = LinearRegression()
+```
+to initialize, and then to train : 
+
+```shell
+lin_reg.fit(X_train, y_train)
+```
+and for testing : 
+```shell
+y_pred = lin_reg.predict(X_test)
+evaluation = lin_reg.evaluate(X_test, y_test)
+```
+
+For the unsupervised clustering algorithms you may do : 
+```shell
+from sealion.unsupervised_clustering import KMeans
+kmeans = KMeans(k = 3)
+```
+and then to fit and predict : 
+```shell
+predictions = kmeans.fit_predict(X)
+```
+
+Neural networks are a bit more complicated, so you can check an example [here](https://github.com/anish-lakkapragada/SeaLion/blob/main/examples/deep_learning_example.ipynb)
+
 ## Documentation
 All documentation is currently being put on a website. However useful it may be, I highly recommend you check the examples posted on GitHub here to see the usage of the APIs and how it works. 
 
