@@ -111,7 +111,7 @@ def one_hot(indices, depth) :
     df = pd.DataFrame({'col1' : zeros.tolist(), 'col2' : indices.tolist()})
     return np.apply_along_axis(_change, 1, df)
 
-def revert_one_hot(one_hot_data) :
+def revert_one_hot_nn(one_hot_data) :
     '''
     Say from the one_hot() data you've gotten something like this :
 
@@ -136,7 +136,7 @@ def revert_one_hot(one_hot_data) :
 
     return np.apply_along_axis(np.argmax, 1, one_hot_data)
 
-def revert_softmax(softmax_data) :
+def revert_softmax_nn(softmax_data) :
     '''
     Say from the softmax function (in neural networks) you've gotten something like this :
 
