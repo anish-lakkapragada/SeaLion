@@ -22,7 +22,7 @@ Testimonials
 Installation
 ------------
 
-The package is available on PyPi. Install like such :
+The package is available on PyPI. Install like such :
 
 .. code:: shell
 
