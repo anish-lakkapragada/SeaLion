@@ -38,7 +38,7 @@ General Usage
 For most classifiers you can just do (we'll use Linear Regression as an
 example here) :
 
-.. code:: shell
+.. code:: python
 
     from sealion.regression import LinearRegression
     lin_reg = LinearRegression()
