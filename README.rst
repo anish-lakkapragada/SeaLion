@@ -16,8 +16,7 @@ Testimonials
 ------------
 
 -  "Super Expansive Python ML Library"
--  [@Peter
-   Washington](https://twitter.com/peter\_washing/status/1356766327541616644),
+   -  [@Peter Washington](https://twitter.com/peter\_washing/status/1356766327541616644),
    Stanford PHD candidate in Bio-Engineering
 
 Installation
