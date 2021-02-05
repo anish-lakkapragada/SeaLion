@@ -19,17 +19,6 @@ Testimonials
    -  `@Peter Washington <https://twitter.com/peter\_washing/status/1356766327541616644>`__, Stanford PHD candidate in Bio-Engineering
    
 
-Installation
-------------
-
-The package is available on PyPI. Install like such :
-
-.. code:: shell
-
-    pip install sealion
-
-SeaLion can only support Python 3, so please make sure you are on the
-newest version.
 
 General Usage
 -------------
@@ -70,6 +59,18 @@ and then to fit and predict :
 
 Neural networks are a bit more complicated, so you can check an example
 `here. <https://github.com/anish-lakkapragada/SeaLion/blob/main/examples/deep_learning_example.ipynb>`__
+
+Installation
+------------
+
+The package is available on PyPI. Install like such :
+
+.. code:: shell
+
+    pip install sealion
+
+SeaLion can only support Python 3, so please make sure you are on the
+newest version.
 
 Documentation
 -------------
