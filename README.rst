@@ -69,7 +69,7 @@ and then to fit and predict :
     predictions = kmeans.fit_predict(X)
 
 Neural networks are a bit more complicated, so you can check an example
-`here <https://github.com/anish-lakkapragada/SeaLion/blob/main/examples/deep_learning_example.ipynb>`__
+`here. <https://github.com/anish-lakkapragada/SeaLion/blob/main/examples/deep_learning_example.ipynb>`__
 
 Documentation
 -------------
