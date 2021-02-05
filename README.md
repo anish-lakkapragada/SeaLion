@@ -26,6 +26,7 @@ For most classifiers you can just do (we'll use Linear Regression as an example 
 from sealion.regression import LinearRegression
 lin_reg = LinearRegression()
 ```
+
 to initialize, and then to train : 
 
 ```shell
