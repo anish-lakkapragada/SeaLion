@@ -31,14 +31,14 @@ log_reg = LogisticRegression()
 to initialize, and then to train :
 
 ``` python
-log_reg.fit(X_train, y_train) # X_train must be a matrix, y_train must be a vector
+log_reg.fit(X_train, y_train) 
 ```
 
 and for testing :
 
 ```python
-y_pred = log_reg.predict(X_test) # X_test must be a matrix
-evaluation = log_reg.evaluate(X_test, y_test) # X_test must be a matrix, y_test must be a vector
+y_pred = log_reg.predict(X_test) 
+evaluation = log_reg.evaluate(X_test, y_test) 
 ```
 
 For the unsupervised clustering algorithms you may do :
@@ -51,7 +51,7 @@ kmeans = KMeans(k = 3)
 and then to fit and predict :
 
 ```python
-predictions = kmeans.fit_predict(X) # X must be a matrix
+predictions = kmeans.fit_predict(X) 
 ```
 
 Neural networks are a bit more complicated, so you may want to check an example
