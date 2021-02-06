@@ -12,7 +12,7 @@ dimensionality reduction, ensemble learning, bayesian models, and even
 deep neural networks. Those more experienced will appreciate the extra
 morsels of functionality.
 
-<img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/sealion_demo.gif" width="1300" height = "1100">
+<img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/sealion_demo.gif" width="1500" height = "1100">
 
 Testimonials
 ------------
