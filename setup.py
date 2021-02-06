@@ -4,7 +4,7 @@ import pathlib
 from setuptools import setup
 from os import path
 
-with open('README.rst', 'r') as fh:
+with open('README.md', 'r') as fh:
     read_me_description = fh.read()
 
 non_python_files = ['cython_decision_tree_functions.pyx', 'cython_tsne.pyx', 'cython_unsupervised_clustering.pyx',
@@ -29,10 +29,11 @@ setup(
         'pandas',
         'scipy',
         'tqdm',
-        'multiprocess'
+        'multiprocess',
+        'seaborn'
     ],
     long_description=read_me_description,
-    long_description_content_type="text/x-rst",
+    long_description_content_type="text/markdown",
     python_requires='>=3',
     classifiers=[
         'Development Status :: 3 - Alpha',
