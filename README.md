@@ -26,7 +26,7 @@ General Usage
 For most classifiers you can just do (we'll use Linear Regression as an
 example here) :
 
-``` python
+```java
 from sealion.regression import LinearRegression
 lin_reg = LinearRegression()
 ```
