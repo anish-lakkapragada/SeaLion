@@ -16,8 +16,10 @@ of the way.
 Quick Demo
 -------------
 
-![](https://raw.githubusercontent.com/anish-lakkapragada/SeaLion/main/gif.md)
-*SeaLion in Action*
+<figure>
+    <img src="https://raw.githubusercontent.com/anish-lakkapragada/SeaLion/main/sealion_demo.gif" width="800" height = "449">
+    <figcaption> <i> SeaLion in action. </i> </figcaption>
+</figure>
 
 General Usage
 -------------
