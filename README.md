@@ -87,7 +87,7 @@ newest version.
 General Information
 -------------------
 
-SeaLion was built by Anish Lakkapragada starting in Thanksgiving of 2020
+SeaLion was built by Anish Lakkapragada, a freshman in high school, starting in Thanksgiving of 2020
 and has continued onto early 2021. The library is meant for beginners to
 use when solving the standard libraries like iris, breast cancer, swiss
 roll, the moons dataset, MNIST, etc. The source code is not as much as
