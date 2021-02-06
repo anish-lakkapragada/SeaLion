@@ -16,9 +16,7 @@ Testimonials
 ------------
 
 "Super Expansive Python ML Library"
-:   -   [@Peter
-        Washington](https://twitter.com/peter\_washing/status/1356766327541616644),
-        Stanford PHD candidate in Bio-Engineering
+   -   [@Peter Washington](https://twitter.com/peter\_washing/status/1356766327541616644), Stanford PHD candidate in Bio-Engineering
 
 General Usage
 -------------
@@ -26,34 +24,34 @@ General Usage
 For most classifiers you can just do (we'll use Linear Regression as an
 example here) :
 
-``` {.sourceCode .python}
+``` python
 from sealion.regression import LinearRegression
 lin_reg = LinearRegression()
 ```
 
 to initialize, and then to train :
 
-``` {.sourceCode .python}
+``` python
 lin_reg.fit(X_train, y_train)
 ```
 
 and for testing :
 
-``` {.sourceCode .python}
+```python
 y_pred = lin_reg.predict(X_test)
 evaluation = lin_reg.evaluate(X_test, y_test)
 ```
 
 For the unsupervised clustering algorithms you may do :
 
-``` {.sourceCode .python}
+```python
 from sealion.unsupervised_clustering import KMeans
 kmeans = KMeans(k = 3)
 ```
 
 and then to fit and predict :
 
-``` {.sourceCode .python}
+```python
 predictions = kmeans.fit_predict(X)
 ```
 
@@ -65,7 +63,7 @@ Installation
 
 The package is available on PyPI. Install like such :
 
-``` {.sourceCode .shell}
+``` shell
 pip install sealion
 ```
 
