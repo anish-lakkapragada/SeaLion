@@ -17,7 +17,7 @@ Quick Demo
 -------------
 
 <figure>
-    <img src="https://raw.githubusercontent.com/anish-lakkapragada/SeaLion/main/sealion_demo.gif" width="775" height = "400">
+    <img src="https://raw.githubusercontent.com/anish-lakkapragada/SeaLion/main/sealion_demo.gif" width="775" height = "375">
     <figcaption> <i> SeaLion in action. </i> </figcaption>
 </figure>
 
