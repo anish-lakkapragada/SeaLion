@@ -5,6 +5,7 @@ SeaLion
 ![License](https://img.shields.io/apm/l/te?color=informational)
 ![total lines](https://img.shields.io/tokei/lines/github/anish-lakkapragada/SeaLion?color=brightgreen)
 ![issues](https://img.shields.io/github/issues/anish-lakkapragada/SeaLion?color=yellow&style=plastic)
+![pypi](https://img.shields.io/pypi/v/sealion?color=red&style=plastic)
 ![repo size](https://img.shields.io/github/repo-size/anish-lakkapragada/SeaLion?color=important)
 
 SeaLion is designed to teach today's aspiring ml-engineers the popular
