@@ -12,7 +12,7 @@ dimensionality reduction, ensemble learning, bayesian models, and even
 deep neural networks. Those more experienced will appreciate the extra
 morsels of functionality.
 
-![Linear Regression Demo in SeaLion](https://github.com/anish-lakkapragada/SeaLion/blob/main/sealion_demo.gif)
+<img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/sealion_demo.gif" width="50" height = "50">
 
 Testimonials
 ------------
