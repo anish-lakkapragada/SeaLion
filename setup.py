@@ -37,6 +37,9 @@ setup(
     python_requires='>=3',
     classifiers=[
         'Development Status :: 3 - Alpha',
+        'Development Status :: 3.7 - Alpha',
+        'Development Status :: 3.8 - Alpha',
+        'Development Status :: 3.9 - Alpha',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',
