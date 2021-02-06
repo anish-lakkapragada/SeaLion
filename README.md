@@ -7,30 +7,33 @@ ways of application. We do this through concise algorithms that do the job
 in the least jargon possible and examples to guide you through every step 
 of the way. 
 
+Quick Demo
+-------------
+
 <img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/sealion_demo.gif" width="900" height = "505">
 
 General Usage
 -------------
 
-For most classifiers you can just do (we'll use Linear Regression as an
+For most classifiers you can just do (we'll use Logistic Regression as an
 example here) :
 
 ```python
-from sealion.regression import LinearRegression
-lin_reg = LinearRegression()
+from sealion.regression import LogisticRegression
+log_reg = LogisticRegression()
 ```
 
 to initialize, and then to train :
 
 ``` python
-lin_reg.fit(X_train, y_train)
+log_reg.fit(X_train, y_train)
 ```
 
 and for testing :
 
 ```python
-y_pred = lin_reg.predict(X_test)
-evaluation = lin_reg.evaluate(X_test, y_test)
+y_pred = log_reg.predict(X_test)
+evaluation = log_reg.evaluate(X_test, y_test)
 ```
 
 For the unsupervised clustering algorithms you may do :
@@ -46,7 +49,7 @@ and then to fit and predict :
 predictions = kmeans.fit_predict(X)
 ```
 
-Neural networks are a bit more complicated, so you can check an example
+Neural networks are a bit more complicated, so you may want to check an example
 [here.](https://github.com/anish-lakkapragada/SeaLion/blob/main/examples/deep_learning_example.ipynb)
 
 
