@@ -16,12 +16,8 @@ of the way.
 Quick Demo
 -------------
 
-
-<figure>
-    <img src="https://raw.githubusercontent.com/anish-lakkapragada/SeaLion/main/sealion_demo.gif" width="900" height = "350">
-    <figcaption> <i> SeaLion in action. </i> </figcaption>
-</figure>
-
+![sealion_demo.gif](https://raw.githubusercontent.com/anish-lakkapragada/SeaLion/main/sealion_demo.gif = 900x350)
+*SeaLion in Action*
 
 General Usage
 -------------
