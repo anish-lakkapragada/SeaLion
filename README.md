@@ -18,7 +18,7 @@ Quick Demo
 -------------
 
 
-<img src="https://raw.githubusercontent.com/anish-lakkapragada/SeaLion/main/sealion_demo.gif" width = 800 height = 449>
+<img src="https://raw.githubusercontent.com/anish-lakkapragada/SeaLion/main/sealion_demo.gif" width = 800 height = 500>
 
 *SeaLion in Action*
 
