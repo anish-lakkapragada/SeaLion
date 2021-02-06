@@ -1,24 +1,13 @@
 SeaLion
 =======
 
-SeaLion is designed to teach aspiring data scientists the popular
+SeaLion is designed to teach today's aspiring ml-engineers the popular
 machine learning concepts of today in a way that gives both intution and
-ways of application. We do this through documentation that explains the
-models, how they work, and how to use them with examples on familiar
-datasets like iris, breast cancer, MNIST, etc. Through this library we
-hope new students will learn common algorithms and ways of
-implementation for things like regression, unsupervised clusering,
-dimensionality reduction, ensemble learning, bayesian models, and even
-deep neural networks. Those more experienced will appreciate the extra
-morsels of functionality.
+ways of application. We do this through concise algorithms that do the job 
+in the least jargon possible and examples to guide you through every step 
+of the way. 
 
 <img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/sealion_demo.gif" width="900" height = "505">
-
-Testimonials
-------------
-
-"Super Expansive Python ML Library"
-   -   [@Peter Washington](https://twitter.com/peter\_washing/status/1356766327541616644), Stanford PHD candidate in Bio-Engineering
 
 General Usage
 -------------
@@ -60,6 +49,14 @@ predictions = kmeans.fit_predict(X)
 Neural networks are a bit more complicated, so you can check an example
 [here.](https://github.com/anish-lakkapragada/SeaLion/blob/main/examples/deep_learning_example.ipynb)
 
+
+Testimonials
+------------
+
+"Super Expansive Python ML Library"
+   -   [@Peter Washington](https://twitter.com/peter\_washing/status/1356766327541616644), Stanford PHD candidate in Bio-Engineering
+
+
 Installation
 ------------
 
@@ -72,12 +69,6 @@ pip install sealion
 SeaLion can only support Python 3, so please make sure you are on the
 newest version.
 
-Documentation
--------------
-
-All documentation is currently being put on a website. However useful it
-may be, I highly recommend you check the examples posted on GitHub here
-to see the usage of the APIs and how it works.
 
 General Information
 -------------------
@@ -90,6 +81,13 @@ most other ML libraries (only 4000 lines) and has much more relaxed
 security with the MIT license so feel free to read it or contribute. He
 hopes to spread machine learning to other high schoolers through this
 library.
+
+Documentation
+-------------
+
+All documentation is currently being put on a website. However useful it
+may be, I highly recommend you check the examples posted on GitHub here
+to see the usage of the APIs and how it works.
 
 Updates for v3.0.0!
 -------------------
