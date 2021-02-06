@@ -10,7 +10,12 @@ of the way.
 Quick Demo
 -------------
 
-<img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/sealion_demo.gif" width="900" height = "505" text = "cool">
+
+<figure>
+    <img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/sealion_demo.gif" width="900" height = "505">
+    <figcaption> Above : Checking out Linear Regression. </figcaption>
+</figure>
+
 
 General Usage
 -------------
