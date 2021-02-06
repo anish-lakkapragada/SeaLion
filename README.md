@@ -16,7 +16,7 @@ of the way.
 Quick Demo
 -------------
 
-![sealion_demo.gif](https://raw.githubusercontent.com/anish-lakkapragada/SeaLion/main/sealion_demo.gif = 900x350)
+![](https://raw.githubusercontent.com/anish-lakkapragada/SeaLion/main/sealion_demo.gif = 900x350)
 *SeaLion in Action*
 
 General Usage
