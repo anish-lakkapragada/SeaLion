@@ -13,8 +13,7 @@ Quick Demo
 
 <figure>
     <img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/sealion_demo.gif" width="900" height = "505">
-    <figcaption> Above : Checking out Linear Regression. </figcaption>
-    <p style="font-style: italic;">Learning website</p>
+    <figcaption> <i> Above : Checking out Linear Regression. </i> </figcaption>
 </figure>
 
 
