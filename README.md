@@ -1,5 +1,10 @@
 SeaLion
 =======
+|Py-Versions| |Versions| |Conda-Forge-Status| |Docker| |Snapcraft|
+
+|Build-Status| |Coverage-Status| |Branch-Coverage-Status| |Codacy-Grade| |Libraries-Rank| |PyPI-Downloads|
+
+|LICENCE| |OpenHub-Status| |binder-demo| |awesome-python|
 
 SeaLion is designed to teach today's aspiring ml-engineers the popular
 machine learning concepts of today in a way that gives both intution and
