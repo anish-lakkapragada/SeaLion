@@ -1,3 +1,4 @@
+![SeaLion](https://github.com/anish-lakkapragada/SeaLion/blob/main/SeaLion%20Logo.png?raw=true)
 SeaLion
 =======
 
