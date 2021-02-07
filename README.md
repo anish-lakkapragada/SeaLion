@@ -1,4 +1,7 @@
 ![SeaLion](https://github.com/anish-lakkapragada/SeaLion/blob/main/SeaLion%20Logo.png?raw=true)
+
+<img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/SeaLion%20Logo.png?raw=true" width = 800 height = 536>
+
 SeaLion
 =======
 
