@@ -1,4 +1,4 @@
-<img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/logo.png?raw=true" width = 900 height = 600>
+<img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/logo.png?raw=true" width = 900 height = 700>
 
 SeaLion
 =======
