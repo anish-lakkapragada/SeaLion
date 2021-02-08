@@ -8,14 +8,16 @@ performance.
 
 import numpy as np
 
+
 def indexOf(listy, element):
     indice = -1
-    if element in listy :
+    if element in listy:
         indice = listy.index(element)
     return indice
 
-def _change_labels(predicted) :
-    '''predicted is a numpy array'''
+
+def _change_labels(predicted):
+    """predicted is a numpy array"""
     list_predicted = predicted.tolist()
     list_predicted.sort()
     num_diff_categories = len(set(list_predicted))
@@ -23,13 +25,15 @@ def _change_labels(predicted) :
     organized_diff_categories = list(set(list_predicted))
     organized_diff_categories.sort()
     penalty = 1 if indexOf(list_predicted, -1) != -1 else 0
-    for _ in range(num_diff_categories) :
+    for _ in range(num_diff_categories):
         label_to_new_label[organized_diff_categories[_]] = _ - penalty
 
-    for old, new in label_to_new_label.items() : predicted[predicted == old] = new
+    for old, new in label_to_new_label.items():
+        predicted[predicted == old] = new
     return predicted
 
-class DBSCAN() :
+
+class DBSCAN:
     """
     DBSCAN is an algorithm for unsupervised clustering. That means that it identifies clusters in data, and assumes
     each cluster is a different category/label. Different than KMeans because it does not assume clusters are
@@ -59,25 +63,31 @@ class DBSCAN() :
 
     """
 
-    def __init__(self, eps = 0.5, min_neighbors = 7):
+    def __init__(self, eps=0.5, min_neighbors=7):
         """
         :param eps: eps or epsilon value for finding nearest points (in the algorithm)
         :param min_neighbors: the minimum amount of neighbors a point needs to be
         deemed a core instance.
         """
         from .cython_unsupervised_clustering import CythonDBSCAN
+
         self.cython_dbscan = CythonDBSCAN()
         self.eps = eps
         self.min_neighbors = min_neighbors
-    def fit_predict(self, x_train) :
+
+    def fit_predict(self, x_train):
         """
         :param x_train: 2D data to cluster.
         :return: Labels, or cluster number, for each data point in x_train. -1 means it belongs
         to no cluster.
         """
-        if len(np.array(x_train).shape) != 2 : raise ValueError("x_train must be 2D (even if only one sample.)")
-        predicted =  np.array(self.cython_dbscan.fit_predict(x_train, self.eps, self.min_neighbors))
+        if len(np.array(x_train).shape) != 2:
+            raise ValueError("x_train must be 2D (even if only one sample.)")
+        predicted = np.array(
+            self.cython_dbscan.fit_predict(x_train, self.eps, self.min_neighbors)
+        )
         return _change_labels(predicted)
+
     def visualize_clustering(self, color_dict):
         """
         This only works if x_train passed in the fit_predict() method has 2 dimensional inputs. This does :
@@ -89,6 +99,7 @@ class DBSCAN() :
         """
         import matplotlib.pyplot as plt
         from collections import defaultdict
+
         plt.cla()
 
         # reorganize points to classes -> matplotlib is prettier that way
@@ -103,15 +114,20 @@ class DBSCAN() :
             classes_to_points[label].append(point)
 
         for label, points in classes_to_points.items():
-            plt.scatter(np.array(points)[:, 0], np.array(points)[:, 1], color=color_dict[label],
-                        label="cluster : " + str(label))
+            plt.scatter(
+                np.array(points)[:, 0],
+                np.array(points)[:, 1],
+                color=color_dict[label],
+                label="cluster : " + str(label),
+            )
         plt.legend()
-        plt.title('Clustering of data with DBSCAN')
-        plt.xlabel('x-axis')
-        plt.ylabel('y-axis')
+        plt.title("Clustering of data with DBSCAN")
+        plt.xlabel("x-axis")
+        plt.ylabel("y-axis")
         plt.show()
 
-class KMeans() :
+
+class KMeans:
     """
     The most famous unsupervised clustering method there is. Tries to find k clusters
     (k is a parameter given by you) of the data and assign each data point to its cluster number.
@@ -153,10 +169,13 @@ class KMeans() :
         of x_train
 
     """
-    def __init__(self, k = 5):
+
+    def __init__(self, k=5):
         from .cython_unsupervised_clustering import CythonKMeans
+
         self.cython_kmeans = CythonKMeans()
         self.k = k
+
     def fit_predict(self, x_train):
         """
         :param x_train: 2D data to cluster.
@@ -165,7 +184,7 @@ class KMeans() :
 
         return np.array(self.cython_kmeans.fit_predict(x_train, self.k))
 
-    def visualize_elbow_curve(self, min_k = 2, max_k = 10) :
+    def visualize_elbow_curve(self, min_k=2, max_k=10):
         """
         Tests k-values from min_k (default 2) to max_k (default 10) and sees their inertia score in the
         clustering done. Then plots the k-values to their respective inertia score. Look for the
@@ -184,8 +203,14 @@ class KMeans() :
             inertia_scores.append(self.cython_kmeans.inertia_score())
         self.k = original_k
         import matplotlib.pyplot as plt
+
         plt.cla()
-        plt.plot([k for k in range(min_k, max_k)], inertia_scores, color="green", label="inertia scores")
+        plt.plot(
+            [k for k in range(min_k, max_k)],
+            inertia_scores,
+            color="green",
+            label="inertia scores",
+        )
         plt.scatter([k for k in range(min_k, max_k)], inertia_scores, color="green")
         plt.legend()
         plt.xlabel("k-value")
@@ -195,7 +220,8 @@ class KMeans() :
 
     def _get_centroids(self):
         return self.cython_kmeans.get_centroids()
-    def visualize_clustering(self, color_dict) :
+
+    def visualize_clustering(self, color_dict):
         """
         This only works if x_train passed in the fit_predict() method has 2 dimensional inputs. This does :
         [[1, 1], [2, 2], [3, 3]] and this doesn't : [[1] ,[2], [3]]
@@ -205,11 +231,17 @@ class KMeans() :
         :return: None, just show the image of the visualized clustering.
         """
         import matplotlib.pyplot as plt
+
         plt.cla()
-        for label, points in self.cython_kmeans.get_labeled_clusters().items() :
-            plt.scatter([point[0] for point in points], [point[1] for point in points], color = color_dict[label], label = "cluster : " + str(label))
+        for label, points in self.cython_kmeans.get_labeled_clusters().items():
+            plt.scatter(
+                [point[0] for point in points],
+                [point[1] for point in points],
+                color=color_dict[label],
+                label="cluster : " + str(label),
+            )
         plt.legend()
-        plt.title('Clustering of data with KMeans')
-        plt.xlabel('x-axis')
-        plt.ylabel('y-axis')
+        plt.title("Clustering of data with KMeans")
+        plt.xlabel("x-axis")
+        plt.ylabel("y-axis")
         plt.show()

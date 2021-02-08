@@ -9,23 +9,26 @@ so bear with me here.
 import numpy as np
 
 
-class Layer :
-    def __init__(self)  :
+class Layer:
+    def __init__(self):
         self.parameters = {}
         self.gradients = {}
         self.activation = None
         self.nesterov = False
         self.indices = ...
         pass
-    def forward(self, inputs) :
+
+    def forward(self, inputs):
         """This method saves the inputs, and returns its outputs"""
         pass
+
     def backward(self, grad):
         """This method takes in a gradient (e.x ∂l/∂Z2) and returns its grad (e.x. dL/dA1)"""
 
         pass
 
-class Flatten(Layer) :
+
+class Flatten(Layer):
     """
     This would be better explained as Image Data Flattener. Let's say your dealing with MNIST (check out the examples
     on github) - you will have data that is 60000 by 28 by 28. Neural networks can't work with data like that - it has
@@ -44,13 +47,16 @@ class Flatten(Layer) :
     >>> model.add(nn.layers.Dense(784, whatever_output_size, more_args)) #now put that data to 784 as the 28 * 28 is flattened to just 784
     >>> Do more cool stuff...
     """
-    def forward(self, inputs) :
+
+    def forward(self, inputs):
         self.inputs = inputs
         return inputs.reshape(inputs.shape[0], np.product(inputs.shape[1:]))
+
     def backward(self, grad):
         return self.inputs
 
-class Dropout(Layer) :
+
+class Dropout(Layer):
     """
     Dropout is one of the most well-known regularization techniques there is. Imagine you were working on a coding
     project with about 200 people. If we just relied on one person to know how to compile, another person to know how to debug,
@@ -81,18 +87,24 @@ class Dropout(Layer) :
 
     In dropout remember 2 things, not just one matter. The probability, and the layers its applied at. Experimentation is key.
     """
-    def __init__(self, dropout_rate) :
+
+    def __init__(self, dropout_rate):
         super().__init__()
         self.dr = dropout_rate
+
     def forward(self, inputs):
         self.inputs = inputs
-        self.dropped_inputs =  self.inputs * np.random.binomial(1, (1 - self.dr), inputs.shape)
+        self.dropped_inputs = self.inputs * np.random.binomial(
+            1, (1 - self.dr), inputs.shape
+        )
         return self.dropped_inputs
+
     def backward(self, grad):
         grad[np.where(self.dropped_inputs[self.indices] == 0)] = 0
         return grad
 
-class Dense(Layer) :
+
+class Dense(Layer):
     """
 
     This is the class that you will depend on the most. This class is for creating the fully-connected layers that
@@ -145,131 +157,160 @@ class Dense(Layer) :
 
     Sorry for so much documentation, but this really is the class you will call the most.
     """
-    def __init__(self, input_size : int, output_size : int, activation = None, weight_init = "xavier") -> None :
+
+    def __init__(
+        self, input_size: int, output_size: int, activation=None, weight_init="xavier"
+    ) -> None:
         super().__init__()
 
-        weight_init_addition =  1 # no weight init
-        if weight_init.lower() == "xavier" :
-            weight_init_addition = np.sqrt(2/(output_size + input_size))
-        elif weight_init.lower() == "he" :
+        weight_init_addition = 1  # no weight init
+        if weight_init.lower() == "xavier":
+            weight_init_addition = np.sqrt(2 / (output_size + input_size))
+        elif weight_init.lower() == "he":
             weight_init_addition = np.sqrt(2 / input_size)
-        elif weight_init.lower() == "lecun"  :
+        elif weight_init.lower() == "lecun":
             weight_init_addition = np.sqrt(1 / input_size)
-        elif not weight_init.lower() == "none" :
+        elif not weight_init.lower() == "none":
             print(f"No known weight init : {weight_init}")
 
-        self.parameters['weights'] = np.random.randn(input_size, output_size) * weight_init_addition
-        self.parameters['bias'] = np.random.randn(output_size)
-        self.gradients['weights'] = np.random.randn(*self.parameters['weights'].shape)
-        self.gradients['bias'] = np.random.randn(*self.parameters['bias'].shape)
+        self.parameters["weights"] = (
+            np.random.randn(input_size, output_size) * weight_init_addition
+        )
+        self.parameters["bias"] = np.random.randn(output_size)
+        self.gradients["weights"] = np.random.randn(*self.parameters["weights"].shape)
+        self.gradients["bias"] = np.random.randn(*self.parameters["bias"].shape)
         self.activation = activation
 
     def forward(self, inputs):
         self.inputs = inputs
-        return np.dot(inputs, self.parameters['weights']) + self.parameters['bias']
+        return np.dot(inputs, self.parameters["weights"]) + self.parameters["bias"]
 
-    def backward(self, grad) :
-        #here we can update our weights
-        '''if gradient ∂L/∂ZN, store grads ∂l/∂w1 and return dL/dA1'''
+    def backward(self, grad):
+        # here we can update our weights
+        """if gradient ∂L/∂ZN, store grads ∂l/∂w1 and return dL/dA1"""
 
-        self.gradients['weights'] = self.inputs[self.indices].T.dot(grad)
-        self.gradients['bias'] = np.sum(grad, axis = 0)
-        return np.dot(grad, (self.parameters['weights']).T) #dLdZ2 * dZ2/dA1
+        self.gradients["weights"] = self.inputs[self.indices].T.dot(grad)
+        self.gradients["bias"] = np.sum(grad, axis=0)
+        return np.dot(grad, (self.parameters["weights"]).T)  # dLdZ2 * dZ2/dA1
 
 
-class Activation(Layer) :
+class Activation(Layer):
     """
     To add Activation Functions, check the Dense class for a tutorial, or the examples.
     """
-    def __init__(self, activ_func, activ_func_prime) :
+
+    def __init__(self, activ_func, activ_func_prime):
         super().__init__()
         self.activ_func = activ_func
         self.activ_func_prime = activ_func_prime
+
     def forward(self, inputs):
         self.inputs = inputs
         return self.activ_func(inputs)
-    def backward(self, grad) :
+
+    def backward(self, grad):
         return self.activ_func_prime(self.inputs[self.indices]) * grad
 
 
-def sigmoid(x) :
+def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
-def sigmoid_prime(z) :
+
+def sigmoid_prime(z):
     return sigmoid(z) * (1 - sigmoid(z))
 
-def tanh(x) :
+
+def tanh(x):
     return np.tanh(x)
 
-def tanh_prime(z) :
+
+def tanh_prime(z):
     return 1 - np.power(tanh(z), 2)
 
-def relu(x) :
+
+def relu(x):
     return np.maximum(x, 0)
 
-def relu_prime(z) :
+
+def relu_prime(z):
     return (z > 0).astype(int)
 
-def leaky_relu(x, leak = 0.01) :
+
+def leaky_relu(x, leak=0.01):
     return np.maximum(leak * x, x)
 
-def leaky_relu_prime(z, leak = 0.01) :
+
+def leaky_relu_prime(z, leak=0.01):
     grad = np.ones_like(z)
     grad[z < 0] *= leak
     return grad
 
-def elu(z, alpha = 1) :
+
+def elu(z, alpha=1):
     return np.where(z > 0, z, alpha * (np.exp(z) - 1))
 
-def elu_prime(z, alpha = 1) :
-    grad =  np.where(z > 0, np.ones_like(z), alpha * (np.exp(z)))
+
+def elu_prime(z, alpha=1):
+    grad = np.where(z > 0, np.ones_like(z), alpha * (np.exp(z)))
     return grad
 
-def swish(x) :
+
+def swish(x):
     return x * sigmoid(x)
 
-def swish_prime(z) :
+
+def swish_prime(z):
     return swish(z) + sigmoid(z) * (1 - swish(z))
 
-def selu(x) :
+
+def selu(x):
     alpha = 1.6732
     lamb = 1.0507
     return lamb * np.maximum((alpha * np.exp(x) - alpha), x)
 
-def selu_prime(x) :
+
+def selu_prime(x):
     alpha = 1.6732
     lamb = 1.0507
     grad = np.where(x <= 0, np.ones_like(x), lamb * alpha * np.exp(x))
     return grad
 
 
-class Tanh(Activation) :
+class Tanh(Activation):
     """Uses the tanh activation, which squishes values from -1 to 1."""
+
     def __init__(self):
         super().__init__(tanh, tanh_prime)
 
-class Sigmoid(Activation) :
+
+class Sigmoid(Activation):
     """Uses the sigmoid activation, which squishes values from 0 to 1."""
+
     def __init__(self):
         super().__init__(sigmoid, sigmoid_prime)
 
-class Swish(Activation) :
+
+class Swish(Activation):
     """
     Uses the swish activation, which is sort of like ReLU and sigmoid combined. It's really just f(x) = x * sigmoid(x).
     Not as used as other activation functions, but give it a try!
     """
+
     def __init__(self):
         super().__init__(swish, swish_prime)
+
 
 class ReLU(Activation):
     """
     The most well known activation function and the pseudo-default almost. All it does is turn negative values to 0 and
     keep the rest.
     """
+
     def __init__(self):
         super().__init__(relu, relu_prime)
 
-class LeakyReLU(Activation) :
+
+class LeakyReLU(Activation):
     """
     Variant of the ReLU activation, just allows negatives values to be something more like 0.01 instead of 0, which means
     the neuron is "dead" as 0 * anything is 0.
@@ -277,31 +318,39 @@ class LeakyReLU(Activation) :
     The leak is the slope of how low negative values you are willing to tolerate. Usually set from 0.001 - 0.2, but the
     default of 0.01 works usually quite well.
     """
-    def __init__(self, leak = 0.01):
+
+    def __init__(self, leak=0.01):
         super().__init__(leaky_relu, leaky_relu_prime)
         self.leak = leak
+
     def forward(self, inputs):
         self.inputs = inputs
-        return self.activ_func(inputs, leak = self.leak)
-    def backward(self, grad) :
-        return self.activ_func_prime(self.inputs[self.indices], leak = self.leak) * grad
+        return self.activ_func(inputs, leak=self.leak)
 
-class ELU(Activation) :
+    def backward(self, grad):
+        return self.activ_func_prime(self.inputs[self.indices], leak=self.leak) * grad
+
+
+class ELU(Activation):
     """
 
     Solves the similar dying activation problem. The default of 1 for alpha works quite well in practice, so you won't need
     to change it much.
     """
-    def __init__(self, alpha = 1):
+
+    def __init__(self, alpha=1):
         super().__init__(elu, elu_prime)
         self.alpha = alpha
+
     def forward(self, inputs):
         self.inputs = inputs
-        return self.activ_func(inputs, alpha = self.alpha)
-    def backward(self, grad) :
-        return self.activ_func_prime(self.inputs[self.indices], alpha = self.alpha) * grad
+        return self.activ_func(inputs, alpha=self.alpha)
 
-class SELU(Activation) :
+    def backward(self, grad):
+        return self.activ_func_prime(self.inputs[self.indices], alpha=self.alpha) * grad
+
+
+class SELU(Activation):
     """
     Special type of activation function, that will "self-normalize" (have a mean of 0, and a standard deviation of 1) its outputs.
     This self-normalization typically leads to faster convergence.
@@ -316,12 +365,12 @@ class SELU(Activation) :
         super().__init__(selu, selu_prime)
 
 
-
-class Softmax(Layer) :
+class Softmax(Layer):
     """
     Softmax activation function, used for multi-class (2+) classification problems.
     Make sure to use crossentropy with softmax, and it is only meant for the last layer!
     """
+
     def forward(self, inputs):
         self.inputs = inputs
 

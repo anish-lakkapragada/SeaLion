@@ -14,15 +14,18 @@ from tqdm import tqdm
 from multiprocessing import cpu_count
 import random
 
+
 def r2_score(y_pred, y_test):
     num = np.sum(np.power(y_test - y_pred, 2))
     denum = np.sum(np.power(y_test - np.mean(y_test), 2))
     return 1 - num / denum
 
-def _perc_correct(y_pred, y_test) :
-    return np.sum((y_pred == y_test).astype('int'))/len(y_pred)
 
-class NeuralNetwork() :
+def _perc_correct(y_pred, y_test):
+    return np.sum((y_pred == y_test).astype("int")) / len(y_pred)
+
+
+class NeuralNetwork:
     """
     This class is very rich and packed with methods, so I figured it would be best to have this tutorial guide you
     on a tutorial on the "hello world" of machine learning.
@@ -140,7 +143,7 @@ class NeuralNetwork() :
     Of course there's a lot more things we could've changed, but I think that's pretty good for now!
     """
 
-    def __init__(self, layers = None):
+    def __init__(self, layers=None):
         from .layers import Dense, Flatten, Softmax, Dropout
         from .loss import CrossEntropy, softmax
         from .optimizers import Adam, SGD
@@ -158,10 +161,10 @@ class NeuralNetwork() :
         self.revert_softmax = revert_softmax_nn
 
         self.layers = []
-        if layers : #self.layers = layers
-            for layer in layers :
+        if layers:  # self.layers = layers
+            for layer in layers:
                 self.layers.append(layer)
-                if layer.activation :
+                if layer.activation:
                     self.layers.append(layer.activation)
         self.finalized = False
         self.sgd_indices = ...
@@ -172,251 +175,374 @@ class NeuralNetwork() :
 
     def num_parameters(self):
         num_params = 0
-        for layer in self.layers :
-            if isinstance(layer, self.Dense) :
-                num_params += np.product(layer.parameters['weights'].shape) + layer.parameters['bias'].shape
+        for layer in self.layers:
+            if isinstance(layer, self.Dense):
+                num_params += (
+                    np.product(layer.parameters["weights"].shape)
+                    + layer.parameters["bias"].shape
+                )
         return num_params
-    def enter_parameters(self, parameters) :
-        for layer_num in range(len(self.layers)) :
-            try :
-                if parameters[layer_num]['weights'] == None and parameters[layer_num]['bias'] == None: continue
-            except Exception :
-                self.layers[layer_num].parameters['weights'] = parameters[layer_num]['weights']
-                self.layers[layer_num].parameters['bias'] = parameters[layer_num]['bias']
+
+    def enter_parameters(self, parameters):
+        for layer_num in range(len(self.layers)):
+            try:
+                if (
+                    parameters[layer_num]["weights"] == None
+                    and parameters[layer_num]["bias"] == None
+                ):
+                    continue
+            except Exception:
+                self.layers[layer_num].parameters["weights"] = parameters[layer_num][
+                    "weights"
+                ]
+                self.layers[layer_num].parameters["bias"] = parameters[layer_num][
+                    "bias"
+                ]
 
     def give_parameters(self):
         parameters = []
-        for layer in self.layers :
-            try :
-                parameters.append({'weights' : layer.parameters['weights'], 'bias' : layer.parameters['bias']})
-            except Exception :
-                parameters.append({'weights' : None, 'bias' : None})
+        for layer in self.layers:
+            try:
+                parameters.append(
+                    {
+                        "weights": layer.parameters["weights"],
+                        "bias": layer.parameters["bias"],
+                    }
+                )
+            except Exception:
+                parameters.append({"weights": None, "bias": None})
         return parameters
 
-    def pickle_params(self, FILE_NAME = "NeuralNetwork_learnt_parameters"):
+    def pickle_params(self, FILE_NAME="NeuralNetwork_learnt_parameters"):
         parameters = NeuralNetwork.give_parameters(self)
         import pickle
 
-        with open(FILE_NAME + '.pickle', 'wb') as f:
+        with open(FILE_NAME + ".pickle", "wb") as f:
             pickle.dump(parameters, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     def add(self, layer):
         self.layers.append(layer)
-        if layer.activation :
+        if layer.activation:
             self.layers.append(layer.activation)
 
     def forward(self, inputs):
-        for layer in self.layers :
-            if isinstance(layer, self.Softmax) : continue
+        for layer in self.layers:
+            if isinstance(layer, self.Softmax):
+                continue
             inputs = layer.forward(inputs)
         return inputs
+
     def backward(self, grad):
-        for layer in reversed(self.layers) :
-            if isinstance(layer, self.Softmax) : continue
+        for layer in reversed(self.layers):
+            if isinstance(layer, self.Softmax):
+                continue
             grad = layer.backward(grad)
         return grad
 
-    def finalize(self, loss, optimizer) :
-        '''Both of these have to be the classes for the loss and optimizations'''
+    def finalize(self, loss, optimizer):
+        """Both of these have to be the classes for the loss and optimizations"""
         self.loss, self.optimizer = loss, optimizer
         self.finalized = True
 
     def _sgd_updating_indices(self):
-        '''only call if the loss is SGD'''
+        """only call if the loss is SGD"""
 
-        for layer_num in range(len(self.layers)) :
+        for layer_num in range(len(self.layers)):
             layer = self.layers[layer_num]
             layer.indices = self.sgd_indices
-            self.layers[layer_num]= layer
+            self.layers[layer_num] = layer
 
     def _chunk_train(self, data_chunk, label_chunk):
-        '''the actual training code!'''
+        """the actual training code!"""
         predicted = NeuralNetwork.forward(self, data_chunk)
         for layer_num in range(len(self.layers)):
             if self.layers[layer_num].nesterov:
-                '''nesterov accel'''
+                """nesterov accel"""
                 try:
-                    self.layers[layer_num].parameters['weights'] += self.optimizer.momentum * \
-                                                                    self.optimizer.momentum_params[
-                                                                        'weights' + str(layer_num)]
-                    self.layers[layer_num].parameters['bias'] += self.optimizer.momentum * \
-                                                                 self.optimizer.momentum_params['bias' + str(layer_num)]
+                    self.layers[layer_num].parameters["weights"] += (
+                        self.optimizer.momentum
+                        * self.optimizer.momentum_params["weights" + str(layer_num)]
+                    )
+                    self.layers[layer_num].parameters["bias"] += (
+                        self.optimizer.momentum
+                        * self.optimizer.momentum_params["bias" + str(layer_num)]
+                    )
                 except Exception:
                     pass
 
-        if isinstance(self.optimizer, self.Adam) :
+        if isinstance(self.optimizer, self.Adam):
             self.adam_t += 1
             self.optimizer.t = self.adam_t
 
-        if isinstance(self.optimizer, self.SGD) :
-            '''select indices for the gradients and update all layers'''
+        if isinstance(self.optimizer, self.SGD):
+            """select indices for the gradients and update all layers"""
             start_index = np.random.randint(len(predicted) - 3)
             self.sgd_indices = slice(start_index, len(predicted) - 1)
             NeuralNetwork._sgd_updating_indices(self)
 
-
-        grad = self.loss.grad(label_chunk[self.sgd_indices], predicted[self.sgd_indices])  # calculate the dL/dY
+        grad = self.loss.grad(
+            label_chunk[self.sgd_indices], predicted[self.sgd_indices]
+        )  # calculate the dL/dY
         NeuralNetwork.backward(self, grad)
         self.optimizer.update(self.layers)
 
-    def train(self, x_train, y_train, epochs=1, batch_size=32, show_loop = True):
-        if not self.finalized : raise ValueError("This model isn't finalized. Call it through model.finalize().")
+    def train(self, x_train, y_train, epochs=1, batch_size=32, show_loop=True):
+        if not self.finalized:
+            raise ValueError(
+                "This model isn't finalized. Call it through model.finalize()."
+            )
 
-        if isinstance(self.layers[-1], self.Softmax) and not isinstance(self.loss, self.CrossEntropy) :
-            raise ValueError("If the last layer activation is softmax, you must be using CrossEntropy loss.")
+        if isinstance(self.layers[-1], self.Softmax) and not isinstance(
+            self.loss, self.CrossEntropy
+        ):
+            raise ValueError(
+                "If the last layer activation is softmax, you must be using CrossEntropy loss."
+            )
 
-        if isinstance(self.loss, self.CrossEntropy) and not isinstance(self.layers[-1], self.Softmax) :
-            raise ValueError("If the loss function is crossentropy, you must be using Softmax as your last layer.")
+        if isinstance(self.loss, self.CrossEntropy) and not isinstance(
+            self.layers[-1], self.Softmax
+        ):
+            raise ValueError(
+                "If the loss function is crossentropy, you must be using Softmax as your last layer."
+            )
 
         x_train, y_train = np.array(x_train), np.array(y_train)
-        if len(y_train.shape) != 2: raise ValueError("y_train must be 2D.")
+        if len(y_train.shape) != 2:
+            raise ValueError("y_train must be 2D.")
         if not isinstance(self.layers[0], self.Flatten) and len(x_train.shape) > 2:
-            raise ValueError("There must be a Flatten layer in the beginning if you are working with data that is not "
-                             "a matrix (e.g. something that is 60k * 28 * 28 not 60k * 784)")
+            raise ValueError(
+                "There must be a Flatten layer in the beginning if you are working with data that is not "
+                "a matrix (e.g. something that is 60k * 28 * 28 not 60k * 784)"
+            )
 
         # perform batch operations
         if batch_size > x_train.shape[0]:
-            warnings.warn("Batch size is more than the number of samples, so we have set batch_size = 1 and are just performing full batch gradient descent.")
+            warnings.warn(
+                "Batch size is more than the number of samples, so we have set batch_size = 1 and are just performing full batch gradient descent."
+            )
             batch_size = 1
 
         x_train = np.array_split(x_train, batch_size)
         y_train = np.array_split(y_train, batch_size)
         self.optimizer.setup(self.layers)
 
-        epochs = tqdm(range(epochs), position=0, ncols=100) if show_loop else range(epochs)
+        epochs = (
+            tqdm(range(epochs), position=0, ncols=100) if show_loop else range(epochs)
+        )
         evaluation_batch = random.randint(0, len(x_train) - 1)
-        evaluation_method = NeuralNetwork.regression_evaluate if self.loss.type_regression else NeuralNetwork.categorical_evaluate
+        evaluation_method = (
+            NeuralNetwork.regression_evaluate
+            if self.loss.type_regression
+            else NeuralNetwork.categorical_evaluate
+        )
 
-        for epoch in epochs :
-            Parallel(prefer = "threads")(delayed(NeuralNetwork._chunk_train)(self, data_chunk, label_chunk) for data_chunk, label_chunk in
-                                         zip(x_train, y_train))
+        for epoch in epochs:
+            Parallel(prefer="threads")(
+                delayed(NeuralNetwork._chunk_train)(self, data_chunk, label_chunk)
+                for data_chunk, label_chunk in zip(x_train, y_train)
+            )
 
-            if show_loop :
-             epochs.set_description("Acc : " + str(round(evaluation_method(self, x_train[evaluation_batch], y_train[evaluation_batch])* 100, 2)) + "%")
-
-        # adjust dropout
-        for layer_num in range(len(self.layers)) :
-            '''adjust the weights and biases if there is dropout'''
-            try :
-                layer = self.layers[layer_num]
-                if isinstance(layer, self.Dropout) :
-                    receiving_layer = self.layers[layer_num + 1] #this is the layer that receives the dropout
-                    receiving_layer.parameters['weights'] *= (1 - layer.dr)
-                    receiving_layer.parameters['bias'] *= (1 - layer.dr)
-                    self.layers[layer_num + 1] = receiving_layer
-            except Exception :
-                pass
-
-    def full_batch_train(self, x_train, y_train, epochs = 1, show_loop = True):
-        if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
-
-        if isinstance(self.layers[-1], self.Softmax) and not isinstance(self.loss, self.CrossEntropy):
-            raise ValueError("If the last layer activation is softmax, you must be using CrossEntropy loss.")
-
-        if isinstance(self.loss, self.CrossEntropy) and not isinstance(self.layers[-1], self.Softmax):
-            raise ValueError("If the loss function is crossentropy, you must be using Softmax as your last layer.")
-
-        x_train, y_train = np.array(x_train), np.array(y_train)
-        if len(y_train.shape) != 2: raise ValueError("y_train must be 2D.")
-        if not isinstance(self.layers[0], self.Flatten) and len(x_train.shape) > 2:
-            raise ValueError("There must be a Flatten layer in the beginning if you are working with data that is not "
-                             "a matrix (e.g. something that is 60k * 28 * 28 not 60k * 784)")
-
-        epochs = tqdm(range(epochs), position = 0, ncols = 100) if show_loop else range(epochs)
-        evaluation_method = NeuralNetwork.regression_evaluate if self.loss.type_regression else NeuralNetwork.categorical_evaluate
-        self.optimizer.setup(self.layers) #setup the optimizer
-
-        for epoch in epochs :
-            NeuralNetwork._chunk_train(self, x_train, y_train)
-
-            if show_loop == True :
-                epochs.set_description("Acc : " + str(round(evaluation_method(self, x_train, y_train) * 100, 2)) + "%")
-
+            if show_loop:
+                epochs.set_description(
+                    "Acc : "
+                    + str(
+                        round(
+                            evaluation_method(
+                                self,
+                                x_train[evaluation_batch],
+                                y_train[evaluation_batch],
+                            )
+                            * 100,
+                            2,
+                        )
+                    )
+                    + "%"
+                )
 
         # adjust dropout
         for layer_num in range(len(self.layers)):
-            '''adjust the weights and biases if there is dropout'''
+            """adjust the weights and biases if there is dropout"""
             try:
                 layer = self.layers[layer_num]
                 if isinstance(layer, self.Dropout):
-                    receiving_layer = self.layers[layer_num + 1]  # this is the layer that receives the dropout
-                    receiving_layer.parameters['weights'] *= (1 - layer.dr)
-                    receiving_layer.parameters['bias'] *= (1 - layer.dr)
+                    receiving_layer = self.layers[
+                        layer_num + 1
+                    ]  # this is the layer that receives the dropout
+                    receiving_layer.parameters["weights"] *= 1 - layer.dr
+                    receiving_layer.parameters["bias"] *= 1 - layer.dr
                     self.layers[layer_num + 1] = receiving_layer
             except Exception:
                 pass
 
-    def mini_batch_train(self, x_train, y_train, epochs = 1, N = 0.2, show_loop = True) :
-        if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
+    def full_batch_train(self, x_train, y_train, epochs=1, show_loop=True):
+        if not self.finalized:
+            raise ValueError(
+                "This model isn't finalized. Call it through model.finalize()."
+            )
 
-        if isinstance(self.layers[-1], self.Softmax) and not isinstance(self.loss, self.CrossEntropy):
-            raise ValueError("If the last layer activation is softmax, you must be using CrossEntropy loss.")
+        if isinstance(self.layers[-1], self.Softmax) and not isinstance(
+            self.loss, self.CrossEntropy
+        ):
+            raise ValueError(
+                "If the last layer activation is softmax, you must be using CrossEntropy loss."
+            )
 
-        if isinstance(self.loss, self.CrossEntropy) and not isinstance(self.layers[-1], self.Softmax):
-            raise ValueError("If the loss function is crossentropy, you must be using Softmax as your last layer.")
-
+        if isinstance(self.loss, self.CrossEntropy) and not isinstance(
+            self.layers[-1], self.Softmax
+        ):
+            raise ValueError(
+                "If the loss function is crossentropy, you must be using Softmax as your last layer."
+            )
 
         x_train, y_train = np.array(x_train), np.array(y_train)
-        if len(y_train.shape) != 2 : raise ValueError("y_train must be 2D.")
+        if len(y_train.shape) != 2:
+            raise ValueError("y_train must be 2D.")
         if not isinstance(self.layers[0], self.Flatten) and len(x_train.shape) > 2:
-            raise ValueError("There must be a Flatten layer in the beginning if you are working with data that is not "
-                             "a matrix (e.g. something that is 60k * 28 * 28 not 60k * 784)")
+            raise ValueError(
+                "There must be a Flatten layer in the beginning if you are working with data that is not "
+                "a matrix (e.g. something that is 60k * 28 * 28 not 60k * 784)"
+            )
 
-        if N == 1 : raise ValueError("N cannot be equal to 1, has to be between 0 and 1.")
+        epochs = (
+            tqdm(range(epochs), position=0, ncols=100) if show_loop else range(epochs)
+        )
+        evaluation_method = (
+            NeuralNetwork.regression_evaluate
+            if self.loss.type_regression
+            else NeuralNetwork.categorical_evaluate
+        )
+        self.optimizer.setup(self.layers)  # setup the optimizer
+
+        for epoch in epochs:
+            NeuralNetwork._chunk_train(self, x_train, y_train)
+
+            if show_loop == True:
+                epochs.set_description(
+                    "Acc : "
+                    + str(round(evaluation_method(self, x_train, y_train) * 100, 2))
+                    + "%"
+                )
+
+        # adjust dropout
+        for layer_num in range(len(self.layers)):
+            """adjust the weights and biases if there is dropout"""
+            try:
+                layer = self.layers[layer_num]
+                if isinstance(layer, self.Dropout):
+                    receiving_layer = self.layers[
+                        layer_num + 1
+                    ]  # this is the layer that receives the dropout
+                    receiving_layer.parameters["weights"] *= 1 - layer.dr
+                    receiving_layer.parameters["bias"] *= 1 - layer.dr
+                    self.layers[layer_num + 1] = receiving_layer
+            except Exception:
+                pass
+
+    def mini_batch_train(self, x_train, y_train, epochs=1, N=0.2, show_loop=True):
+        if not self.finalized:
+            raise ValueError(
+                "This model isn't finalized. Call it through model.finalize()."
+            )
+
+        if isinstance(self.layers[-1], self.Softmax) and not isinstance(
+            self.loss, self.CrossEntropy
+        ):
+            raise ValueError(
+                "If the last layer activation is softmax, you must be using CrossEntropy loss."
+            )
+
+        if isinstance(self.loss, self.CrossEntropy) and not isinstance(
+            self.layers[-1], self.Softmax
+        ):
+            raise ValueError(
+                "If the loss function is crossentropy, you must be using Softmax as your last layer."
+            )
+
+        x_train, y_train = np.array(x_train), np.array(y_train)
+        if len(y_train.shape) != 2:
+            raise ValueError("y_train must be 2D.")
+        if not isinstance(self.layers[0], self.Flatten) and len(x_train.shape) > 2:
+            raise ValueError(
+                "There must be a Flatten layer in the beginning if you are working with data that is not "
+                "a matrix (e.g. something that is 60k * 28 * 28 not 60k * 784)"
+            )
+
+        if N == 1:
+            raise ValueError("N cannot be equal to 1, has to be between 0 and 1.")
 
         N *= len(x_train)
         N = round(N)
 
-        epochs = tqdm(range(epochs), position = 0, ncols = 100) if show_loop else range(epochs)
-        evaluation_method = NeuralNetwork.regression_evaluate if self.loss.type_regression else NeuralNetwork.categorical_evaluate
+        epochs = (
+            tqdm(range(epochs), position=0, ncols=100) if show_loop else range(epochs)
+        )
+        evaluation_method = (
+            NeuralNetwork.regression_evaluate
+            if self.loss.type_regression
+            else NeuralNetwork.categorical_evaluate
+        )
         self.optimizer.setup(self.layers)
 
         for epoch in epochs:
 
-            #set up the mini-batch
+            # set up the mini-batch
             start_index = random.randint(0, len(x_train) - N - 1)
             end_index = start_index + N
-            data_chunk, label_chunk = x_train[start_index : end_index], y_train[start_index : end_index]
+            data_chunk, label_chunk = (
+                x_train[start_index:end_index],
+                y_train[start_index:end_index],
+            )
 
             NeuralNetwork._chunk_train(self, data_chunk, label_chunk)
 
             if show_loop == True:
-                epochs.set_description("Acc : " + str(round(evaluation_method(self, x_train, y_train) * 100, 2)) + "%")
+                epochs.set_description(
+                    "Acc : "
+                    + str(round(evaluation_method(self, x_train, y_train) * 100, 2))
+                    + "%"
+                )
 
-        #adjust dropout
-        for layer_num in range(len(self.layers)) :
-            '''adjust the weights and biases if there is dropout'''
-            try :
+        # adjust dropout
+        for layer_num in range(len(self.layers)):
+            """adjust the weights and biases if there is dropout"""
+            try:
                 layer = self.layers[layer_num]
-                if isinstance(layer, self.Dropout) :
-                    receiving_layer = self.layers[layer_num + 1] #this is the layer that receives the dropout
-                    receiving_layer.parameters['weights'] *= (1 - layer.dr)
-                    receiving_layer.parameters['bias'] *= (1 - layer.dr)
+                if isinstance(layer, self.Dropout):
+                    receiving_layer = self.layers[
+                        layer_num + 1
+                    ]  # this is the layer that receives the dropout
+                    receiving_layer.parameters["weights"] *= 1 - layer.dr
+                    receiving_layer.parameters["bias"] *= 1 - layer.dr
                     self.layers[layer_num + 1] = receiving_layer
-            except Exception :
+            except Exception:
                 pass
-
 
     def predict(self, x_test):
 
-        if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
-
+        if not self.finalized:
+            raise ValueError(
+                "This model isn't finalized. Call it through model.finalize()."
+            )
 
         x_test = np.array(x_test)
         y_pred = NeuralNetwork.forward(self, x_test)
-        if isinstance(self.layers[-1], self.Softmax) : y_pred = self.softmax(y_pred)
+        if isinstance(self.layers[-1], self.Softmax):
+            y_pred = self.softmax(y_pred)
 
-        if self.loss.type_regression :
+        if self.loss.type_regression:
             return y_pred
-        else :
+        else:
             return np.round_(y_pred)
 
-
     def evaluate(self, x_test, y_test):
-        if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
+        if not self.finalized:
+            raise ValueError(
+                "This model isn't finalized. Call it through model.finalize()."
+            )
 
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+        if len(y_test.shape) != 2:
+            raise ValueError("y_test must be 2D.")
 
         y_pred = NeuralNetwork.predict(self, x_test)
 
@@ -424,21 +550,31 @@ class NeuralNetwork() :
 
     def regression_evaluate(self, x_test, y_test):
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+        if len(y_test.shape) != 2:
+            raise ValueError("y_test must be 2D.")
 
         y_pred = NeuralNetwork.predict(self, x_test)
 
-        return np.mean([r2_score(y_pred[:, col].flatten(), y_test[:, col].flatten()) for col in range(y_pred.shape[1])]) #mean of each columns r^2
+        return np.mean(
+            [
+                r2_score(y_pred[:, col].flatten(), y_test[:, col].flatten())
+                for col in range(y_pred.shape[1])
+            ]
+        )  # mean of each columns r^2
 
-    def categorical_evaluate(self, x_test, y_test) :
+    def categorical_evaluate(self, x_test, y_test):
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+        if len(y_test.shape) != 2:
+            raise ValueError("y_test must be 2D.")
 
         y_pred = NeuralNetwork.predict(self, x_test)
 
-        return _perc_correct(self.revert_softmax(y_pred).flatten(), self.revert_one_hot(y_test).flatten())
+        return _perc_correct(
+            self.revert_softmax(y_pred).flatten(), self.revert_one_hot(y_test).flatten()
+        )
 
-class NeuralNetwork_MapReduce():
+
+class NeuralNetwork_MapReduce:
     """
     Map Reduce is a key algorithm to training neural networks these days. Maybe not as complicated as some other strategies,
     but as usual I couldn't resist the urge to try to see how this could work.
@@ -491,8 +627,10 @@ class NeuralNetwork_MapReduce():
     as usual please notify on Github or email me at anish.lakkapragada@gmail.com
 
     """
+
     def __init__(self, layers=None):
         from .utils_nn import revert_one_hot_nn, revert_softmax_nn
+
         self.revert_softmax = revert_softmax_nn
         self.revert_one_hot = revert_one_hot_nn
         self.layers = []
@@ -506,9 +644,10 @@ class NeuralNetwork_MapReduce():
 
         warnings.filterwarnings("ignore", category=RuntimeWarning)
         warnings.filterwarnings("ignore", category=np.ComplexWarning)
+
     def add(self, layer):
         self.layers.append(layer)
-        if layer.activation :
+        if layer.activation:
             self.layers.append(layer.activation)
 
     def forward(self, inputs):
@@ -516,38 +655,43 @@ class NeuralNetwork_MapReduce():
             inputs = layer.forward(inputs)
         return inputs
 
-
     def backward(self, grad):
         for layer in reversed(self.layers):
             grad = layer.backward(grad)
         return grad
 
     def finalize(self, loss, optimizer):
-        '''Both of these have to be the classes for the loss and optimizations'''
+        """Both of these have to be the classes for the loss and optimizations"""
         self.loss, self.optimizer = loss, optimizer
         self.finalized = True
 
     def num_parameters(self):
         return self.models[0].num_parameters()
 
-    def _train_individual_model(self, model_num) :
-        '''here we train the individual model for the MapReduce algo'''
+    def _train_individual_model(self, model_num):
+        """here we train the individual model for the MapReduce algo"""
         model = self.models[model_num]
         data_chunk, label_chunk = self.x_train[model_num], self.y_train[model_num]
-        model.full_batch_train(data_chunk, label_chunk, epochs=self.epochs, show_loop=False)
-        self.models[model_num] = model #update it to the train algorithm
+        model.full_batch_train(
+            data_chunk, label_chunk, epochs=self.epochs, show_loop=False
+        )
+        self.models[model_num] = model  # update it to the train algorithm
 
-    def give_best_parameters(self, x_test, y_test) :
-        if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
-        models = {} #evaluation_score : class
-        for model in self.models  :
+    def give_best_parameters(self, x_test, y_test):
+        if len(y_test.shape) != 2:
+            raise ValueError("y_test must be 2D.")
+        models = {}  # evaluation_score : class
+        for model in self.models:
             score = model.evaluate(x_test, y_test)
             models[score] = model
         best_model = models[min(models)]
         return best_model.give_parameters()
 
-    def pickle_best_parameters(self, x_test, y_test, FILE_NAME =  "NeuralNetwork_learnt_parameters"):
-        if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+    def pickle_best_parameters(
+        self, x_test, y_test, FILE_NAME="NeuralNetwork_learnt_parameters"
+    ):
+        if len(y_test.shape) != 2:
+            raise ValueError("y_test must be 2D.")
         best_params = NeuralNetwork_MapReduce.give_best_parameters(self, x_test, y_test)
         """
         @author : Anish Lakkapragada
@@ -571,9 +715,9 @@ class NeuralNetwork_MapReduce():
             return 1 - num / denum
 
         def _perc_correct(y_pred, y_test):
-            return np.sum((y_pred == y_test).astype('int')) / len(y_pred)
+            return np.sum((y_pred == y_test).astype("int")) / len(y_pred)
 
-        class NeuralNetwork():
+        class NeuralNetwork:
             """
             This class is very rich and packed with methods, so I figured it would be best to have this tutorial guide you
             on a tutorial on the "hello world" of machine learning.
@@ -725,31 +869,47 @@ class NeuralNetwork_MapReduce():
                 num_params = 0
                 for layer in self.layers:
                     if isinstance(layer, self.Dense):
-                        num_params += np.product(layer.parameters['weights'].shape) + layer.parameters['bias'].shape
+                        num_params += (
+                            np.product(layer.parameters["weights"].shape)
+                            + layer.parameters["bias"].shape
+                        )
                 return num_params
 
             def enter_parameters(self, parameters):
                 for layer_num in range(len(self.layers)):
                     try:
-                        if parameters[layer_num]['weights'] == None and parameters[layer_num]['bias'] == None: continue
+                        if (
+                            parameters[layer_num]["weights"] == None
+                            and parameters[layer_num]["bias"] == None
+                        ):
+                            continue
                     except Exception:
-                        self.layers[layer_num].parameters['weights'] = parameters[layer_num]['weights']
-                        self.layers[layer_num].parameters['bias'] = parameters[layer_num]['bias']
+                        self.layers[layer_num].parameters["weights"] = parameters[
+                            layer_num
+                        ]["weights"]
+                        self.layers[layer_num].parameters["bias"] = parameters[
+                            layer_num
+                        ]["bias"]
 
             def give_parameters(self):
                 parameters = []
                 for layer in self.layers:
                     try:
-                        parameters.append({'weights': layer.parameters['weights'], 'bias': layer.parameters['bias']})
+                        parameters.append(
+                            {
+                                "weights": layer.parameters["weights"],
+                                "bias": layer.parameters["bias"],
+                            }
+                        )
                     except Exception:
-                        parameters.append({'weights': None, 'bias': None})
+                        parameters.append({"weights": None, "bias": None})
                 return parameters
 
             def pickle_params(self, FILE_NAME="NeuralNetwork_learnt_parameters"):
                 parameters = NeuralNetwork.give_parameters(self)
                 import pickle
 
-                with open(FILE_NAME + '.pickle', 'wb') as f:
+                with open(FILE_NAME + ".pickle", "wb") as f:
                     pickle.dump(parameters, f, protocol=pickle.HIGHEST_PROTOCOL)
 
             def add(self, layer):
@@ -759,23 +919,25 @@ class NeuralNetwork_MapReduce():
 
             def forward(self, inputs):
                 for layer in self.layers:
-                    if isinstance(layer, self.Softmax): continue
+                    if isinstance(layer, self.Softmax):
+                        continue
                     inputs = layer.forward(inputs)
                 return inputs
 
             def backward(self, grad):
                 for layer in reversed(self.layers):
-                    if isinstance(layer, self.Softmax): continue
+                    if isinstance(layer, self.Softmax):
+                        continue
                     grad = layer.backward(grad)
                 return grad
 
             def finalize(self, loss, optimizer):
-                '''Both of these have to be the classes for the loss and optimizations'''
+                """Both of these have to be the classes for the loss and optimizations"""
                 self.loss, self.optimizer = loss, optimizer
                 self.finalized = True
 
             def _sgd_updating_indices(self):
-                '''only call if the loss is SGD'''
+                """only call if the loss is SGD"""
 
                 for layer_num in range(len(self.layers)):
                     layer = self.layers[layer_num]
@@ -783,18 +945,24 @@ class NeuralNetwork_MapReduce():
                     self.layers[layer_num] = layer
 
             def _chunk_train(self, data_chunk, label_chunk):
-                '''the actual training code!'''
+                """the actual training code!"""
                 predicted = NeuralNetwork.forward(self, data_chunk)
                 for layer_num in range(len(self.layers)):
                     if self.layers[layer_num].nesterov:
-                        '''nesterov accel'''
+                        """nesterov accel"""
                         try:
-                            self.layers[layer_num].parameters['weights'] += self.optimizer.momentum * \
-                                                                            self.optimizer.momentum_params[
-                                                                                'weights' + str(layer_num)]
-                            self.layers[layer_num].parameters['bias'] += self.optimizer.momentum * \
-                                                                         self.optimizer.momentum_params[
-                                                                             'bias' + str(layer_num)]
+                            self.layers[layer_num].parameters["weights"] += (
+                                self.optimizer.momentum
+                                * self.optimizer.momentum_params[
+                                    "weights" + str(layer_num)
+                                ]
+                            )
+                            self.layers[layer_num].parameters["bias"] += (
+                                self.optimizer.momentum
+                                * self.optimizer.momentum_params[
+                                    "bias" + str(layer_num)
+                                ]
+                            )
                         except Exception:
                             pass
 
@@ -803,89 +971,154 @@ class NeuralNetwork_MapReduce():
                     self.optimizer.t = self.adam_t
 
                 if isinstance(self.optimizer, self.SGD):
-                    '''select indices for the gradients and update all layers'''
+                    """select indices for the gradients and update all layers"""
                     start_index = np.random.randint(len(predicted) - 3)
                     self.sgd_indices = slice(start_index, len(predicted) - 1)
                     NeuralNetwork._sgd_updating_indices(self)
 
-                grad = self.loss.grad(label_chunk[self.sgd_indices], predicted[self.sgd_indices])  # calculate the dL/dY
+                grad = self.loss.grad(
+                    label_chunk[self.sgd_indices], predicted[self.sgd_indices]
+                )  # calculate the dL/dY
                 NeuralNetwork.backward(self, grad)
                 self.optimizer.update(self.layers)
 
             def train(self, x_train, y_train, epochs=1, batch_size=32, show_loop=True):
-                if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
-
-                if isinstance(self.layers[-1], self.Softmax) and not isinstance(self.loss, self.CrossEntropy):
-                    raise ValueError("If the last layer activation is softmax, you must be using CrossEntropy loss.")
-
-                if isinstance(self.loss, self.CrossEntropy) and not isinstance(self.layers[-1], self.Softmax):
+                if not self.finalized:
                     raise ValueError(
-                        "If the loss function is crossentropy, you must be using Softmax as your last layer.")
+                        "This model isn't finalized. Call it through model.finalize()."
+                    )
+
+                if isinstance(self.layers[-1], self.Softmax) and not isinstance(
+                    self.loss, self.CrossEntropy
+                ):
+                    raise ValueError(
+                        "If the last layer activation is softmax, you must be using CrossEntropy loss."
+                    )
+
+                if isinstance(self.loss, self.CrossEntropy) and not isinstance(
+                    self.layers[-1], self.Softmax
+                ):
+                    raise ValueError(
+                        "If the loss function is crossentropy, you must be using Softmax as your last layer."
+                    )
 
                 x_train, y_train = np.array(x_train), np.array(y_train)
-                if len(y_train.shape) != 2: raise ValueError("y_train must be 2D.")
-                if not isinstance(self.layers[0], self.Flatten) and len(x_train.shape) > 2:
+                if len(y_train.shape) != 2:
+                    raise ValueError("y_train must be 2D.")
+                if (
+                    not isinstance(self.layers[0], self.Flatten)
+                    and len(x_train.shape) > 2
+                ):
                     raise ValueError(
                         "There must be a Flatten layer in the beginning if you are working with data that is not "
-                        "a matrix (e.g. something that is 60k * 28 * 28 not 60k * 784)")
+                        "a matrix (e.g. something that is 60k * 28 * 28 not 60k * 784)"
+                    )
 
                 # perform batch operations
                 if batch_size > x_train.shape[0]:
                     warnings.warn(
-                        "Batch size is more than the number of samples, so we have set batch_size = 1 and are just performing full batch gradient descent.")
+                        "Batch size is more than the number of samples, so we have set batch_size = 1 and are just performing full batch gradient descent."
+                    )
                     batch_size = 1
 
                 x_train = np.array_split(x_train, batch_size)
                 y_train = np.array_split(y_train, batch_size)
                 self.optimizer.setup(self.layers)
 
-                epochs = tqdm(range(epochs), position=0, ncols=100) if show_loop else range(epochs)
+                epochs = (
+                    tqdm(range(epochs), position=0, ncols=100)
+                    if show_loop
+                    else range(epochs)
+                )
                 evaluation_batch = random.randint(0, len(x_train) - 1)
-                evaluation_method = NeuralNetwork.regression_evaluate if self.loss.type_regression else NeuralNetwork.categorical_evaluate
+                evaluation_method = (
+                    NeuralNetwork.regression_evaluate
+                    if self.loss.type_regression
+                    else NeuralNetwork.categorical_evaluate
+                )
 
                 for epoch in epochs:
                     Parallel(prefer="threads")(
-                        delayed(NeuralNetwork._chunk_train)(self, data_chunk, label_chunk) for data_chunk, label_chunk
-                        in
-                        zip(x_train, y_train))
+                        delayed(NeuralNetwork._chunk_train)(
+                            self, data_chunk, label_chunk
+                        )
+                        for data_chunk, label_chunk in zip(x_train, y_train)
+                    )
 
                     if show_loop:
-                        epochs.set_description("Acc : " + str(
-                            round(evaluation_method(self, x_train[evaluation_batch], y_train[evaluation_batch]) * 100,
-                                  2)) + "%")
+                        epochs.set_description(
+                            "Acc : "
+                            + str(
+                                round(
+                                    evaluation_method(
+                                        self,
+                                        x_train[evaluation_batch],
+                                        y_train[evaluation_batch],
+                                    )
+                                    * 100,
+                                    2,
+                                )
+                            )
+                            + "%"
+                        )
 
                 # adjust dropout
                 for layer_num in range(len(self.layers)):
-                    '''adjust the weights and biases if there is dropout'''
+                    """adjust the weights and biases if there is dropout"""
                     try:
                         layer = self.layers[layer_num]
                         if isinstance(layer, self.Dropout):
-                            receiving_layer = self.layers[layer_num + 1]  # this is the layer that receives the dropout
-                            receiving_layer.parameters['weights'] *= (1 - layer.dr)
-                            receiving_layer.parameters['bias'] *= (1 - layer.dr)
+                            receiving_layer = self.layers[
+                                layer_num + 1
+                            ]  # this is the layer that receives the dropout
+                            receiving_layer.parameters["weights"] *= 1 - layer.dr
+                            receiving_layer.parameters["bias"] *= 1 - layer.dr
                             self.layers[layer_num + 1] = receiving_layer
                     except Exception:
                         pass
 
             def full_batch_train(self, x_train, y_train, epochs=1, show_loop=True):
-                if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
-
-                if isinstance(self.layers[-1], self.Softmax) and not isinstance(self.loss, self.CrossEntropy):
-                    raise ValueError("If the last layer activation is softmax, you must be using CrossEntropy loss.")
-
-                if isinstance(self.loss, self.CrossEntropy) and not isinstance(self.layers[-1], self.Softmax):
+                if not self.finalized:
                     raise ValueError(
-                        "If the loss function is crossentropy, you must be using Softmax as your last layer.")
+                        "This model isn't finalized. Call it through model.finalize()."
+                    )
+
+                if isinstance(self.layers[-1], self.Softmax) and not isinstance(
+                    self.loss, self.CrossEntropy
+                ):
+                    raise ValueError(
+                        "If the last layer activation is softmax, you must be using CrossEntropy loss."
+                    )
+
+                if isinstance(self.loss, self.CrossEntropy) and not isinstance(
+                    self.layers[-1], self.Softmax
+                ):
+                    raise ValueError(
+                        "If the loss function is crossentropy, you must be using Softmax as your last layer."
+                    )
 
                 x_train, y_train = np.array(x_train), np.array(y_train)
-                if len(y_train.shape) != 2: raise ValueError("y_train must be 2D.")
-                if not isinstance(self.layers[0], self.Flatten) and len(x_train.shape) > 2:
+                if len(y_train.shape) != 2:
+                    raise ValueError("y_train must be 2D.")
+                if (
+                    not isinstance(self.layers[0], self.Flatten)
+                    and len(x_train.shape) > 2
+                ):
                     raise ValueError(
                         "There must be a Flatten layer in the beginning if you are working with data that is not "
-                        "a matrix (e.g. something that is 60k * 28 * 28 not 60k * 784)")
+                        "a matrix (e.g. something that is 60k * 28 * 28 not 60k * 784)"
+                    )
 
-                epochs = tqdm(range(epochs), position=0, ncols=100) if show_loop else range(epochs)
-                evaluation_method = NeuralNetwork.regression_evaluate if self.loss.type_regression else NeuralNetwork.categorical_evaluate
+                epochs = (
+                    tqdm(range(epochs), position=0, ncols=100)
+                    if show_loop
+                    else range(epochs)
+                )
+                evaluation_method = (
+                    NeuralNetwork.regression_evaluate
+                    if self.loss.type_regression
+                    else NeuralNetwork.categorical_evaluate
+                )
                 self.optimizer.setup(self.layers)  # setup the optimizer
 
                 for epoch in epochs:
@@ -893,45 +1126,82 @@ class NeuralNetwork_MapReduce():
 
                     if show_loop == True:
                         epochs.set_description(
-                            "Acc : " + str(round(evaluation_method(self, x_train, y_train) * 100, 2)) + "%")
+                            "Acc : "
+                            + str(
+                                round(
+                                    evaluation_method(self, x_train, y_train) * 100, 2
+                                )
+                            )
+                            + "%"
+                        )
 
                 # adjust dropout
                 for layer_num in range(len(self.layers)):
-                    '''adjust the weights and biases if there is dropout'''
+                    """adjust the weights and biases if there is dropout"""
                     try:
                         layer = self.layers[layer_num]
                         if isinstance(layer, self.Dropout):
-                            receiving_layer = self.layers[layer_num + 1]  # this is the layer that receives the dropout
-                            receiving_layer.parameters['weights'] *= (1 - layer.dr)
-                            receiving_layer.parameters['bias'] *= (1 - layer.dr)
+                            receiving_layer = self.layers[
+                                layer_num + 1
+                            ]  # this is the layer that receives the dropout
+                            receiving_layer.parameters["weights"] *= 1 - layer.dr
+                            receiving_layer.parameters["bias"] *= 1 - layer.dr
                             self.layers[layer_num + 1] = receiving_layer
                     except Exception:
                         pass
 
-            def mini_batch_train(self, x_train, y_train, epochs=1, N=0.2, show_loop=True):
-                if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
-
-                if isinstance(self.layers[-1], self.Softmax) and not isinstance(self.loss, self.CrossEntropy):
-                    raise ValueError("If the last layer activation is softmax, you must be using CrossEntropy loss.")
-
-                if isinstance(self.loss, self.CrossEntropy) and not isinstance(self.layers[-1], self.Softmax):
+            def mini_batch_train(
+                self, x_train, y_train, epochs=1, N=0.2, show_loop=True
+            ):
+                if not self.finalized:
                     raise ValueError(
-                        "If the loss function is crossentropy, you must be using Softmax as your last layer.")
+                        "This model isn't finalized. Call it through model.finalize()."
+                    )
+
+                if isinstance(self.layers[-1], self.Softmax) and not isinstance(
+                    self.loss, self.CrossEntropy
+                ):
+                    raise ValueError(
+                        "If the last layer activation is softmax, you must be using CrossEntropy loss."
+                    )
+
+                if isinstance(self.loss, self.CrossEntropy) and not isinstance(
+                    self.layers[-1], self.Softmax
+                ):
+                    raise ValueError(
+                        "If the loss function is crossentropy, you must be using Softmax as your last layer."
+                    )
 
                 x_train, y_train = np.array(x_train), np.array(y_train)
-                if len(y_train.shape) != 2: raise ValueError("y_train must be 2D.")
-                if not isinstance(self.layers[0], self.Flatten) and len(x_train.shape) > 2:
+                if len(y_train.shape) != 2:
+                    raise ValueError("y_train must be 2D.")
+                if (
+                    not isinstance(self.layers[0], self.Flatten)
+                    and len(x_train.shape) > 2
+                ):
                     raise ValueError(
                         "There must be a Flatten layer in the beginning if you are working with data that is not "
-                        "a matrix (e.g. something that is 60k * 28 * 28 not 60k * 784)")
+                        "a matrix (e.g. something that is 60k * 28 * 28 not 60k * 784)"
+                    )
 
-                if N == 1: raise ValueError("N cannot be equal to 1, has to be between 0 and 1.")
+                if N == 1:
+                    raise ValueError(
+                        "N cannot be equal to 1, has to be between 0 and 1."
+                    )
 
                 N *= len(x_train)
                 N = round(N)
 
-                epochs = tqdm(range(epochs), position=0, ncols=100) if show_loop else range(epochs)
-                evaluation_method = NeuralNetwork.regression_evaluate if self.loss.type_regression else NeuralNetwork.categorical_evaluate
+                epochs = (
+                    tqdm(range(epochs), position=0, ncols=100)
+                    if show_loop
+                    else range(epochs)
+                )
+                evaluation_method = (
+                    NeuralNetwork.regression_evaluate
+                    if self.loss.type_regression
+                    else NeuralNetwork.categorical_evaluate
+                )
                 self.optimizer.setup(self.layers)
 
                 for epoch in epochs:
@@ -939,34 +1209,50 @@ class NeuralNetwork_MapReduce():
                     # set up the mini-batch
                     start_index = random.randint(0, len(x_train) - N - 1)
                     end_index = start_index + N
-                    data_chunk, label_chunk = x_train[start_index: end_index], y_train[start_index: end_index]
+                    data_chunk, label_chunk = (
+                        x_train[start_index:end_index],
+                        y_train[start_index:end_index],
+                    )
 
                     NeuralNetwork._chunk_train(self, data_chunk, label_chunk)
 
                     if show_loop == True:
                         epochs.set_description(
-                            "Acc : " + str(round(evaluation_method(self, x_train, y_train) * 100, 2)) + "%")
+                            "Acc : "
+                            + str(
+                                round(
+                                    evaluation_method(self, x_train, y_train) * 100, 2
+                                )
+                            )
+                            + "%"
+                        )
 
                 # adjust dropout
                 for layer_num in range(len(self.layers)):
-                    '''adjust the weights and biases if there is dropout'''
+                    """adjust the weights and biases if there is dropout"""
                     try:
                         layer = self.layers[layer_num]
                         if isinstance(layer, self.Dropout):
-                            receiving_layer = self.layers[layer_num + 1]  # this is the layer that receives the dropout
-                            receiving_layer.parameters['weights'] *= (1 - layer.dr)
-                            receiving_layer.parameters['bias'] *= (1 - layer.dr)
+                            receiving_layer = self.layers[
+                                layer_num + 1
+                            ]  # this is the layer that receives the dropout
+                            receiving_layer.parameters["weights"] *= 1 - layer.dr
+                            receiving_layer.parameters["bias"] *= 1 - layer.dr
                             self.layers[layer_num + 1] = receiving_layer
                     except Exception:
                         pass
 
             def predict(self, x_test):
 
-                if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
+                if not self.finalized:
+                    raise ValueError(
+                        "This model isn't finalized. Call it through model.finalize()."
+                    )
 
                 x_test = np.array(x_test)
                 y_pred = NeuralNetwork.forward(self, x_test)
-                if isinstance(self.layers[-1], self.Softmax): y_pred = self.softmax(y_pred)
+                if isinstance(self.layers[-1], self.Softmax):
+                    y_pred = self.softmax(y_pred)
 
                 if self.loss.type_regression:
                     return y_pred
@@ -974,10 +1260,14 @@ class NeuralNetwork_MapReduce():
                     return np.round_(y_pred)
 
             def evaluate(self, x_test, y_test):
-                if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
+                if not self.finalized:
+                    raise ValueError(
+                        "This model isn't finalized. Call it through model.finalize()."
+                    )
 
                 x_test, y_test = np.array(x_test), np.array(y_test)
-                if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+                if len(y_test.shape) != 2:
+                    raise ValueError("y_test must be 2D.")
 
                 y_pred = NeuralNetwork.predict(self, x_test)
 
@@ -985,22 +1275,31 @@ class NeuralNetwork_MapReduce():
 
             def regression_evaluate(self, x_test, y_test):
                 x_test, y_test = np.array(x_test), np.array(y_test)
-                if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+                if len(y_test.shape) != 2:
+                    raise ValueError("y_test must be 2D.")
 
                 y_pred = NeuralNetwork.predict(self, x_test)
 
-                return np.mean([r2_score(y_pred[:, col].flatten(), y_test[:, col].flatten()) for col in
-                                range(y_pred.shape[1])])  # mean of each columns r^2
+                return np.mean(
+                    [
+                        r2_score(y_pred[:, col].flatten(), y_test[:, col].flatten())
+                        for col in range(y_pred.shape[1])
+                    ]
+                )  # mean of each columns r^2
 
             def categorical_evaluate(self, x_test, y_test):
                 x_test, y_test = np.array(x_test), np.array(y_test)
-                if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+                if len(y_test.shape) != 2:
+                    raise ValueError("y_test must be 2D.")
 
                 y_pred = NeuralNetwork.predict(self, x_test)
 
-                return _perc_correct(self.revert_softmax(y_pred).flatten(), self.revert_one_hot(y_test).flatten())
+                return _perc_correct(
+                    self.revert_softmax(y_pred).flatten(),
+                    self.revert_one_hot(y_test).flatten(),
+                )
 
-        class NeuralNetwork_MapReduce():
+        class NeuralNetwork_MapReduce:
             """
             Map Reduce is a key algorithm to training neural networks these days. Maybe not as complicated as some other strategies,
             but as usual I couldn't resist the urge to try to see how this could work.
@@ -1056,6 +1355,7 @@ class NeuralNetwork_MapReduce():
 
             def __init__(self, layers=None):
                 from .utils_nn import revert_one_hot_nn, revert_softmax_nn
+
                 self.revert_softmax = revert_softmax_nn
                 self.revert_one_hot = revert_one_hot_nn
                 self.layers = []
@@ -1086,7 +1386,7 @@ class NeuralNetwork_MapReduce():
                 return grad
 
             def finalize(self, loss, optimizer):
-                '''Both of these have to be the classes for the loss and optimizations'''
+                """Both of these have to be the classes for the loss and optimizations"""
                 self.loss, self.optimizer = loss, optimizer
                 self.finalized = True
 
@@ -1094,14 +1394,20 @@ class NeuralNetwork_MapReduce():
                 return self.models[0].num_parameters()
 
             def _train_individual_model(self, model_num):
-                '''here we train the individual model for the MapReduce algo'''
+                """here we train the individual model for the MapReduce algo"""
                 model = self.models[model_num]
-                data_chunk, label_chunk = self.x_train[model_num], self.y_train[model_num]
-                model.full_batch_train(data_chunk, label_chunk, epochs=self.epochs, show_loop=False)
+                data_chunk, label_chunk = (
+                    self.x_train[model_num],
+                    self.y_train[model_num],
+                )
+                model.full_batch_train(
+                    data_chunk, label_chunk, epochs=self.epochs, show_loop=False
+                )
                 self.models[model_num] = model  # update it to the train algorithm
 
             def give_best_parameters(self, x_test, y_test):
-                if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+                if len(y_test.shape) != 2:
+                    raise ValueError("y_test must be 2D.")
                 models = {}  # evaluation_score : class
                 for model in self.models:
                     score = model.evaluate(x_test, y_test)
@@ -1109,17 +1415,25 @@ class NeuralNetwork_MapReduce():
                 best_model = models[min(models)]
                 return best_model.give_parameters()
 
-            def pickle_best_parameters(self, x_test, y_test, FILE_NAME="NeuralNetwork_learnt_parameters"):
-                if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
-                best_params = NeuralNetwork_MapReduce.give_best_parameters(self, x_test, y_test)
+            def pickle_best_parameters(
+                self, x_test, y_test, FILE_NAME="NeuralNetwork_learnt_parameters"
+            ):
+                if len(y_test.shape) != 2:
+                    raise ValueError("y_test must be 2D.")
+                best_params = NeuralNetwork_MapReduce.give_best_parameters(
+                    self, x_test, y_test
+                )
 
                 import pickle
 
-                with open(FILE_NAME + '.pickle', 'wb') as f:
+                with open(FILE_NAME + ".pickle", "wb") as f:
                     pickle.dump(best_params, f, protocol=pickle.HIGHEST_PROTOCOL)
 
             def train(self, x_train, y_train, epochs=1, batch_size=32, num_cores=-1):
-                if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
+                if not self.finalized:
+                    raise ValueError(
+                        "This model isn't finalized. Call it through model.finalize()."
+                    )
 
                 # store these for the above method
                 self.epochs = epochs
@@ -1127,9 +1441,13 @@ class NeuralNetwork_MapReduce():
 
                 x_train, y_train = np.array(x_train), np.array(y_train)
 
-                if len(y_train.shape) != 2: raise ValueError("y_train must be 2D.")
-                if not num_cores: raise ValueError("num_cores cannot be 0!")
-                num_cores_used = cpu_count() + 1 + num_cores if num_cores < 0 else num_cores
+                if len(y_train.shape) != 2:
+                    raise ValueError("y_train must be 2D.")
+                if not num_cores:
+                    raise ValueError("num_cores cannot be 0!")
+                num_cores_used = (
+                    cpu_count() + 1 + num_cores if num_cores < 0 else num_cores
+                )
                 self.num_cores_used = num_cores_used
 
                 # split the x_train and y_train into the number of cores
@@ -1148,26 +1466,43 @@ class NeuralNetwork_MapReduce():
                     self.models.append(model)
 
                 self.model_nums = range(len(self.models))
-                Parallel()(delayed(NeuralNetwork_MapReduce._train_individual_model)(self, model_num) for
-                           model_num in self.model_nums)
+                Parallel()(
+                    delayed(NeuralNetwork_MapReduce._train_individual_model)(
+                        self, model_num
+                    )
+                    for model_num in self.model_nums
+                )
 
                 self.num_cores_used = num_cores_used  # save this for the predict method
 
             def predict(self, x_test):
-                if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
+                if not self.finalized:
+                    raise ValueError(
+                        "This model isn't finalized. Call it through model.finalize()."
+                    )
 
                 x_test = np.array(x_test)
-                predictions_across_models = np.array([model.predict(x_test) for model in self.models])
+                predictions_across_models = np.array(
+                    [model.predict(x_test) for model in self.models]
+                )
                 if self.loss.type_regression:  # todo fix this
-                    return np.sum(predictions_across_models, axis=0) / self.num_cores_used
+                    return (
+                        np.sum(predictions_across_models, axis=0) / self.num_cores_used
+                    )
                 else:
-                    return np.round_(np.sum(predictions_across_models, axis=0) / self.num_cores_used)
+                    return np.round_(
+                        np.sum(predictions_across_models, axis=0) / self.num_cores_used
+                    )
 
             def evaluate(self, x_test, y_test):
-                if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
+                if not self.finalized:
+                    raise ValueError(
+                        "This model isn't finalized. Call it through model.finalize()."
+                    )
 
                 x_test, y_test = np.array(x_test), np.array(y_test)
-                if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+                if len(y_test.shape) != 2:
+                    raise ValueError("y_test must be 2D.")
 
                 y_pred = NeuralNetwork_MapReduce.predict(self, x_test)
 
@@ -1176,38 +1511,50 @@ class NeuralNetwork_MapReduce():
             def regression_evaluate(self, x_test, y_test):
                 x_test, y_test = np.array(x_test), np.array(y_test)
                 # if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
-                if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+                if len(y_test.shape) != 2:
+                    raise ValueError("y_test must be 2D.")
 
                 y_pred = NeuralNetwork_MapReduce.predict(self, x_test)
 
-                return np.mean([r2_score(y_pred[:, col].flatten(), y_test[:, col].flatten()) for col in
-                                range(y_pred.shape[1])])  # mean of each columns r^2
+                return np.mean(
+                    [
+                        r2_score(y_pred[:, col].flatten(), y_test[:, col].flatten())
+                        for col in range(y_pred.shape[1])
+                    ]
+                )  # mean of each columns r^2
 
             def categorical_evaluate(self, x_test, y_test):
                 x_test, y_test = np.array(x_test), np.array(y_test)
-                if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+                if len(y_test.shape) != 2:
+                    raise ValueError("y_test must be 2D.")
 
                 y_pred = np.round_(NeuralNetwork_MapReduce.predict(self, x_test))
 
-                return _perc_correct(self.revert_softmax(y_pred), self.revert_one_hot(y_test))
+                return _perc_correct(
+                    self.revert_softmax(y_pred), self.revert_one_hot(y_test)
+                )
 
         import pickle
 
-        with open(FILE_NAME + '.pickle', 'wb') as f:
+        with open(FILE_NAME + ".pickle", "wb") as f:
             pickle.dump(best_params, f, protocol=pickle.HIGHEST_PROTOCOL)
 
+    def train(self, x_train, y_train, epochs=1, batch_size=32, num_cores=-1):
+        if not self.finalized:
+            raise ValueError(
+                "This model isn't finalized. Call it through model.finalize()."
+            )
 
-    def train(self, x_train, y_train, epochs=1, batch_size=32, num_cores=-1) :
-        if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
-
-        #store these for the above method
+        # store these for the above method
         self.epochs = epochs
         self.batch_size = batch_size
 
         x_train, y_train = np.array(x_train), np.array(y_train)
 
-        if len(y_train.shape) != 2: raise ValueError("y_train must be 2D.")
-        if not num_cores: raise ValueError("num_cores cannot be 0!")
+        if len(y_train.shape) != 2:
+            raise ValueError("y_train must be 2D.")
+        if not num_cores:
+            raise ValueError("num_cores cannot be 0!")
         num_cores_used = cpu_count() + 1 + num_cores if num_cores < 0 else num_cores
         self.num_cores_used = num_cores_used
 
@@ -1221,33 +1568,45 @@ class NeuralNetwork_MapReduce():
 
         self.models = []
 
-        for core in range(num_cores_used) :
+        for core in range(num_cores_used):
             model = NeuralNetwork(self.layers)
             model.finalize(self.loss, self.optimizer)
             self.models.append(model)
 
         self.model_nums = range(len(self.models))
-        Parallel()(delayed(NeuralNetwork_MapReduce._train_individual_model)(self, model_num) for
-                   model_num in self.model_nums)
-
+        Parallel()(
+            delayed(NeuralNetwork_MapReduce._train_individual_model)(self, model_num)
+            for model_num in self.model_nums
+        )
 
         self.num_cores_used = num_cores_used  # save this for the predict method
 
     def predict(self, x_test):
-        if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
+        if not self.finalized:
+            raise ValueError(
+                "This model isn't finalized. Call it through model.finalize()."
+            )
 
         x_test = np.array(x_test)
-        predictions_across_models = np.array([model.predict(x_test) for model in self.models])
-        if self.loss.type_regression : # todo fix this
+        predictions_across_models = np.array(
+            [model.predict(x_test) for model in self.models]
+        )
+        if self.loss.type_regression:  # todo fix this
             return np.sum(predictions_across_models, axis=0) / self.num_cores_used
-        else :
-            return np.round_(np.sum(predictions_across_models, axis=0) / self.num_cores_used)
+        else:
+            return np.round_(
+                np.sum(predictions_across_models, axis=0) / self.num_cores_used
+            )
 
     def evaluate(self, x_test, y_test):
-        if not self.finalized: raise ValueError("This model isn't finalized. Call it through model.finalize().")
+        if not self.finalized:
+            raise ValueError(
+                "This model isn't finalized. Call it through model.finalize()."
+            )
 
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+        if len(y_test.shape) != 2:
+            raise ValueError("y_test must be 2D.")
 
         y_pred = NeuralNetwork_MapReduce.predict(self, x_test)
 
@@ -1255,19 +1614,25 @@ class NeuralNetwork_MapReduce():
 
     def regression_evaluate(self, x_test, y_test):
         x_test, y_test = np.array(x_test), np.array(y_test)
-        #if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
-        if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+        # if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(y_test.shape) != 2:
+            raise ValueError("y_test must be 2D.")
 
         y_pred = NeuralNetwork_MapReduce.predict(self, x_test)
 
-        return np.mean([r2_score(y_pred[:, col].flatten(), y_test[:, col].flatten()) for col in range(y_pred.shape[1])]) #mean of each columns r^2
+        return np.mean(
+            [
+                r2_score(y_pred[:, col].flatten(), y_test[:, col].flatten())
+                for col in range(y_pred.shape[1])
+            ]
+        )  # mean of each columns r^2
 
-    def categorical_evaluate(self, x_test, y_test) :
+    def categorical_evaluate(self, x_test, y_test):
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(y_test.shape) != 2: raise ValueError("y_test must be 2D.")
+        if len(y_test.shape) != 2:
+            raise ValueError("y_test must be 2D.")
 
         y_pred = np.round_(NeuralNetwork_MapReduce.predict(self, x_test))
 
         return _perc_correct(self.revert_softmax(y_pred), self.revert_one_hot(y_test))
-
 

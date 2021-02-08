@@ -13,16 +13,20 @@ https://ruder.io/optimizing-gradient-descent/
 
 import numpy as np
 
-class Optimizer :
+
+class Optimizer:
     def __init__(self):
         self.nesterov = False
+
     def setup(self, nn):
         pass
+
     def update(self, nn):
         pass
 
-class GD(Optimizer) :
-    '''
+
+class GD(Optimizer):
+    """
 
     The simplest optimizer -  you will quickly outgrow it. All you need to understand here is that the learning rate
     is just how fast you want the model to learn (default 0.001) set typically from 1e-6 to 0.1. A higher learning rate may mean
@@ -37,19 +41,24 @@ class GD(Optimizer) :
     In the model.finalize() method :
     >>> model.finalize(loss = ..., optimizer = nn.optimizers.GD(lr = 0.5, clip_threshold = 5)) # here the learning
     # learning rate is 0.5 and the threshold for clipping is 5.
-    '''
-    def __init__(self, lr = 0.001, clip_threshold = np.inf) :
+    """
+
+    def __init__(self, lr=0.001, clip_threshold=np.inf):
         super().__init__()
         self.lr = lr
         self.clip_threshold = clip_threshold
+
     def update(self, nn):
-        for layer in nn :
-            for param_name, _ in layer.parameters.items() :
+        for layer in nn:
+            for param_name, _ in layer.parameters.items():
                 gradients = layer.gradients[param_name]
-                gradients[np.where(np.abs(gradients) > self.clip_threshold)] = self.clip_threshold
+                gradients[
+                    np.where(np.abs(gradients) > self.clip_threshold)
+                ] = self.clip_threshold
                 layer.parameters[param_name] -= self.lr * gradients
 
-class Momentum(Optimizer) :
+
+class Momentum(Optimizer):
     """
     If you are unfamiliar with gradient descent, please read the docs on that in GD class for this to hopefully make more sense.
 
@@ -68,38 +77,46 @@ class Momentum(Optimizer) :
 
     Usually though this works really good with SGD...
     """
-    def __init__(self, lr = 0.001, momentum = 0.9, nesterov = False, clip_threshold = np.inf) :
+
+    def __init__(self, lr=0.001, momentum=0.9, nesterov=False, clip_threshold=np.inf):
         super().__init__()
         self.lr = lr
         self.momentum = momentum
         self.nesterov = nesterov
         self.clip_threshold = clip_threshold
+
     def setup(self, nn):
         self.momentum_params = {}
         for layer_num in range(len(nn)):
             layer = nn[layer_num]
             for param_name, _ in layer.parameters.items():
-                self.momentum_params[param_name + str(layer_num)] = np.zeros(layer.gradients[param_name].shape)
+                self.momentum_params[param_name + str(layer_num)] = np.zeros(
+                    layer.gradients[param_name].shape
+                )
 
-        if self.nesterov :
-            for layer_num in range(len(nn)) :
+        if self.nesterov:
+            for layer_num in range(len(nn)):
                 layer = nn[layer_num]
                 layer.nesterov = True
                 nn[layer_num] = layer
 
     def update(self, nn):
-        '''nn is self.layers'''
-        for layer_num in range(len(nn)) :
+        """nn is self.layers"""
+        for layer_num in range(len(nn)):
             layer = nn[layer_num]
-            for param_name, _ in layer.parameters.items() :
-                self.momentum_params[param_name + str(layer_num)] = self.momentum * self.momentum_params[param_name + str(layer_num)] \
-                 - self.lr * layer.gradients[param_name]
+            for param_name, _ in layer.parameters.items():
+                self.momentum_params[param_name + str(layer_num)] = (
+                    self.momentum * self.momentum_params[param_name + str(layer_num)]
+                    - self.lr * layer.gradients[param_name]
+                )
                 final_grad = self.momentum_params[param_name + str(layer_num)]
-                final_grad[np.where(np.abs(final_grad) > self.clip_threshold)] = self.clip_threshold
-                layer.parameters[param_name] +=final_grad
+                final_grad[
+                    np.where(np.abs(final_grad) > self.clip_threshold)
+                ] = self.clip_threshold
+                layer.parameters[param_name] += final_grad
 
 
-class SGD(Optimizer) :
+class SGD(Optimizer):
     """
     SGD stands for Stochastic gradient descent, which means that it calculates its gradients on random (stochastic) picked samples
     and their predictions. The reason it does this is because calculating the gradients on the whole dataset can take a
@@ -119,38 +136,47 @@ class SGD(Optimizer) :
     also gradient clipping at 50.
 
     """
-    def __init__(self, lr = 0.001, momentum = 0.0, nesterov = False, clip_threshold = np.inf) :
+
+    def __init__(self, lr=0.001, momentum=0.0, nesterov=False, clip_threshold=np.inf):
         super().__init__()
         self.lr = lr
         self.momentum = momentum
         self.nesterov = nesterov
         self.clip_threshold = clip_threshold
+
     def setup(self, nn):
-        '''nn is self.layers'''
+        """nn is self.layers"""
         self.momentum_params = {}
         for layer_num in range(len(nn)):
             layer = nn[layer_num]
             for param_name, _ in layer.parameters.items():
-                self.momentum_params[param_name + str(layer_num)] = np.zeros(layer.gradients[param_name].shape)
+                self.momentum_params[param_name + str(layer_num)] = np.zeros(
+                    layer.gradients[param_name].shape
+                )
 
-        if self.nesterov :
-            for layer_num in range(len(nn)) :
+        if self.nesterov:
+            for layer_num in range(len(nn)):
                 layer = nn[layer_num]
                 layer.nesterov = True
                 nn[layer_num] = layer
 
     def update(self, nn):
-        '''nn is self.layers'''
-        for layer_num in range(len(nn)) :
+        """nn is self.layers"""
+        for layer_num in range(len(nn)):
             layer = nn[layer_num]
-            for param_name, _ in layer.parameters.items() :
-                self.momentum_params[param_name + str(layer_num)] = self.momentum * self.momentum_params[param_name + str(layer_num)] \
-                 - self.lr * layer.gradients[param_name]
+            for param_name, _ in layer.parameters.items():
+                self.momentum_params[param_name + str(layer_num)] = (
+                    self.momentum * self.momentum_params[param_name + str(layer_num)]
+                    - self.lr * layer.gradients[param_name]
+                )
                 final_grad = self.momentum_params[param_name + str(layer_num)]
-                final_grad[np.where(np.abs(final_grad) > self.clip_threshold)] = self.clip_threshold
+                final_grad[
+                    np.where(np.abs(final_grad) > self.clip_threshold)
+                ] = self.clip_threshold
                 layer.parameters[param_name] += final_grad
 
-class AdaGrad(Optimizer) :
+
+class AdaGrad(Optimizer):
     """
     Slightly more advanced optimizer, an understanding of momentum will be invaluable here. AdaGrad and a whole plethora
     of optimizers use adaptive gradients, or an adaptive learning rate. This just means that it will assess the landscape
@@ -168,33 +194,50 @@ class AdaGrad(Optimizer) :
     being too small to make a difference, but we have it anyways for your enjoyment. Better optimizers await!
 
     """
-    def __init__(self, lr = 0.001, nesterov = False, clip_threshold = np.inf, e = 1e-10):
+
+    def __init__(self, lr=0.001, nesterov=False, clip_threshold=np.inf, e=1e-10):
         super().__init__()
         self.lr = lr
         self.nesterov = nesterov
         self.clip_threshold = clip_threshold
         self.e = e
+
     def setup(self, nn):
-        self.momentum_params = {} #the s in page 354 of handsonmlv2
-        for layer_num in range(len(nn)) :
+        self.momentum_params = {}  # the s in page 354 of handsonmlv2
+        for layer_num in range(len(nn)):
             layer = nn[layer_num]
-            for param_name, _ in layer.parameters.items() :
-                self.momentum_params[param_name + str(layer_num)] = np.zeros(layer.gradients[param_name].shape)
-        if self.nesterov :
-            for layer_num in range(len(nn)) :
+            for param_name, _ in layer.parameters.items():
+                self.momentum_params[param_name + str(layer_num)] = np.zeros(
+                    layer.gradients[param_name].shape
+                )
+        if self.nesterov:
+            for layer_num in range(len(nn)):
                 layer = nn[layer_num]
                 layer.nesterov = True
                 nn[layer_num] = layer
+
     def update(self, nn):
-        for layer_num in range(len(nn)) :
+        for layer_num in range(len(nn)):
             layer = nn[layer_num]
-            for param_name ,_ in layer.parameters.items() :
-                self.momentum_params[param_name + str(layer_num)] += np.power(layer.gradients[param_name], 2)
-                final_grad = self.lr * layer.gradients[param_name] / (np.sqrt(self.momentum_params[param_name + str(layer_num)]) + self.e)
-                final_grad[np.where(np.abs(final_grad) > self.clip_threshold)] = self.clip_threshold
+            for param_name, _ in layer.parameters.items():
+                self.momentum_params[param_name + str(layer_num)] += np.power(
+                    layer.gradients[param_name], 2
+                )
+                final_grad = (
+                    self.lr
+                    * layer.gradients[param_name]
+                    / (
+                        np.sqrt(self.momentum_params[param_name + str(layer_num)])
+                        + self.e
+                    )
+                )
+                final_grad[
+                    np.where(np.abs(final_grad) > self.clip_threshold)
+                ] = self.clip_threshold
                 layer.parameters[param_name] -= final_grad
 
-class RMSProp(Optimizer) :
+
+class RMSProp(Optimizer):
     """
     RMSprop is a widely known and used algorithm for deep neural network. All it does is solve the problem AdaGrad has
     of stopping too early by not scaling down the gradients so much. It does through a beta parameter, which is set to 0.9
@@ -206,36 +249,57 @@ class RMSProp(Optimizer) :
 
     Of course there is the nesterov, clipping threshold, and e parameter all for you to tune.
     """
-    def __init__(self, lr = 0.001, beta = 0.9, nesterov = False, clip_threshold = np.inf, e = 1e-10):
+
+    def __init__(
+        self, lr=0.001, beta=0.9, nesterov=False, clip_threshold=np.inf, e=1e-10
+    ):
         super().__init__()
         self.lr = lr
         self.beta = beta
         self.nesterov = nesterov
         self.clip_threshold = clip_threshold
         self.e = e
+
     def setup(self, nn):
-        self.momentum_params = {} #the s in page 354 of handsonmlv2
-        for layer_num in range(len(nn)) :
+        self.momentum_params = {}  # the s in page 354 of handsonmlv2
+        for layer_num in range(len(nn)):
             layer = nn[layer_num]
-            for param_name, _ in layer.parameters.items() :
-                self.momentum_params[param_name + str(layer_num)] = np.zeros(layer.gradients[param_name].shape)
-        if self.nesterov :
-            for layer_num in range(len(nn)) :
+            for param_name, _ in layer.parameters.items():
+                self.momentum_params[param_name + str(layer_num)] = np.zeros(
+                    layer.gradients[param_name].shape
+                )
+        if self.nesterov:
+            for layer_num in range(len(nn)):
                 layer = nn[layer_num]
                 layer.nesterov = True
                 nn[layer_num] = layer
+
     def update(self, nn):
-        for layer_num in range(len(nn)) :
+        for layer_num in range(len(nn)):
             layer = nn[layer_num]
-            for param_name ,_ in layer.parameters.items() :
-                self.momentum_params[param_name + str(layer_num)] = self.beta * self.momentum_params[param_name + str(layer_num)] + \
-                                                                    (1 - self.beta) * np.power(layer.gradients[param_name], 2)
-                final_grad = self.lr * layer.gradients[param_name] / (np.sqrt(self.momentum_params[param_name + str(layer_num)]) + self.e)
-                final_grad[np.where(np.abs(final_grad) > self.clip_threshold)] = self.clip_threshold
+            for param_name, _ in layer.parameters.items():
+                self.momentum_params[
+                    param_name + str(layer_num)
+                ] = self.beta * self.momentum_params[param_name + str(layer_num)] + (
+                    1 - self.beta
+                ) * np.power(
+                    layer.gradients[param_name], 2
+                )
+                final_grad = (
+                    self.lr
+                    * layer.gradients[param_name]
+                    / (
+                        np.sqrt(self.momentum_params[param_name + str(layer_num)])
+                        + self.e
+                    )
+                )
+                final_grad[
+                    np.where(np.abs(final_grad) > self.clip_threshold)
+                ] = self.clip_threshold
                 layer.parameters[param_name] -= final_grad
 
 
-class Adam(Optimizer) :
+class Adam(Optimizer):
     """
     Most popularly used optimizer, typically considered the default just like ReLU for activation functions.
     Combines the ideas of RMSprop and momentum together, meaning that it will adapt to different landscapes but move
@@ -252,7 +316,16 @@ class Adam(Optimizer) :
     both and there's barely a difference. If you are using Adam optimization and it isn't working maybe try using
     nesterov with momentum instead.
     """
-    def __init__(self, lr = 0.001, beta1 = 0.9, beta2 = 0.999, nesterov = False, clip_threshold = np.inf, e = 1e-10):
+
+    def __init__(
+        self,
+        lr=0.001,
+        beta1=0.9,
+        beta2=0.999,
+        nesterov=False,
+        clip_threshold=np.inf,
+        e=1e-10,
+    ):
         super().__init__()
         self.lr = lr
         self.beta1 = beta1
@@ -261,38 +334,54 @@ class Adam(Optimizer) :
         self.clip_threshold = clip_threshold
         self.e = e
         self.t = 1
+
     def setup(self, nn):
         self.momentum_M, self.momentum_S = {}, {}
-        for layer_num in range(len(nn)) :
+        for layer_num in range(len(nn)):
             layer = nn[layer_num]
-            for param_name, _ in layer.parameters.items() :
-                self.momentum_M[param_name + str(layer_num)] = np.zeros(layer.gradients[param_name].shape)
-                self.momentum_S[param_name + str(layer_num)] = np.zeros(layer.gradients[param_name].shape)
-        if self.nesterov :
-            for layer_num in range(len(nn)) :
+            for param_name, _ in layer.parameters.items():
+                self.momentum_M[param_name + str(layer_num)] = np.zeros(
+                    layer.gradients[param_name].shape
+                )
+                self.momentum_S[param_name + str(layer_num)] = np.zeros(
+                    layer.gradients[param_name].shape
+                )
+        if self.nesterov:
+            for layer_num in range(len(nn)):
                 layer = nn[layer_num]
                 layer.nesterov = True
                 nn[layer_num] = layer
 
     def update(self, nn):
 
-
         for layer_num in range(len(nn)):
             layer = nn[layer_num]
             for param_name, _ in layer.parameters.items():
-                self.momentum_M[param_name + str(layer_num)] = self.beta1 * self.momentum_M[param_name + str(layer_num)] \
+                self.momentum_M[param_name + str(layer_num)] = (
+                    self.beta1 * self.momentum_M[param_name + str(layer_num)]
                     - (1 - self.beta1) * layer.gradients[param_name]
-                self.momentum_S[param_name + str(layer_num)] = self.beta2 * self.momentum_S[param_name + str(layer_num)] \
-                    + (1 - self.beta2)  * np.power(layer.gradients[param_name], 2)
-                m_hat = self.momentum_M[param_name + str(layer_num)] / (1 - np.power(self.beta1, self.t))
-                s_hat = self.momentum_S[param_name + str(layer_num)] / (1 - np.power(self.beta2, self.t))
+                )
+                self.momentum_S[
+                    param_name + str(layer_num)
+                ] = self.beta2 * self.momentum_S[param_name + str(layer_num)] + (
+                    1 - self.beta2
+                ) * np.power(
+                    layer.gradients[param_name], 2
+                )
+                m_hat = self.momentum_M[param_name + str(layer_num)] / (
+                    1 - np.power(self.beta1, self.t)
+                )
+                s_hat = self.momentum_S[param_name + str(layer_num)] / (
+                    1 - np.power(self.beta2, self.t)
+                )
                 final_grad = self.lr * m_hat / (self.e + np.sqrt(s_hat))
-                final_grad[np.where(np.abs(final_grad) > self.clip_threshold)] = self.clip_threshold
+                final_grad[
+                    np.where(np.abs(final_grad) > self.clip_threshold)
+                ] = self.clip_threshold
                 layer.parameters[param_name] += final_grad
 
 
-
-class Nadam(Optimizer) :
+class Nadam(Optimizer):
     """
     Nadam optimization is the same thing as Adam, except there's nesterov updating. Basically this class is the same as
     the Adam class, except there is no nesterov parameter (default true.)
@@ -300,7 +389,10 @@ class Nadam(Optimizer) :
     As an example :
     >>> model.finalize(loss = ..., optimizer = nn.optimizers.Nadam(lr = 0.1, beta1 = 0.5, beta2 = 0.5))
     """
-    def __init__(self, lr = 0.001, beta1 = 0.9, beta2 = 0.999, clip_threshold = np.inf, e = 1e-10):
+
+    def __init__(
+        self, lr=0.001, beta1=0.9, beta2=0.999, clip_threshold=np.inf, e=1e-10
+    ):
         super().__init__()
         self.lr = lr
         self.beta1 = beta1
@@ -309,30 +401,48 @@ class Nadam(Optimizer) :
         self.clip_threshold = clip_threshold
         self.e = e
         self.t = 1
+
     def setup(self, nn):
         self.momentum_M, self.momentum_S = {}, {}
-        for layer_num in range(len(nn)) :
+        for layer_num in range(len(nn)):
             layer = nn[layer_num]
-            for param_name, _ in layer.parameters.items() :
-                self.momentum_M[param_name + str(layer_num)] = np.zeros(layer.gradients[param_name].shape)
-                self.momentum_S[param_name + str(layer_num)] = np.zeros(layer.gradients[param_name].shape)
-        if self.nesterov :
-            for layer_num in range(len(nn)) :
+            for param_name, _ in layer.parameters.items():
+                self.momentum_M[param_name + str(layer_num)] = np.zeros(
+                    layer.gradients[param_name].shape
+                )
+                self.momentum_S[param_name + str(layer_num)] = np.zeros(
+                    layer.gradients[param_name].shape
+                )
+        if self.nesterov:
+            for layer_num in range(len(nn)):
                 layer = nn[layer_num]
                 layer.nesterov = True
                 nn[layer_num] = layer
 
     def update(self, nn):
-        for layer_num in range(len(nn)) :
-            layer =nn[layer_num]
-            for param_name, _ in layer.parameters.items() :
-                self.momentum_M[param_name + str(layer_num)] = self.beta1 * self.momentum_M[param_name + str(layer_num)] \
-                        - (1 - self.beta1) * layer.gradients[param_name]
-                self.momentum_S[param_name + str(layer_num)] = self.beta2 * self.momentum_S[param_name + str(layer_num)] \
-                         + (1 - self.beta2) * np.power(layer.gradients[param_name], 2)
-                m_hat = self.momentum_M[param_name + str(layer_num)] / (1 - np.power(self.beta1, self.t))
-                s_hat = self.momentum_S[param_name + str(layer_num)] / (1 - np.power(self.beta2, self.t))
+        for layer_num in range(len(nn)):
+            layer = nn[layer_num]
+            for param_name, _ in layer.parameters.items():
+                self.momentum_M[param_name + str(layer_num)] = (
+                    self.beta1 * self.momentum_M[param_name + str(layer_num)]
+                    - (1 - self.beta1) * layer.gradients[param_name]
+                )
+                self.momentum_S[
+                    param_name + str(layer_num)
+                ] = self.beta2 * self.momentum_S[param_name + str(layer_num)] + (
+                    1 - self.beta2
+                ) * np.power(
+                    layer.gradients[param_name], 2
+                )
+                m_hat = self.momentum_M[param_name + str(layer_num)] / (
+                    1 - np.power(self.beta1, self.t)
+                )
+                s_hat = self.momentum_S[param_name + str(layer_num)] / (
+                    1 - np.power(self.beta2, self.t)
+                )
                 final_grad = self.lr * m_hat / (np.sqrt(s_hat) + self.e)
-                final_grad[np.where(np.abs(final_grad) > self.clip_threshold)] = self.clip_threshold
+                final_grad[
+                    np.where(np.abs(final_grad) > self.clip_threshold)
+                ] = self.clip_threshold
                 layer.gradients[param_name] += final_grad
 

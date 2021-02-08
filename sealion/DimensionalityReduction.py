@@ -9,7 +9,8 @@ so PCA is usually better for big data and you can tSNE is for the toy datasets.
 
 import numpy as np
 
-class PCA() :
+
+class PCA:
     """
     PCA is an algorithm to project the data to however many dimensions you want (please not 0 - LOL!). It is the most
     well known dimensionality reduction algorithm. Can work with data (10000+) very fast. We even have an inverse_transform()
@@ -36,11 +37,13 @@ class PCA() :
         variance and is the lowest dimension.)
 
     """
+
     def __init__(self, new_ndims):
         """
         :param new_ndims: The number of dimensions you want to reduce your data to.
         """
         self.new_ndims = new_ndims
+
     def transform(self, X):
         """
         :param X: the data you want transformed to new_ndims space (specified in __init___). Must be 2D (check above for
@@ -48,9 +51,9 @@ class PCA() :
         :return: all data points in new_ndims space
         """
         X = np.array(X)
-        X_centered = X - X.mean(axis = 0)
+        X_centered = X - X.mean(axis=0)
         U, s, Vt = np.linalg.svd(X_centered)
-        WD = Vt.T[:, :self.new_ndims]
+        WD = Vt.T[:, : self.new_ndims]
         X_pca = X_centered.dot(WD)
         self.WD = WD
         return X_pca
@@ -75,14 +78,20 @@ class PCA() :
         X = np.array(X)
         self.original_variance = np.var(X)
         variances = []
-        for dim in representation_dims :
+        for dim in representation_dims:
             new_pca = PCA(dim)
             new_data = new_pca.transform(X)
-            variances.append(np.sum(np.var(new_data, axis = 0)))
-        #visualize!
+            variances.append(np.sum(np.var(new_data, axis=0)))
+        # visualize!
         import matplotlib.pyplot as plt
+
         plt.cla()
-        plt.plot([dim for dim in representation_dims], [variance for variance in variances], color = "blue", label = "Dimension Variance")
+        plt.plot(
+            [dim for dim in representation_dims],
+            [variance for variance in variances],
+            color="blue",
+            label="Dimension Variance",
+        )
         plt.xlabel("# dimensions")
         plt.ylabel("Variance")
         plt.xticks(np.array([dim for dim in representation_dims], np.int))
@@ -92,7 +101,8 @@ class PCA() :
 
         plt.show()
 
-class tSNE() :
+
+class tSNE:
     """
     Not as famous as PCA for Dimensionality Reduction, but very famous for Data Visualization of data in more than 3
     dimensions. The hardest part of it is the need for hyperparameter tuning, especially with the perplexity factor.
@@ -120,7 +130,10 @@ class tSNE() :
         ->> X is the data you want transformed. It has to be 2D ([[]]) not 1D ([]) and can be a numpy array or python list.
         Runtimes could vary from a few minutes to a few hours, but it will be worth it!
     """
-    def __init__(self, new_ndims, perplexity = 10, learning_rate = 200, momentum = 0.9, max_iters = 1000) :
+
+    def __init__(
+        self, new_ndims, perplexity=10, learning_rate=200, momentum=0.9, max_iters=1000
+    ):
         """
         :param new_ndims: number of dimensions you want your data to go down to
         :param perplexity: how many points do you think are near the typical point in your data. Keep the scale in mind
@@ -131,9 +144,16 @@ class tSNE() :
         """
 
         from . import cython_tsne
-        self.inner_cython_tsne = cython_tsne.cy_tSNE(new_ndims = new_ndims, perplexity = perplexity, learning_rate = learning_rate,
-        momentum = momentum, max_iters = max_iters)
-    def transform(self, X) :
+
+        self.inner_cython_tsne = cython_tsne.cy_tSNE(
+            new_ndims=new_ndims,
+            perplexity=perplexity,
+            learning_rate=learning_rate,
+            momentum=momentum,
+            max_iters=max_iters,
+        )
+
+    def transform(self, X):
         """
         :param X: the data you want transformed, must be 2D.
         :return: every data point in X transformed to new_ndims (set in __init__) space.

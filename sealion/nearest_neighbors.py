@@ -8,7 +8,8 @@ KNearestNeighbors is another powerful ML algorithm. Easy to understand, but rema
 
 import numpy as np
 
-class KNearestNeighbors():
+
+class KNearestNeighbors:
     """
 
     Arguably the easiest machine learning algorithm to make and understand. Simply looks at the k closest points (you give these points)
@@ -46,13 +47,15 @@ class KNearestNeighbors():
         ->> plots the predictions and labels for you to see how well the model did
 
     """
-    def __init__(self, k = 5, regression = False):
+
+    def __init__(self, k=5, regression=False):
         """
         :param k: number of points for a prediction used in the algorithm
         :param regression: are you using regression or classification (if classification - do nothing)
         """
 
         from .cython_knn import CythonKNN
+
         self.cython_knn_model = CythonKNN()
         self.k = k
         self.regression = regression
@@ -63,7 +66,9 @@ class KNearestNeighbors():
         :param y_train: 1D training labels
         :return:
         """
-        self.cython_knn_model.fit(x_train, y_train, k = self.k, regression = self.regression)
+        self.cython_knn_model.fit(
+            x_train, y_train, k=self.k, regression=self.regression
+        )
 
     def predict(self, x_test):
         """
@@ -88,23 +93,37 @@ class KNearestNeighbors():
         Visualize the predictions and labels to see where the model is doing well and struggling.
         """
         import matplotlib.pyplot as plt
+
         plt.cla()
-        if not self.regression :
-            plt.scatter([_ for _ in range(len(y_pred))], y_pred, color="blue",
-                     label="predictions/y_pred")  # plot all predictions in blue
-            plt.scatter([_ for _ in range(len(y_test))], y_test, color="green",
-                     label="labels/y_test")  # plot all labels in green
-        else :
-            plt.plot([_ for _ in range(len(y_pred))], y_pred, color="blue",
-                        label="predictions/y_pred")  # plot all predictions in blue
-            plt.plot([_ for _ in range(len(y_test))], y_test, color="green",
-                        label="labels/y_test")  # plot all labels in green
+        if not self.regression:
+            plt.scatter(
+                [_ for _ in range(len(y_pred))],
+                y_pred,
+                color="blue",
+                label="predictions/y_pred",
+            )  # plot all predictions in blue
+            plt.scatter(
+                [_ for _ in range(len(y_test))],
+                y_test,
+                color="green",
+                label="labels/y_test",
+            )  # plot all labels in green
+        else:
+            plt.plot(
+                [_ for _ in range(len(y_pred))],
+                y_pred,
+                color="blue",
+                label="predictions/y_pred",
+            )  # plot all predictions in blue
+            plt.plot(
+                [_ for _ in range(len(y_test))],
+                y_test,
+                color="green",
+                label="labels/y_test",
+            )  # plot all labels in green
         plt.title("Prediction & Labels Plot")
         plt.xlabel("Data number")
         plt.ylabel("Prediction")
         plt.legend()
         plt.show()
-
-
-
 

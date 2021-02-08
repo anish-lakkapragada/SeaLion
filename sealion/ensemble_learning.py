@@ -17,7 +17,8 @@ import warnings
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
-class RandomForest():
+
+class RandomForest:
     """
     Random Forests may seem intimidating but they are super simple. They are just a bunch of Decision Trees that are
     trained on different sets of the data. You give us the data, and we will create those different sets. You may choose
@@ -72,7 +73,15 @@ class RandomForest():
         too low, etc.
 
     """
-    def __init__(self, num_classifiers= 20, max_branches= math.inf, min_samples=1, replacement=True, min_data=None):
+
+    def __init__(
+        self,
+        num_classifiers=20,
+        max_branches=math.inf,
+        min_samples=1,
+        replacement=True,
+        min_data=None,
+    ):
         """
         :param num_classifiers: Number of decision trees you want created.
         :param max_branches: Maximum number of branches each Decision Tree can have.
@@ -83,6 +92,7 @@ class RandomForest():
         default is 50% of the amount of data, the None is just a placeholder.
         """
         from .decision_trees import DecisionTree
+
         self.DecisionTree = DecisionTree
         self.trees = []
         self.num_classifiers = num_classifiers
@@ -105,33 +115,41 @@ class RandomForest():
         min_data = self.min_data
 
         # on default set min_data = 50% of your dataset
-        if not min_data: min_data = round(0.5 * len(data))
+        if not min_data:
+            min_data = round(0.5 * len(data))
 
         # merge data and labels together [(d1, l1) .. (dN, lN)]
-        data_and_labels = [(data_point, label) for data_point, label in zip(data, labels)]
-
+        data_and_labels = [
+            (data_point, label) for data_point, label in zip(data, labels)
+        ]
 
         self.chunk_data, self.chunk_labels = [], []
         if replacement:
             for classifier in range(num_classifiers):
                 num_samples = min_data + random.randint(0, len(data) - min_data)
                 data_and_labels_set = random.sample(data_and_labels, num_samples)
-                self.chunk_data.append([data_point for data_point, _ in data_and_labels_set])
+                self.chunk_data.append(
+                    [data_point for data_point, _ in data_and_labels_set]
+                )
                 self.chunk_labels.append([label for _, label in data_and_labels_set])
         else:
-            '''no replacement just use up all of the data here'''
+            """no replacement just use up all of the data here"""
             data_and_labels_df = pd.DataFrame({"data": data, "labels": labels})
-            data_and_labels_full_set = np.array_split(data_and_labels_df,
-                                                      num_classifiers)  # splits into num_classifiers dataframes
+            data_and_labels_full_set = np.array_split(
+                data_and_labels_df, num_classifiers
+            )  # splits into num_classifiers dataframes
             for df in data_and_labels_full_set:
                 self.chunk_data.append(np.array(df)[:, 0].flatten())
                 self.chunk_labels.append(np.array(df)[:, 1].flatten())
 
         self.trees = []
         from joblib import parallel_backend
-        with parallel_backend('threading', n_jobs = -1):
-            Parallel()(delayed(RandomForest._train_new_tree)(self, data_chunk, label_chunk) for data_chunk, label_chunk
-                       in zip(self.chunk_data, self.chunk_labels))
+
+        with parallel_backend("threading", n_jobs=-1):
+            Parallel()(
+                delayed(RandomForest._train_new_tree)(self, data_chunk, label_chunk)
+                for data_chunk, label_chunk in zip(self.chunk_data, self.chunk_labels)
+            )
 
         self.decision_trees = []  # stores each tree in a decision tree class
         for tree in self.trees:
@@ -141,7 +159,9 @@ class RandomForest():
             self.decision_trees.append(dt)
 
     def _train_new_tree(self, data, labels):
-        dt = self.DecisionTree(max_branches = self.max_branches, min_samples = self.min_samples)
+        dt = self.DecisionTree(
+            max_branches=self.max_branches, min_samples=self.min_samples
+        )
         dt.fit(data, labels)
         self.trees.append(dt.tree)
 
@@ -162,7 +182,9 @@ class RandomForest():
         :return: accuracy score
         """
         y_pred = RandomForest.predict(self, x_test)
-        amount_correct = sum([1 if pred == label else 0 for pred, label in zip(y_pred, y_test)])
+        amount_correct = sum(
+            [1 if pred == label else 0 for pred, label in zip(y_pred, y_test)]
+        )
         return amount_correct / len(x_test)
 
     def give_best_tree(self, x_test, y_test):
@@ -173,7 +195,10 @@ class RandomForest():
         :param y_test: testing labels (1D)
         :return: tree that performs the best (dictionary data type)
         """
-        evaluations = {decision_tree.evaluate(x_test, y_test): decision_tree for decision_tree in self.decision_trees}
+        evaluations = {
+            decision_tree.evaluate(x_test, y_test): decision_tree
+            for decision_tree in self.decision_trees
+        }
         return evaluations[max(evaluations)].tree  # tree with best score
 
     def visualize_evaluation(self, y_pred, y_test):
@@ -184,22 +209,35 @@ class RandomForest():
         """
 
         import matplotlib.pyplot as plt
+
         plt.cla()
         y_pred, y_test = y_pred.flatten(), y_test.flatten()
-        plt.scatter([_ for _ in range(len(y_pred))], y_pred, color="blue", label="predictions/y_pred")
-        plt.scatter([_ for _ in range(len(y_test))], y_test, color="green", label="labels/y_test")
+        plt.scatter(
+            [_ for _ in range(len(y_pred))],
+            y_pred,
+            color="blue",
+            label="predictions/y_pred",
+        )
+        plt.scatter(
+            [_ for _ in range(len(y_test))],
+            y_test,
+            color="green",
+            label="labels/y_test",
+        )
         plt.title("Predictions & Labels Plot")
         plt.xlabel("Data number")
         plt.ylabel("Prediction")
         plt.legend()
         plt.show()
 
+
 def _train_new_predictor(prediction_dataset):
     predictor, name, x_train, y_train = prediction_dataset
     predictor.fit(x_train, y_train)
     return [name, predictor]
 
-class EnsembleClassifier() :
+
+class EnsembleClassifier:
     """
     Aside from random forests, voting/ensemble classifiers are also another popular way of ensemble learning. How it works
     is by training multiple different classifiers (you choose!) and predicting the most common class (or the average for
@@ -273,40 +311,50 @@ class EnsembleClassifier() :
         too low, etc.
 
     """
-    def __init__(self, predictors, classification = True):
+
+    def __init__(self, predictors, classification=True):
         """
         :param predictors: dict of {name (string) : algorithm (class)}. See example above.
         :param classification: is it a classification or regression task? default classification - if regression set this
         to False.
         """
         from .cython_ensemble_learning import CythonEnsembleClassifier
+
         self.classification = classification
-        self.cython_ensemble_classifier = CythonEnsembleClassifier(predictors, self.classification)
-    def fit(self, x_train, y_train) :
+        self.cython_ensemble_classifier = CythonEnsembleClassifier(
+            predictors, self.classification
+        )
+
+    def fit(self, x_train, y_train):
         """
         :param x_train: 2D training data
         :param y_train: 1D training labels
         :return:
         """
         x_train, y_train = np.array(x_train), np.array(y_train)
-        if len(x_train.shape) != 2: raise ValueError("x_train must be 2D (even if only one sample.)")
-        if len(y_train.shape) != 1: raise ValueError("y_train must be 1D.")
+        if len(x_train.shape) != 2:
+            raise ValueError("x_train must be 2D (even if only one sample.)")
+        if len(y_train.shape) != 1:
+            raise ValueError("y_train must be 1D.")
         self.predictors = self.cython_ensemble_classifier.get_predictors()
 
-        with parallel_backend('threading', n_jobs=cpu_count()):
-            for name, predictor in self.predictors.items() :
+        with parallel_backend("threading", n_jobs=cpu_count()):
+            for name, predictor in self.predictors.items():
                 self.predictors[name].fit(x_train, y_train)
 
         self.trained_predictors = self.predictors
         self.cython_ensemble_classifier.give_trained_predictors(self.trained_predictors)
+
     def predict(self, x_test):
         """
         :param x_test: testing data (2D)
         :return: Predictions in 1D vector/list.
         """
         x_test = np.array(x_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
         return self.cython_ensemble_classifier.predict(x_test)
+
     def evaluate(self, x_test, y_test):
         """
         :param x_test: testing data (2D)
@@ -314,10 +362,13 @@ class EnsembleClassifier() :
         :return: accuracy score
         """
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
-        if len(y_test.shape) != 1: raise ValueError("y_test must be 1D.")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(y_test.shape) != 1:
+            raise ValueError("y_test must be 1D.")
         return self.cython_ensemble_classifier.evaluate(x_test, y_test)
-    def evaluate_all_predictors(self, x_test, y_test) :
+
+    def evaluate_all_predictors(self, x_test, y_test):
         """
         :param x_test: testing data (2D)
         :param y_test: testing labels (1D)
@@ -325,9 +376,12 @@ class EnsembleClassifier() :
         score on the data given.
         """
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
-        if len(y_test.shape) != 1: raise ValueError("y_test must be 1D.")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(y_test.shape) != 1:
+            raise ValueError("y_test must be 1D.")
         return self.cython_ensemble_classifier.evaluate_all_predictors(x_test, y_test)
+
     def get_best_predictor(self, x_test, y_test):
         """
         :param x_test: testing data (2D)
@@ -336,33 +390,51 @@ class EnsembleClassifier() :
         make sense.
         """
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
-        if len(y_test.shape) != 1: raise ValueError("y_test must be 1D.")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(y_test.shape) != 1:
+            raise ValueError("y_test must be 1D.")
         return self.cython_ensemble_classifier.get_best_predictor(x_test, y_test)
-    def visualize_evaluation(self, y_pred, y_test) :
+
+    def visualize_evaluation(self, y_pred, y_test):
         """
         :param y_pred: predictions from the predict() method
         :param y_test: labels for the data
         :return: a matplotlib image of the predictions and the labels ("correct answers") for you to see how well the model did.
         """
         import matplotlib.pyplot as plt
+
         plt.cla()
         y_pred, y_test = y_pred.flatten(), y_test.flatten()
-        if self.classification :
-            plt.scatter([_ for _ in range(len(y_pred))], y_pred, color="blue", label="predictions/y_pred")
-            plt.scatter([_ for _ in range(len(y_test))], y_test, color="green", label="labels/y_test")
-        else :
-            plt.plot([_ for _ in range(len(y_pred))], y_pred, color="blue", label="predictions/y_pred")
-            plt.plot([_ for _ in range(len(y_test))], y_test, color="green", label="labels/y_test")
+        if self.classification:
+            plt.scatter(
+                [_ for _ in range(len(y_pred))],
+                y_pred,
+                color="blue",
+                label="predictions/y_pred",
+            )
+            plt.scatter(
+                [_ for _ in range(len(y_test))],
+                y_test,
+                color="green",
+                label="labels/y_test",
+            )
+        else:
+            plt.plot(
+                [_ for _ in range(len(y_pred))],
+                y_pred,
+                color="blue",
+                label="predictions/y_pred",
+            )
+            plt.plot(
+                [_ for _ in range(len(y_test))],
+                y_test,
+                color="green",
+                label="labels/y_test",
+            )
         plt.title("Predictions & Labels Plot")
         plt.xlabel("Data number")
         plt.ylabel("Prediction")
         plt.legend()
         plt.show()
-
-
-
-
-
-
 

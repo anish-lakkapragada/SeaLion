@@ -9,8 +9,10 @@ has polynomial and exponential regression, along with some regularizers.
 import numpy as np
 from tqdm import tqdm
 import warnings
-warnings.filterwarnings('ignore', category = np.ComplexWarning)
-warnings.filterwarnings('ignore', category = RuntimeWarning)
+
+warnings.filterwarnings("ignore", category=np.ComplexWarning)
+warnings.filterwarnings("ignore", category=RuntimeWarning)
+
 
 def r2_score(y_pred, y_test):
     num = np.sum(np.power(y_test - y_pred, 2))
@@ -18,7 +20,7 @@ def r2_score(y_pred, y_test):
     return 1 - num / denum
 
 
-class LinearRegression():
+class LinearRegression:
     """
     While KNNs (K-Nearest-Neighbors) may be the simplest ML algorithms out there, Linear Regression is probably the one
     you heard first. You may have used it on a TI-84 before - all it does is it fit a line to the data. It does this through
@@ -70,7 +72,9 @@ class LinearRegression():
 
     def __init__(self):
         from sealion.utils import one_hot
+
         self.one_hot = one_hot
+
     def fit(self, x_train, y_train):
         """
         :param x_train: 2D training data
@@ -78,17 +82,19 @@ class LinearRegression():
         :return:
         """
         x_train, y_train = np.array(x_train), np.array(y_train)
-        if len(x_train.shape) != 2: raise ValueError("x_train must be 2D (even if only one sample.)")
-        if len(y_train.shape) != 1: raise ValueError("y_train must be 1D.")
+        if len(x_train.shape) != 2:
+            raise ValueError("x_train must be 2D (even if only one sample.)")
+        if len(y_train.shape) != 1:
+            raise ValueError("y_train must be 1D.")
 
-
-        #Closed form solution below :
-        #Weights = (XT X)^-1 XT y
-        #Intercept_vector = y_train - weights * mean(x_train)
-
+        # Closed form solution below :
+        # Weights = (XT X)^-1 XT y
+        # Intercept_vector = y_train - weights * mean(x_train)
 
         self.weights = np.linalg.inv(x_train.T.dot(x_train)).dot(x_train.T.dot(y_train))
-        self.bias = np.mean(y_train, axis=0) - np.dot(np.mean(x_train, axis=0), self.weights)
+        self.bias = np.mean(y_train, axis=0) - np.dot(
+            np.mean(x_train, axis=0), self.weights
+        )
 
     def predict(self, x_test):
         """
@@ -96,7 +102,8 @@ class LinearRegression():
         :return : predictions in a 1D numpy array
         """
         x_test = np.array(x_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
         return np.dot(x_test, self.weights) + self.bias
 
     def evaluate(self, x_test, y_test):
@@ -106,8 +113,10 @@ class LinearRegression():
         :return: r^2 score
         """
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
-        if len(y_test.shape) != 1: raise ValueError("y_test must be 1D.")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(y_test.shape) != 1:
+            raise ValueError("y_test must be 1D.")
 
         y_pred = np.dot(x_test, self.weights) + self.bias
         return r2_score(y_pred, y_test)
@@ -119,24 +128,36 @@ class LinearRegression():
         :return: a matplotlib image of the predictions and the labels ("correct answers") for you to see how well the model did.
         """
         import matplotlib.pyplot as plt
+
         plt.cla()
-        plt.plot([_ for _ in range(len(y_pred))], y_pred, color="blue",
-                 label="predictions/y_pred")  # plot all predictions in blue
-        plt.plot([_ for _ in range(len(y_test))], y_test, color="green",
-                 label="labels/y_test")  # plot all labels in green
+        plt.plot(
+            [_ for _ in range(len(y_pred))],
+            y_pred,
+            color="blue",
+            label="predictions/y_pred",
+        )  # plot all predictions in blue
+        plt.plot(
+            [_ for _ in range(len(y_test))],
+            y_test,
+            color="green",
+            label="labels/y_test",
+        )  # plot all labels in green
         plt.title("Predictions & Labels Plot")
         plt.xlabel("Data number")
         plt.ylabel("Prediction")
         plt.legend()
         plt.show()
 
-def sigmoid(x) :
+
+def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
-def _perc_correct(y_pred, y_test) :
-    return np.sum((y_pred == y_test).astype('int'))/len(y_pred)
 
-class LogisticRegression():
+def _perc_correct(y_pred, y_test):
+    return np.sum((y_pred == y_test).astype("int")) / len(y_pred)
+
+
+class LogisticRegression:
     """
     Logistic Regression is in the sweet spot of being easy to understand and useful. Despite having "regression" in the
     name, what it does is binary classification. Say you had a dataset of people's heights and weights, along with
@@ -188,7 +209,10 @@ class LogisticRegression():
         too low, etc.
 
     """
-    def __init__(self, accuracy_desired=0.95, learning_rate=0.01, max_iters=1000, show_acc=True):
+
+    def __init__(
+        self, accuracy_desired=0.95, learning_rate=0.01, max_iters=1000, show_acc=True
+    ):
         """
         :param accuracy_desired: the accuracy at which the fit() method can stop
         :param learning_rate: how fast gradient descent should run
@@ -196,6 +220,7 @@ class LogisticRegression():
         :param show_acc: whether or not to show the accuracy in the fit() method
         """
         from .utils import one_hot
+
         self.one_hot = one_hot
         self.accuracy_desired = accuracy_desired
         self.learning_rate = learning_rate
@@ -219,8 +244,10 @@ class LogisticRegression():
         """
 
         x_train, y_train = np.array(x_train), np.array(y_train)
-        if len(x_train.shape) != 2: raise ValueError("x_train must be 2D (even if only one sample.)")
-        if len(y_train.shape) != 1: raise ValueError("y_train must be 1D.")
+        if len(x_train.shape) != 2:
+            raise ValueError("x_train must be 2D (even if only one sample.)")
+        if len(y_train.shape) != 1:
+            raise ValueError("y_train must be 1D.")
 
         learning_rate = self.learning_rate
         max_iters = self.max_iters
@@ -228,7 +255,7 @@ class LogisticRegression():
         accuracy_desired = self.accuracy_desired
 
         def param_init(x_train):
-            '''initialize weights and biases'''
+            """initialize weights and biases"""
             num_features = len(x_train[0])  # number of features
             weights = np.random.randn(num_features, 1)
             bias = np.random.uniform()
@@ -237,9 +264,11 @@ class LogisticRegression():
         weights, bias = param_init(x_train)
         self.num_features = len(x_train[0])
         m = len(y_train)
-        iterations = tqdm(range(max_iters), position = 0)
+        iterations = tqdm(range(max_iters), position=0)
         for iteration in iterations:
-            y_hat = sigmoid(np.dot(x_train, weights) + bias)  # forward pass, y_hat = sigmoid(wx + b)
+            y_hat = sigmoid(
+                np.dot(x_train, weights) + bias
+            )  # forward pass, y_hat = sigmoid(wx + b)
 
             # gradient descent
             y_hat, y_train = y_hat.reshape(m, 1), y_train.reshape(m, 1)
@@ -251,7 +280,9 @@ class LogisticRegression():
             accuracy_perc = perc_correct
 
             if show_acc:
-                iterations.set_description("accuracy : " + str(round(accuracy_perc * 100, 2)) + "% ")
+                iterations.set_description(
+                    "accuracy : " + str(round(accuracy_perc * 100, 2)) + "% "
+                )
 
             if accuracy_perc >= accuracy_desired:
                 iterations.close()
@@ -267,7 +298,8 @@ class LogisticRegression():
         :return: predictions in a 1D vector/list
         """
         x_test = np.array(x_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
         return np.round_(sigmoid(np.dot(x_test, self.weights) + self.bias)).flatten()
 
     def evaluate(self, x_test, y_test):
@@ -278,8 +310,10 @@ class LogisticRegression():
         """
 
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
-        if len(y_test.shape) != 1: raise ValueError("y_test must be 1D.")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(y_test.shape) != 1:
+            raise ValueError("y_test must be 1D.")
 
         y_pred = LogisticRegression.predict(self, x_test)
         y_pred = np.array(y_pred).flatten()
@@ -294,10 +328,21 @@ class LogisticRegression():
         :return: a matplotlib image of the predictions and the labels ("correct answers") for you to see how well the model did.
         """
         import matplotlib.pyplot as plt
+
         plt.cla()
         y_pred, y_test = y_pred.flatten(), y_test.flatten()
-        plt.scatter([_ for _ in range(len(y_pred))], y_pred, color="blue", label="predictions/y_pred")
-        plt.scatter([_ for _ in range(len(y_test))], y_test, color="green", label="labels/y_test")
+        plt.scatter(
+            [_ for _ in range(len(y_pred))],
+            y_pred,
+            color="blue",
+            label="predictions/y_pred",
+        )
+        plt.scatter(
+            [_ for _ in range(len(y_test))],
+            y_test,
+            color="green",
+            label="labels/y_test",
+        )
         plt.title("Predictions & Labels Plot")
         plt.xlabel("Data number")
         plt.ylabel("Prediction")
@@ -309,7 +354,7 @@ def softmax(scores):
     return np.exp(scores) / np.sum(np.exp(scores))
 
 
-class SoftmaxRegression():
+class SoftmaxRegression:
     """
         Once you know logistic regression, softmax regression is a breeze. Logistic regression is really a specific
         type of softmax regression, where the number of classes is equal to 2. Whereas logistic regression only can predict
@@ -355,8 +400,14 @@ class SoftmaxRegression():
 
         """
 
-    def __init__(self, num_classes, accuracy_desired=0.95, learning_rate=0.01, max_iters=1000,
-                 show_acc=True):
+    def __init__(
+        self,
+        num_classes,
+        accuracy_desired=0.95,
+        learning_rate=0.01,
+        max_iters=1000,
+        show_acc=True,
+    ):
         """
         :param num_classes : number of classes your dataset has
         :param accuracy_desired: the accuracy at which the fit() method can stop
@@ -365,6 +416,7 @@ class SoftmaxRegression():
         :param show_acc: whether or not to show the accuracy in the fit() method
         """
         from sealion.utils import one_hot
+
         self.one_hot = one_hot
         self.accuracy_desired = accuracy_desired
         self.learning_rate = learning_rate
@@ -388,8 +440,10 @@ class SoftmaxRegression():
         """
 
         x_train, y_train = np.array(x_train), np.array(y_train)
-        if len(x_train.shape) != 2: raise ValueError("x_train must be 2D (even if only one sample.)")
-        if len(y_train.shape) != 1: raise ValueError("y_train must be 1D.")
+        if len(x_train.shape) != 2:
+            raise ValueError("x_train must be 2D (even if only one sample.)")
+        if len(y_train.shape) != 1:
+            raise ValueError("y_train must be 1D.")
 
         learning_rate = self.learning_rate
         max_iters = self.max_iters
@@ -398,7 +452,10 @@ class SoftmaxRegression():
         num_classes = self.num_classes
 
         y_train = self.one_hot(y_train, depth=num_classes)  # one_hot_encode the labels
-        x_train, y_train = np.array(x_train), np.array(y_train)  # convert to numpy arrays
+        x_train, y_train = (
+            np.array(x_train),
+            np.array(y_train),
+        )  # convert to numpy arrays
 
         def param_init(x_train):
             num_features = len(x_train[0])
@@ -415,18 +472,26 @@ class SoftmaxRegression():
         for iteration in iterations:
 
             Z = np.dot(x_train, weights) + bias  # forward pass start
-            y_hat = np.apply_along_axis(softmax, 1, Z)# softmax for each output
+            y_hat = np.apply_along_axis(softmax, 1, Z)  # softmax for each output
 
             # gradient descent
             dLdZ = (y_hat - y_train) / m  # crossentropy loss derivative
             weights -= learning_rate * np.dot(x_train.T, dLdZ)
-            bias -= learning_rate * np.sum(dLdZ)  # change bias -> dLdZ is a matrix now due to one_hot_labels
-            num_correct = sum([1 if np.argmax(pred) == np.argmax(label) else 0 for pred, label in
-                               zip(np.round_(y_hat), y_train)])  # what percent are labeled correctly - super simple!
+            bias -= learning_rate * np.sum(
+                dLdZ
+            )  # change bias -> dLdZ is a matrix now due to one_hot_labels
+            num_correct = sum(
+                [
+                    1 if np.argmax(pred) == np.argmax(label) else 0
+                    for pred, label in zip(np.round_(y_hat), y_train)
+                ]
+            )  # what percent are labeled correctly - super simple!
 
             accuracy_perc = num_correct / m
             if show_acc:
-                iterations.set_description("accuracy : " + str(round(accuracy_perc * 100, 2)) + "% ")
+                iterations.set_description(
+                    "accuracy : " + str(round(accuracy_perc * 100, 2)) + "% "
+                )
 
             if accuracy_perc >= accuracy_desired:
                 iterations.close()
@@ -443,7 +508,8 @@ class SoftmaxRegression():
         """
 
         x_test = np.array(x_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
 
         x_test = np.array(x_test)
         if len(x_test.shape) < 2:
@@ -451,7 +517,9 @@ class SoftmaxRegression():
 
         Z = np.dot(x_test, self.weights) + self.bias
         y_hat = np.apply_along_axis(softmax, 1, Z)  # softmax for each output)
-        return np.apply_along_axis(np.argmax, 1, y_hat)  # go through each output and give the index of where
+        return np.apply_along_axis(
+            np.argmax, 1, y_hat
+        )  # go through each output and give the index of where
 
     def evaluate(self, x_test, y_test):
         """
@@ -461,8 +529,10 @@ class SoftmaxRegression():
         """
 
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
-        if len(y_test.shape) != 1: raise ValueError("y_test must be 1D.")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(y_test.shape) != 1:
+            raise ValueError("y_test must be 1D.")
 
         Z = np.dot(x_test, self.weights) + self.bias
         y_pred = np.apply_along_axis(softmax, 1, Z)
@@ -478,10 +548,21 @@ class SoftmaxRegression():
         """
 
         import matplotlib.pyplot as plt
+
         plt.cla()
         y_pred, y_test = y_pred.flatten(), y_test.flatten()
-        plt.scatter([_ for _ in range(len(y_pred))], y_pred, color="blue", label="predictions/y_pred")
-        plt.scatter([_ for _ in range(len(y_test))], y_test, color="green", label="labels/y_test")
+        plt.scatter(
+            [_ for _ in range(len(y_pred))],
+            y_pred,
+            color="blue",
+            label="predictions/y_pred",
+        )
+        plt.scatter(
+            [_ for _ in range(len(y_test))],
+            y_test,
+            color="green",
+            label="labels/y_test",
+        )
         plt.title("Predictions & Labels Plot")
         plt.xlabel("Data number")
         plt.ylabel("Prediction")
@@ -489,7 +570,7 @@ class SoftmaxRegression():
         plt.show()
 
 
-class RidgeRegression():
+class RidgeRegression:
     """
     Imagine you have a dataset with 1000 features. Most of these features will usually be irrelevant to the task your solving;
     only a few of them will really matter. If you don't want to use Dimensionality Reduction (see the algorithms there),
@@ -536,7 +617,6 @@ class RidgeRegression():
         too low, etc.
     """
 
-
     def __init__(self, alpha=0.5):
         """
         Set the alpha parameter for the model.
@@ -551,17 +631,21 @@ class RidgeRegression():
         :return:
         """
         x_train, y_train = np.array(x_train), np.array(y_train)
-        if len(x_train.shape) != 2: raise ValueError("x_train must be 2D (even if only one sample.)")
-        if len(y_train.shape) != 1: raise ValueError("y_train must be 1D.")
+        if len(x_train.shape) != 2:
+            raise ValueError("x_train must be 2D (even if only one sample.)")
+        if len(y_train.shape) != 1:
+            raise ValueError("y_train must be 1D.")
 
+        # Closed form solution below :
+        # Weights = (XT X)^-1 XT y
+        # Intercept_vector = y_train - weights * mean(x_train)
 
-        #Closed form solution below :
-        #Weights = (XT X)^-1 XT y
-        #Intercept_vector = y_train - weights * mean(x_train)
-
-        self.weights = np.linalg.inv(x_train.T.dot(x_train) + self.alpha + np.identity(x_train.shape[1])).dot(
-            x_train.T.dot(y_train))
-        self.bias = np.mean(y_train, axis=0) - np.dot(np.mean(x_train, axis=0), self.weights)
+        self.weights = np.linalg.inv(
+            x_train.T.dot(x_train) + self.alpha + np.identity(x_train.shape[1])
+        ).dot(x_train.T.dot(y_train))
+        self.bias = np.mean(y_train, axis=0) - np.dot(
+            np.mean(x_train, axis=0), self.weights
+        )
 
     def predict(self, x_test):
         """
@@ -569,7 +653,8 @@ class RidgeRegression():
         :return : predictions in a 1D numpy array
         """
         x_test = np.array(x_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
         return np.dot(x_test, self.weights) + self.bias
 
     def evaluate(self, x_test, y_test):
@@ -580,8 +665,10 @@ class RidgeRegression():
         """
         x_test, y_test = np.array(x_test), np.array(y_test)
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
-        if len(y_test.shape) != 1: raise ValueError("y_test must be 1D.")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(y_test.shape) != 1:
+            raise ValueError("y_test must be 1D.")
 
         y_pred = np.dot(x_test, self.weights) + self.bias
         return r2_score(y_pred, y_test)
@@ -593,11 +680,20 @@ class RidgeRegression():
         :return: a matplotlib image of the predictions and the labels ("correct answers") for you to see how well the model did.
         """
         import matplotlib.pyplot as plt
+
         plt.cla()
-        plt.plot([_ for _ in range(len(y_pred))], y_pred, color="blue",
-                 label="predictions/y_pred")  # plot all predictions in blue
-        plt.plot([_ for _ in range(len(y_test))], y_test, color="green",
-                 label="labels/y_test")  # plot all labels in green
+        plt.plot(
+            [_ for _ in range(len(y_pred))],
+            y_pred,
+            color="blue",
+            label="predictions/y_pred",
+        )  # plot all predictions in blue
+        plt.plot(
+            [_ for _ in range(len(y_test))],
+            y_test,
+            color="green",
+            label="labels/y_test",
+        )  # plot all labels in green
         plt.title("Predictions & Labels Plot")
         plt.xlabel("Data number")
         plt.ylabel("Prediction")
@@ -606,12 +702,15 @@ class RidgeRegression():
 
 
 def _lasso_sign_weight(weight):
-    if weight > 0: return 1
-    if weight < 0: return -1
-    if weight == 0: return 0
+    if weight > 0:
+        return 1
+    if weight < 0:
+        return -1
+    if weight == 0:
+        return 0
 
 
-class LassoRegression():
+class LassoRegression:
     """
     Regularizer for regression models just like Ridge Regression. A few notable differences, but for the most part
     will do the same thing. Lasso regression tries to minimize the weights just like ridge regression, but one of
@@ -647,7 +746,15 @@ class LassoRegression():
         too low, etc.
 
     """
-    def __init__(self, alpha=0.5, accuracy_desired=0.95, learning_rate=0.01, max_iters=10000, show_acc=True):
+
+    def __init__(
+        self,
+        alpha=0.5,
+        accuracy_desired=0.95,
+        learning_rate=0.01,
+        max_iters=10000,
+        show_acc=True,
+    ):
         """
         :param alpha: penalty for the weights, applied to both lasso and ridge components
         Check above documentation for all other parameters.
@@ -675,13 +782,15 @@ class LassoRegression():
         """
 
         x_train, y_train = np.array(x_train), np.array(y_train)
-        if len(x_train.shape) != 2: raise ValueError("x_train must be 2D (even if only one sample.)")
-        if len(y_train.shape) != 1: raise ValueError("y_train must be 1D.")
+        if len(x_train.shape) != 2:
+            raise ValueError("x_train must be 2D (even if only one sample.)")
+        if len(y_train.shape) != 1:
+            raise ValueError("y_train must be 1D.")
 
         self.num_features = len(x_train[0])
 
         def param_init(x_train):
-            '''initialize weights and biases'''
+            """initialize weights and biases"""
             num_features = len(x_train[0])  # number of features
             weights = np.random.randn(num_features, 1)
             bias = np.random.uniform()
@@ -693,14 +802,21 @@ class LassoRegression():
         m = len(y_train)
         for iteration in iterations:
 
-            if weights.sum() == np.nan or weights.sum() == np.inf or np.isnan(weights.sum()) or np.isinf(weights).any() :
+            if (
+                weights.sum() == np.nan
+                or weights.sum() == np.inf
+                or np.isnan(weights.sum())
+                or np.isinf(weights).any()
+            ):
                 warnings.warn("Failed convergence, please change hyperparameters.")
                 break
 
             y_hat = np.dot(x_train, weights) + bias
 
             dLdYh = (y_hat.flatten() - y_train.flatten()) / m
-            lasso_signs = self.alpha * np.apply_along_axis(_lasso_sign_weight, 1, weights)
+            lasso_signs = self.alpha * np.apply_along_axis(
+                _lasso_sign_weight, 1, weights
+            )
             mse_grad = np.dot(x_train.T, dLdYh)
             gradient = mse_grad + lasso_signs
             weights -= self.learning_rate * np.expand_dims(gradient, 1)
@@ -708,8 +824,10 @@ class LassoRegression():
 
             r2_score_current = r2_score(y_hat.flatten(), y_train.flatten())
 
-            if self.show_acc :
-                iterations.set_description("r^2 : " + str(round(r2_score_current * 100, 2)) + "%")
+            if self.show_acc:
+                iterations.set_description(
+                    "r^2 : " + str(round(r2_score_current * 100, 2)) + "%"
+                )
 
             if r2_score_current >= self.accuracy_desired:
                 iterations.close()
@@ -724,7 +842,8 @@ class LassoRegression():
         :return: predictions (1D vector/list)
         """
         x_test = np.array(x_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
         return (np.dot(x_test, self.weights) + self.bias).flatten()
 
     def evaluate(self, x_test, y_test):
@@ -735,8 +854,10 @@ class LassoRegression():
          """
 
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
-        if len(y_test.shape) != 1: raise ValueError("y_test must be 1D.")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(y_test.shape) != 1:
+            raise ValueError("y_test must be 1D.")
 
         y_pred = (np.dot(x_test, self.weights) + self.bias).flatten()
         return r2_score(y_pred, y_test)
@@ -748,18 +869,28 @@ class LassoRegression():
         :return: a matplotlib image of the predictions and the labels ("correct answers") for you to see how well the model did.
         """
         import matplotlib.pyplot as plt
+
         plt.cla()
-        plt.plot([_ for _ in range(len(y_pred))], y_pred, color="blue",
-                 label="predictions/y_pred")  # plot all predictions in blue
-        plt.plot([_ for _ in range(len(y_test))], y_test, color="green",
-                 label="labels/y_test")  # plot all labels in green
+        plt.plot(
+            [_ for _ in range(len(y_pred))],
+            y_pred,
+            color="blue",
+            label="predictions/y_pred",
+        )  # plot all predictions in blue
+        plt.plot(
+            [_ for _ in range(len(y_test))],
+            y_test,
+            color="green",
+            label="labels/y_test",
+        )  # plot all labels in green
         plt.title("Predictions & Labels Plot")
         plt.xlabel("Data number")
         plt.ylabel("Prediction")
         plt.legend()
         plt.show()
 
-class ElasticNet():
+
+class ElasticNet:
     """
     Elastic Net is a combination of Ridge and Lasso Regression. It implements both penalties, and you just decide how
     much weight each should have. The parameter l1_r in the __init__ of this class is the amount of "importance" lasso regression
@@ -792,14 +923,23 @@ class ElasticNet():
         ->> visualize the predictions and labels. This will help you know if your model is predicting too high,
         too low, etc.
     """
-    def __init__(self, l1_r = 0.5,  alpha=0.5, accuracy_desired=0.95, learning_rate=0.01, max_iters=1000, show_acc=True):
+
+    def __init__(
+        self,
+        l1_r=0.5,
+        alpha=0.5,
+        accuracy_desired=0.95,
+        learning_rate=0.01,
+        max_iters=1000,
+        show_acc=True,
+    ):
         """
         :param l1_r: The weight that lasso regression gets in this model. Default 0.5, but setting it higher tips the
         scale. Setting it to 0 or 1 makes it just ridge or lasso regression.
         :param alpha: penalty for the weights, applied to both lasso and ridge components
         Check above documentation for all other parameters.
         """
-        self.l1_r  = l1_r
+        self.l1_r = l1_r
         self.alpha = alpha
         self.accuracy_desired = accuracy_desired
         self.learning_rate = learning_rate
@@ -825,13 +965,15 @@ class ElasticNet():
         accuracy_desired = self.accuracy_desired
 
         x_train, y_train = np.array(x_train), np.array(y_train)
-        if len(x_train.shape) != 2: raise ValueError("x_train must be 2D (even if only one sample.)")
-        if len(y_train.shape) != 1: raise ValueError("y_train must be 1D.")
+        if len(x_train.shape) != 2:
+            raise ValueError("x_train must be 2D (even if only one sample.)")
+        if len(y_train.shape) != 1:
+            raise ValueError("y_train must be 1D.")
 
         self.num_features = len(x_train[0])
 
         def param_init(x_train):
-            '''initialize weights and biases'''
+            """initialize weights and biases"""
             num_features = len(x_train[0])  # number of features
             weights = np.random.randn(num_features, 1)
             bias = np.random.uniform()
@@ -843,24 +985,37 @@ class ElasticNet():
         m = len(y_train)
         for iteration in iterations:
 
-            if weights.sum() == np.nan or weights.sum() == np.inf or np.isnan(weights.sum()) or np.isinf(weights).any() :
+            if (
+                weights.sum() == np.nan
+                or weights.sum() == np.inf
+                or np.isnan(weights.sum())
+                or np.isinf(weights).any()
+            ):
                 warnings.warn("Failed convergence, please change hyperparameters.")
                 break
 
             y_hat = np.dot(x_train, weights) + bias
 
             dLdYh = (y_hat.flatten() - y_train.flatten()) / m
-            lasso_signs = self.alpha * np.apply_along_axis(_lasso_sign_weight, 1, weights)
+            lasso_signs = self.alpha * np.apply_along_axis(
+                _lasso_sign_weight, 1, weights
+            )
             mse_grad = np.dot(x_train.T, dLdYh)
-            gradient = mse_grad + lasso_signs * self.l1_r + (1 - self.l1_r) * self.alpha * weights.reshape(weights.shape[0])
+            gradient = (
+                mse_grad
+                + lasso_signs * self.l1_r
+                + (1 - self.l1_r) * self.alpha * weights.reshape(weights.shape[0])
+            )
             weights -= learning_rate * np.expand_dims(gradient, 1)
-            #weights -= np.expand_dims(learning_rate * (np.dot(x_train.T, dLdYh) + lasso_signs), 0)
+            # weights -= np.expand_dims(learning_rate * (np.dot(x_train.T, dLdYh) + lasso_signs), 0)
             bias -= learning_rate * np.sum(dLdYh)
 
             r2_score_current = r2_score(y_hat.flatten(), y_train.flatten())
 
-            if show_acc :
-                iterations.set_description("r^2 : " + str(round(r2_score_current * 100, 2)) + "%")
+            if show_acc:
+                iterations.set_description(
+                    "r^2 : " + str(round(r2_score_current * 100, 2)) + "%"
+                )
 
             if r2_score_current >= accuracy_desired:
                 iterations.close()
@@ -875,7 +1030,8 @@ class ElasticNet():
         :return: predictions (1D vector/list)
         """
         x_test = np.array(x_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
         return (np.dot(x_test, self.weights) + self.bias).flatten()
 
     def evaluate(self, x_test, y_test):
@@ -885,8 +1041,10 @@ class ElasticNet():
         :return: r^2 score for the predictions of x_test and y_test
         """
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
-        if len(y_test.shape) != 1: raise ValueError("y_test must be 1D.")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(y_test.shape) != 1:
+            raise ValueError("y_test must be 1D.")
 
         y_pred = (np.dot(x_test, self.weights) + self.bias).flatten()
         return r2_score(y_pred, y_test)
@@ -898,11 +1056,20 @@ class ElasticNet():
         :return: a matplotlib image of the predictions and the labels ("correct answers") for you to see how well the model did.
         """
         import matplotlib.pyplot as plt
+
         plt.cla()
-        plt.plot([_ for _ in range(len(y_pred))], y_pred, color="blue",
-                 label="predictions/y_pred")  # plot all predictions in blue
-        plt.plot([_ for _ in range(len(y_test))], y_test, color="green",
-                 label="labels/y_test")  # plot all labels in green
+        plt.plot(
+            [_ for _ in range(len(y_pred))],
+            y_pred,
+            color="blue",
+            label="predictions/y_pred",
+        )  # plot all predictions in blue
+        plt.plot(
+            [_ for _ in range(len(y_test))],
+            y_test,
+            color="green",
+            label="labels/y_test",
+        )  # plot all labels in green
         plt.title("Predictions & Labels Plot")
         plt.xlabel("Data number")
         plt.ylabel("Prediction")
@@ -910,13 +1077,16 @@ class ElasticNet():
         plt.show()
 
 
-def predict_single_exp_reg(x, w, l, a) :
-    #print("l * np.power(w, x) : ", l * np.power(w, x))
+def predict_single_exp_reg(x, w, l, a):
+    # print("l * np.power(w, x) : ", l * np.power(w, x))
     w, l = np.array(w), np.array(l)
-    return np.sum(l * np.power(w.astype('complex'), x.astype('complex')).astype('float')) + a
+    return (
+        np.sum(l * np.power(w.astype("complex"), x.astype("complex")).astype("float"))
+        + a
+    )
 
 
-class ExponentialRegression() :
+class ExponentialRegression:
     """
 
     Say you've got some curved data. How can a line possibly fit that data? Glad you ask - that's why this class exists.
@@ -953,6 +1123,7 @@ class ExponentialRegression() :
         ->> visualize the predictions and labels. This will help you know if your model is predicting too high,
         too low, etc.
     """
+
     def __init__(self):
         self.inner_linear_model = LinearRegression()
 
@@ -964,19 +1135,23 @@ class ExponentialRegression() :
         """
 
         x_train, y_train = np.array(x_train), np.array(y_train)
-        if len(x_train.shape) != 2: raise ValueError("x_train must be 2D (even if only one sample.)")
-        if len(y_train.shape) != 1: raise ValueError("y_train must be 1D.")
+        if len(x_train.shape) != 2:
+            raise ValueError("x_train must be 2D (even if only one sample.)")
+        if len(y_train.shape) != 1:
+            raise ValueError("y_train must be 1D.")
 
         self.inner_linear_model.fit(x_train, np.log(y_train))
 
-    def predict(self, x_test) :
+    def predict(self, x_test):
         """
         :param x_test: prediction data (2D)
         :return: predictions in a 1D vector/list
         """
         x_test = np.array(x_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
         return np.exp(self.inner_linear_model.predict(x_test))
+
     def evaluate(self, x_test, y_test):
         """
         :param x_test: testing data (2D)
@@ -984,12 +1159,15 @@ class ExponentialRegression() :
         :return: r^2 score
         """
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
-        if len(y_test.shape) != 1: raise ValueError("y_test must be 1D.")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(y_test.shape) != 1:
+            raise ValueError("y_test must be 1D.")
 
         y_pred = ExponentialRegression.predict(self, x_test)
         avg_error = np.mean(np.abs(y_pred - y_test))
-        return 1 - avg_error/np.mean(np.abs(y_test))
+        return 1 - avg_error / np.mean(np.abs(y_test))
+
     def visualize_evaluation(self, y_pred, y_test):
         """
         :param y_pred: predictions from the predict() method
@@ -997,25 +1175,38 @@ class ExponentialRegression() :
         :return: a matplotlib image of the predictions and the labels ("correct answers") for you to see how well the model did.
         """
         import matplotlib.pyplot as plt
+
         plt.cla()
-        plt.plot([_ for _ in range(len(y_pred))], y_pred, color="blue",
-                 label="predictions/y_pred")  # plot all predictions in blue
-        plt.plot([_ for _ in range(len(y_test))], y_test, color="green",
-                 label="labels/y_test")  # plot all labels in green
+        plt.plot(
+            [_ for _ in range(len(y_pred))],
+            y_pred,
+            color="blue",
+            label="predictions/y_pred",
+        )  # plot all predictions in blue
+        plt.plot(
+            [_ for _ in range(len(y_test))],
+            y_test,
+            color="green",
+            label="labels/y_test",
+        )  # plot all labels in green
         plt.title("Predictions & Labels Plot")
         plt.xlabel("Data number")
         plt.ylabel("Prediction")
         plt.legend()
         plt.show()
 
-def _poly_transform(data) :
+
+def _poly_transform(data):
     new_data = []
-    for observation in data :
-        new_d = np.power(observation, np.linspace(1, len(observation), len(observation)))
+    for observation in data:
+        new_d = np.power(
+            observation, np.linspace(1, len(observation), len(observation))
+        )
         new_data.append(new_d)
     return new_data
 
-class PolynomialRegression():
+
+class PolynomialRegression:
     """
     Polynomial Regression is like an extended version of Linear Regression (sort of like Exponential
     Regression.) All it does is turn the equation from y = m1x1 + m2x2 ... mNxN + bias
@@ -1051,7 +1242,6 @@ class PolynomialRegression():
         too low, etc.
     """
 
-
     def fit(self, x_train, y_train):
         """
         :param x_train: training data (2D)
@@ -1060,13 +1250,19 @@ class PolynomialRegression():
         """
 
         x_train, y_train = np.array(x_train), np.array(y_train)
-        if len(x_train.shape) != 2: raise ValueError("x_train must be 2D (even if only one sample.)")
-        if len(y_train.shape) != 1: raise ValueError("y_train must be 1D.")
+        if len(x_train.shape) != 2:
+            raise ValueError("x_train must be 2D (even if only one sample.)")
+        if len(y_train.shape) != 1:
+            raise ValueError("y_train must be 1D.")
 
         x_train = _poly_transform(x_train)  # transform data
 
-        self.inner_linear_model = LinearRegression()  # build the linear regression model
-        self.inner_linear_model.fit(x_train, y_train)  # fit it (using all given parameters)
+        self.inner_linear_model = (
+            LinearRegression()
+        )  # build the linear regression model
+        self.inner_linear_model.fit(
+            x_train, y_train
+        )  # fit it (using all given parameters)
 
     def predict(self, x_test):
         """
@@ -1075,7 +1271,8 @@ class PolynomialRegression():
         """
 
         x_test = np.array(x_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
         x_test = _poly_transform(x_test)
         return self.inner_linear_model.predict(x_test)  # just use the prediction method
 
@@ -1087,8 +1284,10 @@ class PolynomialRegression():
         """
 
         x_test, y_test = np.array(x_test), np.array(y_test)
-        if len(x_test.shape) != 2: raise ValueError("x_test must be 2D (even if only one sample.)")
-        if len(y_test.shape) != 1: raise ValueError("y_test must be 1D.")
+        if len(x_test.shape) != 2:
+            raise ValueError("x_test must be 2D (even if only one sample.)")
+        if len(y_test.shape) != 1:
+            raise ValueError("y_test must be 1D.")
 
         x_test = _poly_transform(x_test)
         return self.inner_linear_model.evaluate(x_test, y_test)
@@ -1100,16 +1299,24 @@ class PolynomialRegression():
         :return: a matplotlib image of the predictions and the labels ("correct answers") for you to see how well the model did.
         """
         import matplotlib.pyplot as plt
+
         plt.cla()
         y_pred, y_test = y_pred.flatten(), y_test.flatten()
-        plt.plot([_ for _ in range(len(y_pred))], y_pred, color="blue", label="predictions/y_pred")
-        plt.plot([_ for _ in range(len(y_test))], y_test, color="green", label="labels/y_test")
+        plt.plot(
+            [_ for _ in range(len(y_pred))],
+            y_pred,
+            color="blue",
+            label="predictions/y_pred",
+        )
+        plt.plot(
+            [_ for _ in range(len(y_test))],
+            y_test,
+            color="green",
+            label="labels/y_test",
+        )
         plt.title("Predictions & Labels Plot")
         plt.xlabel("Data number")
         plt.ylabel("Prediction")
         plt.legend()
         plt.show()
-
-
-
 
