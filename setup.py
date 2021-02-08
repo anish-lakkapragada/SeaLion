@@ -9,6 +9,9 @@ from setuptools import setup
 with open("README.md", "r") as fh:
     read_me_description = fh.read()
 
+with open("requirements.txt") as reqs:
+    requirements = reqs.read().split("\n")
+
 non_python_files = [
     "cython_decision_tree_functions.pyx",
     "cython_tsne.pyx",
@@ -34,15 +37,7 @@ setup(
     url="https://github.com/anish-lakkapragada/SeaLion",
     download_url="https://github.com/anish-lakkapragada/SeaLion/archive/v4.0.1.tar.gz",
     keywords=["Machine Learning", "Data Science", "Python"],
-    install_requires=[
-        "numpy",
-        "joblib",
-        "pandas",
-        "scipy",
-        "tqdm",
-        "multiprocess",
-        "seaborn",
-    ],
+    install_requires=requirements,
     long_description=read_me_description,
     long_description_content_type="text/markdown",
     python_requires=">=3",

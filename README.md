@@ -1,7 +1,8 @@
-<img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/logo.png?raw=true" width = 300 height = 300>
+<p align="center">
+    <img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/logo.png?raw=true" width = 300 height = 300 >
+</p>
 
-SeaLion
-=======
+# SeaLion
 
 ![python](https://img.shields.io/pypi/pyversions/sealion?color=blueviolet&style=plastic)
 ![License](https://img.shields.io/apm/l/te?color=informational)
@@ -17,16 +18,15 @@ ways of application. We do this through concise algorithms that do the job
 in the least jargon possible and examples to guide you through every step 
 of the way. 
 
-Quick Demo
--------------
+## Quick Demo
 
+<p align="center">
+    <img src="https://raw.githubusercontent.com/anish-lakkapragada/SeaLion/main/sealion_demo.gif" width = 580 height = 326>
+    <br />
+    <i>SeaLion in Action</i>
+</p>
 
-<img src="https://raw.githubusercontent.com/anish-lakkapragada/SeaLion/main/sealion_demo.gif" width = 580 height = 326>
-
-*SeaLion in Action*
-
-General Usage
--------------
+## General Usage
 
 For most classifiers you can just do (we'll use Logistic Regression as an
 example here) :
@@ -66,15 +66,13 @@ Neural networks are a bit more complicated, so you may want to check an example
 [here.](https://github.com/anish-lakkapragada/SeaLion/blob/main/examples/deep_learning_example.ipynb)
 
 
-Testimonials
-------------
+## Testimonials
 
 "Super Expansive Python ML Library"
    -   [@Peter Washington](https://twitter.com/peter\_washing/status/1356766327541616644), Stanford PHD candidate in Bio-Engineering
 
 
-Installation
-------------
+## Installation
 
 The package is available on PyPI. Install like such :
 
@@ -86,8 +84,7 @@ SeaLion can only support Python 3, so please make sure you are on the
 newest version.
 
 
-General Information
--------------------
+## General Information
 
 SeaLion was built by Anish Lakkapragada, a freshman in high school, starting in Thanksgiving of 2020
 and has continued onto early 2021. The library is meant for beginners to
@@ -98,15 +95,14 @@ security with the MIT license so feel free to read it or contribute. He
 hopes to spread machine learning to other high schoolers through this
 library.
 
-Documentation
--------------
+
+## Documentation
 
 All documentation is currently being put on a website. However useful it
 may be, I highly recommend you check the examples posted on GitHub here
 to see the usage of the APIs and how it works.
 
-Updates for v3.0.0!
--------------------
+### Updates for v3.0.0!
 
 SeaLion v3.0 and up has had a lot of major milestones.
 
@@ -133,8 +129,7 @@ import sealion all of those .pyx files will get compiled into .so files
 import will take about 40 seconds, but after that it will be as quick as
 any other import.
 
-Machine Learning Algorithms
----------------------------
+## Machine Learning Algorithms
 
 The machine learning algorithms of SeaLion are listed below. Please note
 that the stucture of the listing isn't meant to resemble that of
@@ -173,14 +168,14 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
 
 2.  **Regression**
 
--   Linear Regression (Normal Equation, closed-form)
--   Ridge Regression (L2 regularization, closed-form solution)
--   Lasso Regression (L1 regularization)
--   Elastic-Net Regression
--   Logistic Regression
--   Softmax Regression
--   Exponential Regression
--   Polynomial Regression
+    -   Linear Regression (Normal Equation, closed-form)
+    -   Ridge Regression (L2 regularization, closed-form solution)
+    -   Lasso Regression (L1 regularization)
+    -   Elastic-Net Regression
+    -   Logistic Regression
+    -   Softmax Regression
+    -   Exponential Regression
+    -   Polynomial Regression
 
 3.  **Dimensionality Reduction**
     -   Principal Component Analysis (PCA)
@@ -211,8 +206,7 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
     -   revert one hot encoding to 1D Array (revert\_one\_hot())
     -   revert softmax predictions to 1D Array (revert\_softmax())
 
-Algorithms in progress
-----------------------
+## Algorithms in progress
 
 Some of the algorithms we are working on right now.
 
@@ -221,8 +215,12 @@ Some of the algorithms we are working on right now.
 3.  **Gaussian Mixture Models**
 4.  **Barnes Hut t-SNE** (please, please contribute for this one)
 
-Contributing
-------------
+## Contributing
+
+First, install the required libraries:
+```bash
+pip install -r requirements.txt
+```
 
 If you feel you can do something better than how it is right now in
 SeaLion, please do! Believe me, you will find great joy in simplifying
@@ -239,8 +237,7 @@ minimum.
 
 Other than that, thanks for contributing!
 
-Acknowledgements
-----------------
+## Acknowledgements
 
 Plenty of articles and people helped me a long way. Some of the tougher
 questions I dealt with were Automatic Differentiation in neural
@@ -258,8 +255,7 @@ helping make the normal equation and cauchy distribution in tSNE make
 sense. Also thanks to [@Kento Nishi](http://github.com/KentoNishi) for
 helping me understand open-source.
 
-Feedback, comments, or questions
---------------------------------
+## Feedback, comments, or questions
 
 If you have any feedback or something you would like to tell me, please
 do not hesitate to share! Feel free to comment here on github or reach

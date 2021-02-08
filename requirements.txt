@@ -1,0 +1,7 @@
+numpy
+joblib
+pandas
+scipy
+tqdm
+multiprocess
+seaborn
