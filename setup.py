@@ -10,12 +10,15 @@ with open('README.md', 'r') as fh:
 non_python_files = ['cython_decision_tree_functions.pyx', 'cython_tsne.pyx', 'cython_unsupervised_clustering.pyx',
                     'cython_naive_bayes.pyx', 'cython_ensemble_learning.pyx', 'cython_knn.pyx']
 
+version_name = sys.argv[1].replace("refs/tags/", "")
+del sys.argv[1]
+
 setup(
     name='sealion',
     packages=setuptools.find_packages(),
     package_data={'': non_python_files},
     include_package_data=True,
-    version='4.0.1',
+    version=version_name,
     license='MIT',
     description='SeaLion is a comprehensive machine learning and data science library for beginners and ml-engineers alike.',
     author='Anish Lakkapragada',
