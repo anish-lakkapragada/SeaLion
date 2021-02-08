@@ -65,6 +65,8 @@ predictions = kmeans.fit_predict(X)
 Neural networks are a bit more complicated, so you may want to check an example
 [here.](https://github.com/anish-lakkapragada/SeaLion/blob/main/examples/deep_learning_example.ipynb)
 
+The syntax of the APIs was designed to be easy to use and familiar to most other ML libraries. This is to make sure both beginners and experts in the field
+can comfortably use SeaLion. Of course, none of the source code uses other ML frameworks. 
 
 ## Testimonials
 
