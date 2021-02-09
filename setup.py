@@ -35,7 +35,6 @@ setup(
     author="Anish Lakkapragada",
     author_email="anish.lakkapragada@gmail.com",
     url="https://github.com/anish-lakkapragada/SeaLion",
-    download_url="https://github.com/anish-lakkapragada/SeaLion/archive/v4.0.1.tar.gz",
     keywords=["Machine Learning", "Data Science", "Python"],
     install_requires=requirements,
     long_description=read_me_description,
