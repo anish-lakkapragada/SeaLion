@@ -1,6 +1,15 @@
 import numpy as np
 cimport numpy as np
 
+'''
+before r^2 score
+def r2_score(y_pred, y_test):
+     y_pred, y_test = np.array(y_pred), np.array(y_test)
+     num = np.sum(np.power(y_test - y_pred, 2))
+     denum = np.sum(np.power(y_test - np.mean(y_test), 2))
+     return 1 - num / denum
+'''
+
 cdef double distance(x1, point):
     cdef double distance_double
     x1, point = np.array(x1), np.array(point) #convert to numpy arrays (even if tuple)
@@ -8,11 +17,55 @@ cdef double distance(x1, point):
     x1, point = x1.tolist(), point.tolist()
     return distance_double
 
-def r2_score(y_pred, y_test):
-    y_pred, y_test = np.array(y_pred), np.array(y_test)
-    num = np.sum(np.power(y_test - y_pred, 2))
-    denum = np.sum(np.power(y_test - np.mean(y_test), 2))
-    return 1 - num / denum
+
+cdef arr_sub_arr(double[:] dst, double[:] x, double[:] y):
+    for i in range(x.shape[0]):
+        dst[i] = x[i] - y[i]
+
+cdef arr_sub_float(double[:] dst, double[:] x, double y):
+    for i in range(x.shape[0]):
+        dst[i] = x[i] - y
+
+cdef arr_square(double[:] dst, double[:] src):
+    for i in range(src.shape[0]):
+        dst[i] = src[i] * src[i]
+
+cdef arr_mean(double[:] src):
+    cdef Py_ssize_t n_elem = src.shape[0]
+
+    return arr_sum(src) / n_elem
+
+cdef arr_sum(double[:] src):
+    cdef double _sum = 0.0
+
+    for i in range(src.shape[0]):
+        _sum += src[i]
+
+    return _sum
+
+cdef __r2_score_cython(double[:] y_pred, double[:] y_test):
+    arr_sub_arr(y_pred, y_pred, y_test) # y_pred = y_pred - y_test
+    arr_square(y_pred, y_pred) # square everything
+
+    cdef double num = arr_sum(y_pred) # sum it all up
+    cdef double y_test_mean = arr_mean(y_test) # take the mean of y_test (double)
+
+    arr_sub_float(y_pred, y_test, y_test_mean) # store y_test - y_test mean in y_pred variable
+    arr_square(y_pred, y_pred) # square (y_test - y_test_mean)
+    cdef double denum = arr_sum(y_pred) # take the sum of it
+
+    return 1 - num / denum # get the denum
+
+
+cpdef r2_score(np.ndarray y_pred, np.ndarray y_test):
+    '''official function, to enhance speed benefits'''
+    cdef Py_ssize_t sh1 = y_pred.shape[0]
+    cdef Py_ssize_t sh2 = y_test.shape[0]
+
+    return __r2_score_cython(
+        np.array(y_pred),  # make a copy!
+        y_test
+    )
 
 
 cdef class CythonKNN():
