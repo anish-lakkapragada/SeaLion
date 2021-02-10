@@ -74,6 +74,7 @@ can comfortably use SeaLion. Of course, none of the source code uses other ML fr
    -   [@Peter Washington](https://twitter.com/peter\_washing/status/1356766327541616644), Stanford PHD candidate in Bio-Engineering
 
 r/Python : [r/Python Post](https://www.reddit.com/r/Python/comments/lf59bw/machine_learning_library_by_14year_old_sealion/)
+
 r/learnmachinelearning : [r/learningmachinelearning Post](https://www.reddit.com/r/learnmachinelearning/comments/lfv72l/a_set_of_jupyter_notebooks_to_help_you_understand/)
 
 ## Installation
