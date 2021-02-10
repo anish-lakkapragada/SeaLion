@@ -68,11 +68,13 @@ Neural networks are a bit more complicated, so you may want to check an example
 The syntax of the APIs was designed to be easy to use and familiar to most other ML libraries. This is to make sure both beginners and experts in the field
 can comfortably use SeaLion. Of course, none of the source code uses other ML frameworks. 
 
-## Testimonials
+## Testimonials and Reddit Posts
 
 "Super Expansive Python ML Library"
    -   [@Peter Washington](https://twitter.com/peter\_washing/status/1356766327541616644), Stanford PHD candidate in Bio-Engineering
 
+r/Python : [r/Python Post](https://www.reddit.com/r/Python/comments/lf59bw/machine_learning_library_by_14year_old_sealion/)
+r/learnmachinelearning : [r/learningmachinelearning Post](https://www.reddit.com/r/learnmachinelearning/comments/lfv72l/a_set_of_jupyter_notebooks_to_help_you_understand/)
 
 ## Installation
 
