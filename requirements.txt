@@ -5,3 +5,5 @@ scipy
 tqdm
 multiprocess
 seaborn
+Cython
+setuptools
