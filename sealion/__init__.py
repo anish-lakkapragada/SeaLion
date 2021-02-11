@@ -62,13 +62,11 @@ while True:
 
         break
     except Exception:
-        if time.time() - start == 500:
+        if time.time() - start > 500:
             print(
                 "Cython compilation files unable to load. Please raise this error on github, "
                 "and especially include your architecture, OS, and Python version. Thank you!"
             )
+        break
 
 os.chdir(org_dir)
-
-# todo add the __init__ to all of the classes
-
