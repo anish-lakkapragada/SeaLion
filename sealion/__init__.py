@@ -43,7 +43,7 @@ if os.path.exists("cython_ran.pickle"):
 
 else:
     var = subprocess.Popen(
-        "python3 setup.py build_ext --inplace",
+        "python3 cython_compile.py build_ext --inplace",
         shell=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
