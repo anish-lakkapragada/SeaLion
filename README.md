@@ -107,6 +107,14 @@ All documentation is currently being put on a website. However useful it
 may be, I highly recommend you check the examples posted on GitHub here
 to see the usage of the APIs and how it works.
 
+### Updates for v4.1 and up!
+First things first - thank you for all of the support. The two reddit posts did much better than I expected (1.6k upvotes, about 200 comments) and I got a lot
+of feedback and advice. Thank you to anyone who participated in r/Python or r/learnmachinelearning.
+
+SeaLion has also taken off with the posts. We currently have had 3 issues (1 closed) and have reached 195 stars and 20 forks. I wasn't expecting this and I am grateful for everyone who has shown their appreciation for this library. 
+
+In versions 4.1+ we are hoping to polish the library more. Currently 4.1 comes with Bernoulli Naive Bayes and we also have added precision, recall, and the f1 metric in the utils module. We are hoping to include Gaussian Mixture Models and Batch Normalization in the future. Code examples for these new algorithms will be created within a day or two after release. Thank you! 
+
 ### Updates for v3.0.0!
 
 SeaLion v3.0 and up has had a lot of major milestones.
@@ -217,7 +225,6 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
 Some of the algorithms we are working on right now.
 
 1.  **Batch Normalization**
-2.  **Binomial Naive Bayes**
 3.  **Gaussian Mixture Models**
 4.  **Barnes Hut t-SNE** (please, please contribute for this one)
 
