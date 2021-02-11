@@ -147,7 +147,7 @@ class NeuralNetwork:
         from .layers import Dense, Flatten, Softmax, Dropout
         from .loss import CrossEntropy, softmax
         from .optimizers import Adam, SGD
-        from .utils_nn import revert_one_hot_nn, revert_softmax_nn
+        from ._utils_nn import revert_one_hot_nn, revert_softmax_nn
 
         self.Dense = Dense
         self.Flatten = Flatten
@@ -629,7 +629,7 @@ class NeuralNetwork_MapReduce:
     """
 
     def __init__(self, layers=None):
-        from .utils_nn import revert_one_hot_nn, revert_softmax_nn
+        from ._utils_nn import revert_one_hot_nn, revert_softmax_nn
 
         self.revert_softmax = revert_softmax_nn
         self.revert_one_hot = revert_one_hot_nn
@@ -839,7 +839,7 @@ class NeuralNetwork_MapReduce:
                 from .layers import Dense, Flatten, Softmax, Dropout
                 from .loss import CrossEntropy, softmax
                 from .optimizers import Adam, SGD
-                from .utils_nn import revert_one_hot_nn, revert_softmax_nn
+                from ._utils_nn import revert_one_hot_nn, revert_softmax_nn
 
                 self.Dense = Dense
                 self.Flatten = Flatten
@@ -1354,7 +1354,7 @@ class NeuralNetwork_MapReduce:
             """
 
             def __init__(self, layers=None):
-                from .utils_nn import revert_one_hot_nn, revert_softmax_nn
+                from ._utils_nn import revert_one_hot_nn, revert_softmax_nn
 
                 self.revert_softmax = revert_softmax_nn
                 self.revert_one_hot = revert_one_hot_nn

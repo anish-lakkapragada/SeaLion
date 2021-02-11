@@ -6,4 +6,4 @@ from . import layers
 from . import loss
 from . import models
 from . import optimizers
-from . import utils_nn
+from . import _utils_nn
