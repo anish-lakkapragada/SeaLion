@@ -2,7 +2,7 @@
 @author : Anish Lakkapragada
 @date : 1/9/2021
 
-Contains PCA and tSNE, two great dimensionality reduction algorithms. PCA can deal with around 1000 - 10000 data points
+Contains PCA and tSNE, two amazing dimensionality reduction algorithms. PCA can deal with around 1000 - 10000 data points
 (obviously depending on the number of dimensions.) tSNE is better for visualizations but struggles past five hundred points,
 so PCA is usually better for big data and you can tSNE is for the toy datasets.
 """
