@@ -193,6 +193,7 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
 5.  **Naive Bayes**
     -   Multinomial Naive Bayes
     -   Gaussian Naive Bayes
+    -   Bernoulli Naive Bayes
 
 6.  **Trees**
     -   Decision Tree (with max\_branches, min\_samples regularization +
