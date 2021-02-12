@@ -34,7 +34,7 @@ org_dir = os.getcwd()
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
-VERSION_NUMBER = "4.1.3"
+VERSION_NUMBER = "4.1.4"
 
 def read_pickle_file(file) :
     with open(file, 'rb') as f :
@@ -82,6 +82,7 @@ while True:
                 "Cython compilation files unable to load. Please raise this error on github, "
                 "and especially include your architecture, OS, and Python version. Thank you!"
             )
-        break
+
+            break
 
 os.chdir(org_dir)

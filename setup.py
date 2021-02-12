@@ -30,7 +30,7 @@ setup(
     package_data={"": non_python_files},
     include_package_data=True,
     version=version_name,
-    license="MIT",
+    license="Apache",
     description="SeaLion is a comprehensive machine learning and data science library for beginners and ml-engineers alike.",
     author="Anish Lakkapragada",
     author_email="anish.lakkapragada@gmail.com",

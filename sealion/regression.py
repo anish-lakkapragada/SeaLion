@@ -92,9 +92,7 @@ class LinearRegression:
         # Intercept_vector = y_train - weights * mean(x_train)
 
         self.weights = np.linalg.inv(x_train.T.dot(x_train)).dot(x_train.T.dot(y_train))
-        self.bias = np.mean(y_train, axis=0) - np.dot(
-            np.mean(x_train, axis=0), self.weights
-        )
+        self.bias = np.mean(y_train, axis=0) - np.dot(np.mean(x_train, axis=0), self.weights)
 
     def predict(self, x_test):
         """
