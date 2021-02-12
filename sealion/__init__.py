@@ -34,7 +34,7 @@ org_dir = os.getcwd()
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
-VERSION_NUMBER = "4.1.5"
+VERSION_NUMBER = "4.1.6"
 
 def read_pickle_file(file) :
     with open(file, 'rb') as f :
@@ -53,6 +53,27 @@ if os.path.exists("cython_ran.pickle") :
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
         )
+
+        while True:
+            # files are currently being generated
+            try:
+                from . import cython_decision_tree_functions
+                from . import cython_knn
+                from . import cython_naive_bayes
+                from . import cython_unsupervised_clustering
+                from . import cython_tsne
+                from . import cython_ensemble_learning
+
+                break
+            except Exception:
+                if time.time() - start > 500:
+                    print(
+                        "Cython compilation files unable to load. Please raise this error on github, "
+                        "and especially include your architecture, OS, and Python version. Thank you!"
+                    )
+
+                    break
+
         with open("cython_ran.pickle", "wb") as f:
             pickle.dump(VERSION_NUMBER, f) # save the version number
 else:
@@ -62,27 +83,29 @@ else:
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
     )
+
+    while True:
+        # files are currently being generated
+        try:
+            from . import cython_decision_tree_functions
+            from . import cython_knn
+            from . import cython_naive_bayes
+            from . import cython_unsupervised_clustering
+            from . import cython_tsne
+            from . import cython_ensemble_learning
+
+            break
+        except Exception:
+            if time.time() - start > 500:
+                print(
+                    "Cython compilation files unable to load. Please raise this error on github, "
+                    "and especially include your architecture, OS, and Python version. Thank you!"
+                )
+
+                break
+
     with open("cython_ran.pickle", "wb") as f:
         pickle.dump(VERSION_NUMBER, f)
 
-while True:
-    # files are currently being generated
-    try:
-        from . import cython_decision_tree_functions
-        from . import cython_knn
-        from . import cython_naive_bayes
-        from . import cython_unsupervised_clustering
-        from . import cython_tsne
-        from . import cython_ensemble_learning
-
-        break
-    except Exception:
-        if time.time() - start > 500:
-            print(
-                "Cython compilation files unable to load. Please raise this error on github, "
-                "and especially include your architecture, OS, and Python version. Thank you!"
-            )
-
-            break
 
 os.chdir(org_dir)
