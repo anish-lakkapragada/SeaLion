@@ -34,7 +34,7 @@ org_dir = os.getcwd()
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
-VERSION_NUMBER = "4.1.6"
+VERSION_NUMBER = "4.1.7"
 
 def read_pickle_file(file) :
     with open(file, 'rb') as f :
@@ -48,7 +48,7 @@ if os.path.exists("cython_ran.pickle") :
     else :
         # this means that it was a different version
         var = subprocess.Popen(
-            "python3 cython_compile.py build_ext --inplace",
+            "python3 setup.py build_ext --inplace",
             shell=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -78,7 +78,7 @@ if os.path.exists("cython_ran.pickle") :
             pickle.dump(VERSION_NUMBER, f) # save the version number
 else:
     var = subprocess.Popen(
-        "python3 cython_compile.py build_ext --inplace",
+        "python3 setup.py build_ext --inplace",
         shell=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
