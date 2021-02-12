@@ -34,13 +34,27 @@ org_dir = os.getcwd()
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
-if os.path.exists("cython_ran.pickle"):
-    try:
-        shutil.rmtree(dir_path + "/build")  # try to do this
-    except Exception:
-        pass
-    pass
+VERSION_NUMBER = "4.1.2"
 
+def read_pickle_file(file) :
+    with open(file, 'rb') as f :
+        stuff = pickle.load(f)
+    return stuff
+
+if os.path.exists("cython_ran.pickle") :
+    if read_pickle_file("cython_ran.pickle") == VERSION_NUMBER :
+        # then we are up to date here
+        pass
+    else :
+        # this means that it was a different version
+        var = subprocess.Popen(
+            "python3 cython_compile.py build_ext --inplace",
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
+        with open("cython_ran.pickle", "wb") as f:
+            pickle.dump(VERSION_NUMBER, f) # save the version number
 else:
     var = subprocess.Popen(
         "python3 cython_compile.py build_ext --inplace",
@@ -49,9 +63,10 @@ else:
         stderr=subprocess.STDOUT,
     )
     with open("cython_ran.pickle", "wb") as f:
-        pickle.dump("Cython Compiled", f)
+        pickle.dump(VERSION_NUMBER, f)
 
 while True:
+    # files are currently being generated
     try:
         from . import cython_decision_tree_functions
         from . import cython_knn
