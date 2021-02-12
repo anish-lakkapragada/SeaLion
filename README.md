@@ -5,7 +5,7 @@
 # SeaLion
 
 ![python](https://img.shields.io/pypi/pyversions/sealion?color=blueviolet&style=plastic)
-![License](https://img.shields.io/apm/l/te?color=informational)
+![License](https://img.shields.io/pypi/l/sealion?color=informational&style=plastic)
 ![total lines](https://img.shields.io/tokei/lines/github/anish-lakkapragada/SeaLion?color=brightgreen)
 ![issues](https://img.shields.io/github/issues/anish-lakkapragada/SeaLion?color=yellow&style=plastic)
 ![pypi](https://img.shields.io/pypi/v/sealion?color=red&style=plastic)
@@ -95,8 +95,7 @@ SeaLion was built by Anish Lakkapragada, a freshman in high school, starting in 
 and has continued onto early 2021. The library is meant for beginners to
 use when solving the standard libraries like iris, breast cancer, swiss
 roll, the moons dataset, MNIST, etc. The source code is not as much as
-most other ML libraries (only 4000 lines) and has much more relaxed
-security with the MIT license so feel free to read it or contribute. He
+most other ML libraries (only 4000 lines) so it's pretty easy to contribute to. He
 hopes to spread machine learning to other high schoolers through this
 library.
 

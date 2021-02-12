@@ -24,6 +24,6 @@ def setup_indiv(file_name):
 
 from joblib import parallel_backend, delayed, Parallel
 
-with parallel_backend("threading", n_jobs=-1):
-    Parallel()(delayed(setup_indiv)(file_name) for file_name in files)
+for file_name in files :
+    setup_indiv(file_name)
 

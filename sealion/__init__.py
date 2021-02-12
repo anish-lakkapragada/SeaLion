@@ -22,11 +22,13 @@ from . import unsupervised_clustering
 from . import utils
 from . import neural_networks
 
+
 import time
 import os
 import subprocess
 import pickle
 import shutil
+import sys
 
 start = time.time()
 
@@ -34,7 +36,9 @@ org_dir = os.getcwd()
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
-VERSION_NUMBER = "4.1.7"
+VERSION_NUMBER = "4.1.8"
+PYTHON_RUNNING_VERSION = str(sys.version_info.major) + "." + str(sys.version_info.minor)
+
 
 def read_pickle_file(file) :
     with open(file, 'rb') as f :
@@ -48,7 +52,7 @@ if os.path.exists("cython_ran.pickle") :
     else :
         # this means that it was a different version
         var = subprocess.Popen(
-            "python3 setup.py build_ext --inplace",
+            f"python{PYTHON_RUNNING_VERSION} setup.py build_ext --inplace",
             shell=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -78,7 +82,7 @@ if os.path.exists("cython_ran.pickle") :
             pickle.dump(VERSION_NUMBER, f) # save the version number
 else:
     var = subprocess.Popen(
-        "python3 setup.py build_ext --inplace",
+        f"python{PYTHON_RUNNING_VERSION} setup.py build_ext --inplace",
         shell=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
