@@ -13,7 +13,7 @@
 ![Deploy to PyPI](https://github.com/anish-lakkapragada/SeaLion/workflows/Deploy%20to%20PyPI/badge.svg)
 
 SeaLion is designed to teach today's aspiring ml-engineers the popular
-machine learning concepts of today in a way that gives both intution and
+machine learning concepts of today in a way that gives both intuition and
 ways of application. We do this through concise algorithms that do the job 
 in the least jargon possible and examples to guide you through every step 
 of the way. 
