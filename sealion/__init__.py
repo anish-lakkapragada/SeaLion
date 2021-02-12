@@ -34,7 +34,7 @@ org_dir = os.getcwd()
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
-VERSION_NUMBER = "4.1.4"
+VERSION_NUMBER = "4.1.5"
 
 def read_pickle_file(file) :
     with open(file, 'rb') as f :
