@@ -112,6 +112,8 @@ of feedback and advice. Thank you to anyone who participated in r/Python or r/le
 
 SeaLion has also taken off with the posts. We currently have had 3 issues (1 closed) and have reached 195 stars and 20 forks. I wasn't expecting this and I am grateful for everyone who has shown their appreciation for this library. 
 
+Also some issues have popped up. Most of them can be easily solved by just deleting sealion manually (going into the folder where the source is and just deleting it - not pip uninstall) and then reinstalling the usual way, but feel free to put an issue up anytime. 
+
 In versions 4.1+ we are hoping to polish the library more. Currently 4.1 comes with Bernoulli Naive Bayes and we also have added precision, recall, and the f1 metric in the utils module. We are hoping to include Gaussian Mixture Models and Batch Normalization in the future. Code examples for these new algorithms will be created within a day or two after release. Thank you! 
 
 ### Updates for v3.0.0!
