@@ -15,7 +15,7 @@ cpdef np.ndarray[np.float64_t, ndim=1]  give_pi(np.ndarray[np.float64_t, ndim=1]
 
 cpdef np.float64_t perplexity(np.ndarray[np.float64_t, ndim=1]  p_i):
     '''perplexity for binary search'''
-    return np.float64(2 ** np.sum(p_i * np.log2(p_i + 1e-10)))
+    return np.float64(2 ** -np.sum(p_i * np.log2(p_i + 1e-10)))
 
 cpdef tuple binary_search_find_sigma(float desired_perplexity, np.ndarray[np.float64_t, ndim=1]  x_i, np.ndarray[np.float64_t, ndim=2]  X, float low = 1e-10, float high = 500, float tolerance = 0.05, int max_iters = 1000) :
   '''function is a function, target_num is the desired number'''
