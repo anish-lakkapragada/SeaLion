@@ -81,7 +81,7 @@ cdef float multivariate_Gaussian(np.ndarray x, np.ndarray mu, np.ndarray cov_mat
 
 cdef class MultivariateGaussianMixture :
     cdef int k, retries, max_iters
-    cdef bint kmeans_init
+    cdef bint kmeans_init, instant_retry
     cdef kmeans
     cdef np.ndarray mixture_weights
     cdef np.ndarray mu, X
@@ -98,6 +98,7 @@ cdef class MultivariateGaussianMixture :
         self.kmeans_init = kmeans_init
         from sealion.unsupervised_clustering import KMeans
         self.kmeans = KMeans
+        self.instant_retry = False
 
     cpdef void _expectation(self, X):
         """here we do the expectation step where we recalculate all responsibilties"""
@@ -108,8 +109,11 @@ cdef class MultivariateGaussianMixture :
         cdef np.ndarray mu_k
         cdef np.ndarray covariance_matrices
 
-        for k_index, pi_k, mu_k, sigma_k in zip(range(self.k), self.mixture_weights, self.mu, self.covariance_matrices) :
+        try :
+            for k_index, pi_k, mu_k, sigma_k in zip(range(self.k), self.mixture_weights, self.mu, self.covariance_matrices) :
             new_responsibilties[:, k_index][:] = pi_k * stats.multivariate_normal.pdf(X, mean = mu_k, cov = sigma_k)
+        except Exception :
+            self.instant_retry = True
 
         # before normalization, find the log likelihood
         self.log_likelihood = np.sum(np.log(np.sum(new_responsibilties, axis = 1)))
@@ -198,6 +202,10 @@ cdef class MultivariateGaussianMixture :
 
                 MultivariateGaussianMixture._expectation(self, X)
 
+                if self.instant_retry :
+                    self.instant_retry = False
+                    break
+
                 # now we update (maximization)
 
                 MultivariateGaussianMixture._maximization(self, X)
@@ -250,20 +258,23 @@ cdef class UnivariateGaussianMixture :
     cdef float log_likelihood, max_log_likelihood
     cdef np.ndarray mixture_weights, sigmas, mu, X
     cdef np.ndarray responsibilties
+    cdef bint instant_retry
 
     def __init__(self, n_clusters = 5, retries = 3, max_iters = 200):
         self.k = n_clusters
         self.retries = retries
         self.max_iters = max_iters
-
+        self.instant_retry = False
     cpdef void _expectation(self, X):
         """here we do the expectation step where we recalculate all responsibilties"""
         cdef np.ndarray new_responsibilties = np.zeros((len(X), self.k))
         cdef int k_index
         cdef float mu_k, sigma_k
-        for k_index, pi_k, mu_k, sigma_k in zip(range(self.k), self.mixture_weights, self.mu, self.sigmas) :
-            new_responsibilties[:, k_index] = pi_k * stats.multivariate_normal.pdf(X, mean = mu_k, cov = sigma_k)
-
+        try :
+            for k_index, pi_k, mu_k, sigma_k in zip(range(self.k), self.mixture_weights, self.mu, self.sigmas) :
+                new_responsibilties[:, k_index] = pi_k * stats.multivariate_normal.pdf(X, mean = mu_k, cov = sigma_k)
+        except Exception :
+            self.instant_retry = True
         # before normalization, find the log likelihood
         self.log_likelihood = np.sum(np.log(np.sum(new_responsibilties, axis = 1)))
 
@@ -340,6 +351,10 @@ cdef class UnivariateGaussianMixture :
                 # expectation step, evaluate all responsibilties
 
                 UnivariateGaussianMixture._expectation(self, X)
+
+                if self.instant_retry :
+                    self.instant_retry = False
+                    break
 
                 # now we update (maximization)
 
