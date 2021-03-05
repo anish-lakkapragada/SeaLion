@@ -111,7 +111,7 @@ cdef class MultivariateGaussianMixture :
 
         try :
             for k_index, pi_k, mu_k, sigma_k in zip(range(self.k), self.mixture_weights, self.mu, self.covariance_matrices) :
-            new_responsibilties[:, k_index][:] = pi_k * stats.multivariate_normal.pdf(X, mean = mu_k, cov = sigma_k)
+                new_responsibilties[:, k_index][:] = pi_k * stats.multivariate_normal.pdf(X, mean = mu_k, cov = sigma_k)
         except Exception :
             self.instant_retry = True
 
