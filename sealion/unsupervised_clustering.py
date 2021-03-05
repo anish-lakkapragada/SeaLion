@@ -219,7 +219,7 @@ class KMeans:
         plt.title("Elbow curve in KMeans")
 
     def _get_centroids(self):
-        return self.cython_kmeans.get_centroids()
+        return np.array(self.cython_kmeans.get_centroids())
 
     def visualize_clustering(self, color_dict):
         """
