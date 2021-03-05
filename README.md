@@ -197,27 +197,33 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
     -   Principal Component Analysis (PCA)
     -   t-distributed Stochastic Neighbor Embedding (tSNE)
 
-4.  **Unsupervised Clustering**
+4.  **Gaussian Mixture Models**
+    - gaussian mixture models for soft classification in unsupervised clustering
+    - AIC & BIC calculation methods
+    - elbow curve graphing to select the number of clusters
+    - anomaly detection with GMMs
+
+5.  **Unsupervised Clustering**
     -   KMeans (w/ KMeans++)
     -   DBSCAN
 
-5.  **Naive Bayes**
+6.  **Naive Bayes**
     -   Multinomial Naive Bayes
     -   Gaussian Naive Bayes
     -   Bernoulli Naive Bayes
 
-6.  **Trees**
+7.  **Trees**
     -   Decision Tree (with max\_branches, min\_samples regularization +
         CART training)
 
-7.  **Ensemble Learning**
+8.  **Ensemble Learning**
     -   Random Forests
     -   Ensemble/Voting Classifier
 
-8.  **Nearest Neighbors**
+9.  **Nearest Neighbors**
     -   k-nearest neighbors
 
-9.  **Utils**
+10.  **Utils**
     -   one\_hot encoder function (one\_hot())
     -   plot confusion matrix function (confusion\_matrix())
     -   revert one hot encoding to 1D Array (revert\_one\_hot())
@@ -228,8 +234,7 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
 Some of the algorithms we are working on right now.
 
 1.  **Batch Normalization**
-3.  **Gaussian Mixture Models**
-4.  **Barnes Hut t-SNE** (please, please contribute for this one)
+2.  **Barnes Hut t-SNE** (please, please contribute for this one)
 
 ## Contributing
 
