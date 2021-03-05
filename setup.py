@@ -19,6 +19,7 @@ non_python_files = [
     "cython_naive_bayes.pyx",
     "cython_ensemble_learning.pyx",
     "cython_knn.pyx",
+    "cython_mixtures.pyx"
 ]
 
 version_name = sys.argv[1].replace("refs/tags/", "")
