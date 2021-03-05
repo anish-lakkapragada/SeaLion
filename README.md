@@ -198,11 +198,10 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
     -   t-distributed Stochastic Neighbor Embedding (tSNE)
 
 4.  **Gaussian Mixture Models**
-    - gaussian mixture models for soft classification in unsupervised clustering
+    - unsupervised clustering with "soft" predictions
+    - anomaly detection
     - AIC & BIC calculation methods
-    - elbow curve graphing to select the number of clusters
-    - anomaly detection with GMMs
-
+   
 5.  **Unsupervised Clustering**
     -   KMeans (w/ KMeans++)
     -   DBSCAN
