@@ -197,7 +197,7 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
     -   Principal Component Analysis (PCA)
     -   t-distributed Stochastic Neighbor Embedding (tSNE)
 
-4.  **Gaussian Mixture Models (GMMs) **
+4.  **Gaussian Mixture Models (GMMs)**
     - unsupervised clustering with "soft" predictions
     - anomaly detection
     - AIC & BIC calculation methods
