@@ -233,7 +233,8 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
 Some of the algorithms we are working on right now.
 
 1.  **Batch Normalization**
-2.  **Barnes Hut t-SNE** (please, please contribute for this one)
+2.  **AdaBelief Optimizer**
+3.  **Barnes Hut t-SNE** (please, please contribute for this one)
 
 ## Contributing
 
