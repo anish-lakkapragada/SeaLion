@@ -68,7 +68,7 @@ Neural networks are a bit more complicated, so you may want to check an example
 The syntax of the APIs was designed to be easy to use and familiar to most other ML libraries. This is to make sure both beginners and experts in the field
 can comfortably use SeaLion. Of course, none of the source code uses other ML frameworks. 
 
-## Testimonials and Reddit Posts
+## Testimonials, Reddit Posts, and More Cool Stuff
 
 "Super Expansive Python ML Library"
    -   [@Peter Washington](https://twitter.com/peter\_washing/status/1356766327541616644), Stanford PHD candidate in Bio-Engineering
@@ -79,6 +79,12 @@ r/Python : [r/Python Post](https://www.reddit.com/r/Python/comments/lf59bw/machi
 
 r/learnmachinelearning : [r/learningmachinelearning Post](https://www.reddit.com/r/learnmachinelearning/comments/lfv72l/a_set_of_jupyter_notebooks_to_help_you_understand/)
 
+**Some more info** : 
+    - [**1.7k+ downloads**](https://pypistats.org/packages/sealion)
+    - [**Featured in Analytics Vidhya**](https://www.analyticsvidhya.com/blog/2021/02/6-open-source-data-science-projects-that-provide-an-edge-to-your-portfolio/)
+    - **250+ stars**
+    - **15,000 views on GitHub**
+    
 ## Installation
 
 The package is available on PyPI. Install like such :
@@ -96,12 +102,8 @@ newest version.
 SeaLion was built by Anish Lakkapragada, a freshman in high school, starting in Thanksgiving of 2020
 and has continued onto early 2021. The library is meant for beginners to
 use when solving the standard libraries like iris, breast cancer, swiss
-roll, the moons dataset, MNIST, etc. The source code is not as much as
-most other ML libraries (only 4000 lines) so it's pretty easy to contribute to. He
-hopes to spread machine learning to other high schoolers through this
-library.
-
-
+roll, the moons dataset, MNIST, etc. 
+    
 ## Documentation
 
 All documentation is currently being put on a website. However useful it
