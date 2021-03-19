@@ -76,7 +76,7 @@ can comfortably use SeaLion. Of course, none of the source code uses other ML fr
 [Analytics Vidhya calls SeaLion's algorithms **beginner-friendly**, **efficient**, and **concise**.](https://www.analyticsvidhya.com/blog/2021/02/6-open-source-data-science-projects-that-provide-an-edge-to-your-portfolio/)
 
 Stats : 
-   -   [**1.7k+ downloads**](https://pypistats.org/packages/sealion)
+   -   [**1,700+ downloads**](https://pypistats.org/packages/sealion)
    -   **250+ stars**
    -   **15,000 views on GitHub**
    -   **100+ forks/clones**
