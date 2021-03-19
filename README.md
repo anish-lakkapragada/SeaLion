@@ -77,9 +77,9 @@ can comfortably use SeaLion. Of course, none of the source code uses other ML fr
 
 Stats : 
    -   [**1.7k+ downloads**](https://pypistats.org/packages/sealion)
-   -   [**Featured in Analytics Vidhya**](https://www.analyticsvidhya.com/blog/2021/02/6-open-source-data-science-projects-that-provide-an-edge-to-your-portfolio/)
    -   **250+ stars**
    -   **15,000 views on GitHub**
+   -   **100+ forks/clones**
 
 r/Python : [r/Python Post](https://www.reddit.com/r/Python/comments/lf59bw/machine_learning_library_by_14year_old_sealion/)
 
