@@ -79,11 +79,12 @@ r/Python : [r/Python Post](https://www.reddit.com/r/Python/comments/lf59bw/machi
 
 r/learnmachinelearning : [r/learningmachinelearning Post](https://www.reddit.com/r/learnmachinelearning/comments/lfv72l/a_set_of_jupyter_notebooks_to_help_you_understand/)
 
-**Some more info** : 
-    - [**1.7k+ downloads**](https://pypistats.org/packages/sealion)
-    - [**Featured in Analytics Vidhya**](https://www.analyticsvidhya.com/blog/2021/02/6-open-source-data-science-projects-that-provide-an-edge-to-your-portfolio/)
-    - **250+ stars**
-    - **15,000 views on GitHub**
+More info below : 
+
+[**1.7k+ downloads**](https://pypistats.org/packages/sealion)
+[**Featured in Analytics Vidhya**](https://www.analyticsvidhya.com/blog/2021/02/6-open-source-data-science-projects-that-provide-an-edge-to-your-portfolio/)
+**250+ stars**
+**15,000 views on GitHub**
     
 ## Installation
 
