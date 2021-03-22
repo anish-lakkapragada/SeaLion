@@ -333,7 +333,6 @@ class LeakyReLU(Activation):
 
 class ELU(Activation):
     """
-
     Solves the similar dying activation problem. The default of 1 for alpha works quite well in practice, so you won't need
     to change it much.
     """
@@ -370,7 +369,7 @@ class PReLU(Activation) :
     parameter is learnt. To learn this parameter, we do use gradient descent - so you have a learning rate and momentum parameter. 
     Both are on a scale of 0 - 1. 
     """
-    
+
     def __init__(self) : 
     
 
