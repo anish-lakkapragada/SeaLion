@@ -36,7 +36,7 @@ org_dir = os.getcwd()
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
-VERSION_NUMBER = "4.1.8"
+VERSION_NUMBER = "4.3.1"
 PYTHON_RUNNING_VERSION = str(sys.version_info.major) + "." + str(sys.version_info.minor)
 
 
@@ -67,7 +67,7 @@ if os.path.exists("cython_ran.pickle") :
                 from . import cython_unsupervised_clustering
                 from . import cython_tsne
                 from . import cython_ensemble_learning
-
+                from . import cython_mixtures
                 break
             except Exception:
                 if time.time() - start > 500:
@@ -97,7 +97,7 @@ else:
             from . import cython_unsupervised_clustering
             from . import cython_tsne
             from . import cython_ensemble_learning
-
+            from . import cython_mixtures
             break
         except Exception:
             if time.time() - start > 500:

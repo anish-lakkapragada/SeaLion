@@ -68,17 +68,23 @@ Neural networks are a bit more complicated, so you may want to check an example
 The syntax of the APIs was designed to be easy to use and familiar to most other ML libraries. This is to make sure both beginners and experts in the field
 can comfortably use SeaLion. Of course, none of the source code uses other ML frameworks. 
 
-## Testimonials and Reddit Posts
+## Testimonials, Stats, and Reddit Posts
 
 "Super Expansive Python ML Library"
    -   [@Peter Washington](https://twitter.com/peter\_washing/status/1356766327541616644), Stanford PHD candidate in Bio-Engineering
 
 [Analytics Vidhya calls SeaLion's algorithms **beginner-friendly**, **efficient**, and **concise**.](https://www.analyticsvidhya.com/blog/2021/02/6-open-source-data-science-projects-that-provide-an-edge-to-your-portfolio/)
 
-r/Python : [r/Python Post](https://www.reddit.com/r/Python/comments/lf59bw/machine_learning_library_by_14year_old_sealion/)
+Stats : 
+   -   [**1,700+ downloads**](https://pypistats.org/packages/sealion)
+   -   **250+ stars**
+   -   **15,000 views on GitHub**
+   -   **100+ forks/clones**
 
-r/learnmachinelearning : [r/learningmachinelearning Post](https://www.reddit.com/r/learnmachinelearning/comments/lfv72l/a_set_of_jupyter_notebooks_to_help_you_understand/)
+[r/Python Post](https://www.reddit.com/r/Python/comments/lf59bw/machine_learning_library_by_14year_old_sealion/)
 
+[r/learningmachinelearning Post](https://www.reddit.com/r/learnmachinelearning/comments/lfv72l/a_set_of_jupyter_notebooks_to_help_you_understand/)
+    
 ## Installation
 
 The package is available on PyPI. Install like such :
@@ -96,12 +102,8 @@ newest version.
 SeaLion was built by Anish Lakkapragada, a freshman in high school, starting in Thanksgiving of 2020
 and has continued onto early 2021. The library is meant for beginners to
 use when solving the standard libraries like iris, breast cancer, swiss
-roll, the moons dataset, MNIST, etc. The source code is not as much as
-most other ML libraries (only 4000 lines) so it's pretty easy to contribute to. He
-hopes to spread machine learning to other high schoolers through this
-library.
-
-
+roll, the moons dataset, MNIST, etc. 
+    
 ## Documentation
 
 All documentation is currently being put on a website. However useful it
@@ -197,27 +199,32 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
     -   Principal Component Analysis (PCA)
     -   t-distributed Stochastic Neighbor Embedding (tSNE)
 
-4.  **Unsupervised Clustering**
+4.  **Gaussian Mixture Models (GMMs)**
+    - unsupervised clustering with "soft" predictions
+    - anomaly detection
+    - AIC & BIC calculation methods
+   
+5.  **Unsupervised Clustering**
     -   KMeans (w/ KMeans++)
     -   DBSCAN
 
-5.  **Naive Bayes**
+6.  **Naive Bayes**
     -   Multinomial Naive Bayes
     -   Gaussian Naive Bayes
     -   Bernoulli Naive Bayes
 
-6.  **Trees**
+7.  **Trees**
     -   Decision Tree (with max\_branches, min\_samples regularization +
         CART training)
 
-7.  **Ensemble Learning**
+8.  **Ensemble Learning**
     -   Random Forests
     -   Ensemble/Voting Classifier
 
-8.  **Nearest Neighbors**
+9.  **Nearest Neighbors**
     -   k-nearest neighbors
 
-9.  **Utils**
+10.  **Utils**
     -   one\_hot encoder function (one\_hot())
     -   plot confusion matrix function (confusion\_matrix())
     -   revert one hot encoding to 1D Array (revert\_one\_hot())
@@ -228,8 +235,8 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
 Some of the algorithms we are working on right now.
 
 1.  **Batch Normalization**
-3.  **Gaussian Mixture Models**
-4.  **Barnes Hut t-SNE** (please, please contribute for this one)
+2.  **AdaBelief Optimizer**
+3.  **Barnes Hut t-SNE** (please, please contribute for this one)
 
 ## Contributing
 

@@ -12,6 +12,7 @@ files = [
     "cython_naive_bayes",
     "cython_knn",
     "cython_ensemble_learning",
+    "cython_mixtures"
 ]
 
 
