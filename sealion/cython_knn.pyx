@@ -119,7 +119,5 @@ cdef class CythonKNN():
             acc = sum([1 if pred == label else 0 for pred, label in zip(y_pred, y_test)])
             return acc/len(y_test)
         else :
-            print("started to get")
             acc = r2_score(y_pred, y_test)
-            print("ended")
             return acc
