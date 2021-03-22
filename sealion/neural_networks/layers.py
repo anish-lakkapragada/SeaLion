@@ -364,6 +364,15 @@ class SELU(Activation):
     def __init__(self):
         super().__init__(selu, selu_prime)
 
+class PReLU(Activation) : 
+    """
+    The PReLU activation function, which is essentially the same thing as the LeakyReLU activation, except that the "leak"
+    parameter is learnt. To learn this parameter, we do use gradient descent - so you have a learning rate and momentum parameter. 
+    Both are on a scale of 0 - 1. 
+    """
+    
+    def __init__(self) : 
+    
 
 class Softmax(Layer):
     """
