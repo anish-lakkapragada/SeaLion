@@ -151,7 +151,8 @@ any other import.
 
 The machine learning algorithms of SeaLion are listed below. Please note
 that the stucture of the listing isn't meant to resemble that of
-SeaLion's APIs. Of course, new algorithms are being made right now.
+SeaLion's APIs and that hyperlinked algorithms are for those that are new/niche. 
+Of course, new algorithms are being made right now.
 
 1.  **Deep Neural Networks**
     -   Optimizers
