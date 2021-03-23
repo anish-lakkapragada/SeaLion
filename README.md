@@ -162,6 +162,7 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
         -   RMSprop
         -   Adam
         -   Nadam
+        -   [AdaBelief](https://arxiv.org/abs/2010.07468)
     -   Layers
         -   Flatten (turn 2D+ data to 2D matrices)
         -   Dense (fully-connected layers)
@@ -173,6 +174,7 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
         -   Sigmoid
         -   Softmax
         -   Leaky ReLU
+        -   [PReLU](https://arxiv.org/abs/1502.01852)
         -   ELU
         -   SELU
         -   Swish
@@ -235,7 +237,6 @@ SeaLion's APIs. Of course, new algorithms are being made right now.
 Some of the algorithms we are working on right now.
 
 1.  **Batch Normalization**
-2.  **AdaBelief Optimizer**
 3.  **Barnes Hut t-SNE** (please, please contribute for this one)
 
 ## Contributing

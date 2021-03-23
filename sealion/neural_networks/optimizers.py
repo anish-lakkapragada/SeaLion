@@ -446,3 +446,76 @@ class Nadam(Optimizer):
                 ] = self.clip_threshold
                 layer.gradients[param_name] += final_grad
 
+
+class AdaBelief(Optimizer):
+    """
+    AdaBelief is a recently popular optimizer that I thought to implement
+    after checking in with the original paper. The way it works is by establishing the
+    general "belief" (prediction) in where the gradient will go. If the belief and the actual 
+    given gradient are very similar, there will be a large change in the weights
+    (larger gradients), whereas if they are very different, there will be a small 
+    change in the weights. This has worked well in practice, and its results
+    are comparable to Adam. 
+
+    For those interested in the original paper, go here : https://arxiv.org/pdf/2010.07468.pdf
+    """
+    
+    def __init__(
+        self,
+        lr=0.001,
+        beta1=0.9,
+        beta2=0.999,
+        nesterov=False,
+        clip_threshold=np.inf,
+        e=1e-10,
+    ):
+        super().__init__()
+        self.lr = lr
+        self.beta1 = beta1
+        self.beta2 = beta2
+        self.nesterov = nesterov
+        self.clip_threshold = clip_threshold
+        self.e = e
+        self.t = 1
+
+    def setup(self, nn):
+        self.momentum_M, self.momentum_S = {}, {}
+        for layer_num in range(len(nn)):
+            layer = nn[layer_num]
+            for param_name, _ in layer.parameters.items():
+                self.momentum_M[param_name + str(layer_num)] = np.zeros(
+                    layer.gradients[param_name].shape
+                )
+                self.momentum_S[param_name + str(layer_num)] = np.zeros(
+                    layer.gradients[param_name].shape
+                )
+        if self.nesterov:
+            for layer_num in range(len(nn)):
+                layer = nn[layer_num]
+                layer.nesterov = True
+                nn[layer_num] = layer
+
+    def update(self, nn):
+
+        for layer_num in range(len(nn)):
+            layer = nn[layer_num]
+            for param_name, _ in layer.parameters.items():
+                self.momentum_M[param_name + str(layer_num)] = (
+                    self.beta1 * self.momentum_M[param_name + str(layer_num)]
+                    - (1 - self.beta1) * layer.gradients[param_name]
+                )
+                self.momentum_S[param_name + str(layer_num)] = self.beta2 * self.momentum_S[param_name + str(layer_num)] + (1 - self.beta2) * np.power(
+                    layer.gradients[param_name] - self.momentum_M[param_name + str(layer_num)], 2
+                ) + self.e
+
+                m_hat = self.momentum_M[param_name + str(layer_num)] / (
+                    1 - np.power(self.beta1, self.t)
+                )
+                s_hat = self.momentum_S[param_name + str(layer_num)] / (
+                    1 - np.power(self.beta2, self.t)
+                )
+                final_grad = self.lr * m_hat / (self.e + np.sqrt(s_hat))
+                final_grad[
+                    np.where(np.abs(final_grad) > self.clip_threshold)
+                ] = self.clip_threshold
+                layer.parameters[param_name] += final_grad

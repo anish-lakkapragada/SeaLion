@@ -363,14 +363,34 @@ class SELU(Activation):
     def __init__(self):
         super().__init__(selu, selu_prime)
 
-class PReLU(Activation) : 
+class PReLU(Layer) :
     """
-    The PReLU activation function, which is essentially the same thing as the LeakyReLU activation, except that the "leak"
-    parameter is learnt. To learn this parameter, we do use gradient descent - so you have a learning rate and momentum parameter. 
-    Both are on a scale of 0 - 1. 
+    The PReLU activation function is essentially the same thing as the LeakyReLU activation, except that the "leak"
+    parameter is learnt during training. To learn this parameter, gradient descent is used - so you have a learning rate and momentum parameter.
+    Both are on a scale of 0 - 1. We initialize this "leak" parameter to 0.25 at the first iteration.
     """
 
-    def __init__(self) : 
+    def __init__(self, lr = 0.1, momentum = 0.2) :
+        super().__init__()
+        self.a = 0.25
+        self.momentum = momentum
+        self.lr = lr
+    def forward(self, inputs) :
+        self.inputs = inputs
+        self.outputs = np.maximum(inputs, 0) + self.a * np.minimum(inputs, 0)
+        return self.outputs
+    def backward(self, grad) :
+        # gradient is the ∂J/∂Output of this PReLU function
+        
+        # first find ∂J/∂a and update a
+        dOutputda = np.zeros(self.outputs.shape)
+        dOutputda[np.where(self.outputs < 0)] = self.inputs[np.where(self.outputs < 0)]
+        self.a = self.momentum * self.a + self.lr * (grad * dOutputda).sum() # update a
+
+        # now return back dJdInput
+        dOutputdInput = np.ones(self.inputs.shape)
+        dOutputdInput[np.where(self.outputs <= 0)] = self.a
+        return grad * dOutputdInput
     
 
 class Softmax(Layer):
