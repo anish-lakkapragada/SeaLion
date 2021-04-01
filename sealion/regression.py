@@ -9,6 +9,7 @@ has polynomial and exponential regression, along with some regularizers.
 import numpy as np
 from tqdm import tqdm
 import warnings
+from scipy.special import softmax as sfmx_indiv
 
 warnings.filterwarnings("ignore", category=np.ComplexWarning)
 warnings.filterwarnings("ignore", category=RuntimeWarning)
@@ -348,10 +349,6 @@ class LogisticRegression:
         plt.show()
 
 
-def softmax(scores):
-    return np.exp(scores) / np.sum(np.exp(scores))
-
-
 class SoftmaxRegression:
     """
         Once you know logistic regression, softmax regression is a breeze. Logistic regression is really a specific
@@ -470,7 +467,7 @@ class SoftmaxRegression:
         for iteration in iterations:
 
             Z = np.dot(x_train, weights) + bias  # forward pass start
-            y_hat = np.apply_along_axis(softmax, 1, Z)  # softmax for each output
+            y_hat = np.apply_along_axis(sfmx_indiv, 1, Z)  # softmax for each output
 
             # gradient descent
             dLdZ = (y_hat - y_train) / m  # crossentropy loss derivative
@@ -514,7 +511,7 @@ class SoftmaxRegression:
             x_test = np.array([np.array([x_i]) for x_i in x_test])  # make it 2D
 
         Z = np.dot(x_test, self.weights) + self.bias
-        y_hat = np.apply_along_axis(softmax, 1, Z)  # softmax for each output)
+        y_hat = np.apply_along_axis(sfmx_indiv, 1, Z)  # softmax for each output)
         return np.apply_along_axis(
             np.argmax, 1, y_hat
         )  # go through each output and give the index of where
@@ -533,7 +530,7 @@ class SoftmaxRegression:
             raise ValueError("y_test must be 1D.")
 
         Z = np.dot(x_test, self.weights) + self.bias
-        y_pred = np.apply_along_axis(softmax, 1, Z)
+        y_pred = np.apply_along_axis(sfmx_indiv, 1, Z)
         y_pred = np.apply_along_axis(np.argmax, 1, y_pred)
         perc_correct = _perc_correct(y_pred, y_test)
         return perc_correct
