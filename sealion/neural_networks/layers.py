@@ -100,7 +100,7 @@ class Dropout(Layer):
         return self.dropped_inputs
 
     def backward(self, grad):
-        grad[np.where(self.dropped_inputs[self.indices] = 0)] = 0 # set droppped out outputs to 0 
+        grad[np.where(self.dropped_inputs[self.indices] == 0)] = 0 # set droppped out outputs to 0 
         grad *= 1/(1-dropout_rate) # everything else scale by * 1/(1-p)
         return grad
 
