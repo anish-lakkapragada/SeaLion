@@ -100,7 +100,8 @@ class Dropout(Layer):
         return self.dropped_inputs
 
     def backward(self, grad):
-        grad[np.where(self.dropped_inputs[self.indices] == 0)] = 0
+        grad[np.where(self.dropped_inputs[self.indices] = 0)] = 0 # set droppped out outputs to 0 
+        grad *= 1/(1-dropout_rate) # everything else scale by * 1/(1-p)
         return grad
 
 
@@ -370,9 +371,10 @@ class PReLU(Layer) :
     Both are on a scale of 0 - 1. We initialize this "leak" parameter to 0.25 at the first iteration.
     """
 
-    def __init__(self, lr = 0.1, momentum = 0.2) :
+    def __init__(self, lr = 0.1, momentum = 0.9) :
         super().__init__()
         self.a = 0.25
+        self.delta_a = 0 
         self.momentum = momentum
         self.lr = lr
     def forward(self, inputs) :
@@ -385,11 +387,14 @@ class PReLU(Layer) :
         # first find ∂J/∂a and update a
         dOutputda = np.zeros(self.outputs.shape)
         dOutputda[np.where(self.outputs < 0)] = self.inputs[np.where(self.outputs < 0)]
-        self.a = self.momentum * self.a + self.lr * (grad * dOutputda).sum() # update a
 
         # now return back dJdInput
         dOutputdInput = np.ones(self.inputs.shape)
         dOutputdInput[np.where(self.outputs <= 0)] = self.a
+
+        self.delta_a = self.momentum * self.delta_a + self.lr * (grad * dOutputdA).sum()
+        self.a -= self.delta_a  
+
         return grad * dOutputdInput
     
 
