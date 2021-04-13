@@ -5,7 +5,7 @@
 # SeaLion
 
 ![python](https://img.shields.io/pypi/pyversions/sealion?color=blueviolet&style=plastic)
-![License](https://img.shields.io/pypi/l/sealion?color=informational&style=plastic)
+![License](https://img.shields.io/pypi/l/sealion?color=blue)
 ![total lines](https://img.shields.io/tokei/lines/github/anish-lakkapragada/SeaLion?color=brightgreen)
 ![issues](https://img.shields.io/github/issues/anish-lakkapragada/SeaLion?color=yellow&style=plastic)
 ![pypi](https://img.shields.io/pypi/v/sealion?color=red&style=plastic)
