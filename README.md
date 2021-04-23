@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/logo.png?raw=true" width = 300 height = 300 >
+    <img src="https://github.com/anish-lakkapragada/SeaLion/blob/main/logo.png?raw=true" width=300 height=300 >
 </p>
 
 # SeaLion
@@ -22,7 +22,7 @@ of the way.
 
 <p align="center">
     <img src="https://raw.githubusercontent.com/anish-lakkapragada/SeaLion/main/sealion_demo.gif" width = 580 height = 326>
-    <br />
+    <br>
     <i>SeaLion in Action</i>
 </p>
 
@@ -268,7 +268,7 @@ Plenty of articles and people helped me a long way. Some of the tougher
 questions I dealt with were Automatic Differentiation in neural
 networks, in which this
 [tutorial](https://www.youtube.com/watch?v=o64FV-ez6Gw) helped me. I
-also got some help on the O(n\^2) time complexity problem of the
+also got some help on the `O(n^2)` time complexity problem of the
 denominator of t-SNE from this
 [article](https://nlml.github.io/in-raw-numpy/in-raw-numpy-t-sne/) and
 understood the mathematical derivation for the gradients (original paper
