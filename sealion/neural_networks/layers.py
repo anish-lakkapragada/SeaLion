@@ -66,7 +66,7 @@ class Dropout(Layer):
     "Dropping out", or setting to 0, some of the outputs of some of the neurons means that the model will have to learn
     that it can't just depend on one neuron to learn the most important features. This means has each neuron learn some features,
     some other features, etc. and can't just depend on one node. The model will become more robust and generalize
-    better with Dropout as every neuron know has a better set of weights. Normally due to dropout, it will be applied
+    better with Dropout as every neuron now has a better set of weights. Normally due to dropout, it will be applied
     in training, but then "reverse-applied" in testing. Dropout will make the training accuracy go down a bit, but remember
     in the end it's testing on real-world data that matters.
 
