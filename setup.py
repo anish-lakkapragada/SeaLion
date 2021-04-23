@@ -10,7 +10,7 @@ with open("README.md", "r") as fh:
     read_me_description = fh.read()
 
 with open("requirements.txt") as reqs:
-    requirements = reqs.read().split("\n")
+    requirements = reqs.read().strip().split("\n")
 
 non_python_files = [
     "cython_decision_tree_functions.pyx",
