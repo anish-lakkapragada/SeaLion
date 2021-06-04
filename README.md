@@ -167,6 +167,7 @@ Of course, new algorithms are being made right now.
     -   Layers
         -   Flatten (turn 2D+ data to 2D matrices)
         -   Dense (fully-connected layers)
+        -   Batch Normalization! 
     -   Regularization
         -   Dropout
     -   Activations
@@ -237,8 +238,7 @@ Of course, new algorithms are being made right now.
 
 Some of the algorithms we are working on right now.
 
-1.  **Batch Normalization**
-3.  **Barnes Hut t-SNE** (please, please contribute for this one)
+1.  **Barnes Hut t-SNE** (please, please contribute for this one)
 
 ## Contributing
 

@@ -144,7 +144,7 @@ class NeuralNetwork:
     """
 
     def __init__(self, layers=None):
-        from .layers import Dense, Flatten, Softmax, Dropout
+        from .layers import Dense, Flatten, Softmax, Dropout, BatchNormalization
         from .loss import CrossEntropy, softmax
         from .optimizers import Adam, SGD
         from ._utils_nn import revert_one_hot_nn, revert_softmax_nn
@@ -153,8 +153,10 @@ class NeuralNetwork:
         self.Flatten = Flatten
         self.Softmax = Softmax
         self.Dropout = Dropout
+        self.BatchNormalization = BatchNormalization
         self.CrossEntropy = CrossEntropy
         self.softmax = softmax
+        self.training = True 
         self.Adam = Adam
         self.SGD = SGD
         self.revert_one_hot = revert_one_hot_nn
@@ -227,6 +229,8 @@ class NeuralNetwork:
 
     def forward(self, inputs):
         for layer in self.layers:
+            if isinstance(layer, self.BatchNormalization): 
+                layer.train = self.training 
             if isinstance(layer, self.Softmax):
                 continue
             inputs = layer.forward(inputs)
@@ -287,6 +291,7 @@ class NeuralNetwork:
         self.optimizer.update(self.layers)
 
     def train(self, x_train, y_train, epochs=1, batch_size=32, show_loop=True):
+        self.training = True
         if not self.finalized:
             raise ValueError(
                 "This model isn't finalized. Call it through model.finalize()."
@@ -375,6 +380,7 @@ class NeuralNetwork:
                 pass
 
     def full_batch_train(self, x_train, y_train, epochs=1, show_loop=True):
+        self.training = True
         if not self.finalized:
             raise ValueError(
                 "This model isn't finalized. Call it through model.finalize()."
@@ -439,6 +445,7 @@ class NeuralNetwork:
                 pass
 
     def mini_batch_train(self, x_train, y_train, epochs=1, N=0.2, show_loop=True):
+        self.training = True
         if not self.finalized:
             raise ValueError(
                 "This model isn't finalized. Call it through model.finalize()."
@@ -518,7 +525,7 @@ class NeuralNetwork:
                 pass
 
     def predict(self, x_test):
-
+        self.training = False
         if not self.finalized:
             raise ValueError(
                 "This model isn't finalized. Call it through model.finalize()."
@@ -535,6 +542,7 @@ class NeuralNetwork:
             return np.round_(y_pred)
 
     def evaluate(self, x_test, y_test):
+        self.training = False 
         if not self.finalized:
             raise ValueError(
                 "This model isn't finalized. Call it through model.finalize()."
@@ -549,6 +557,7 @@ class NeuralNetwork:
         return self.loss.loss(y_test, y_pred)
 
     def regression_evaluate(self, x_test, y_test):
+        self.training = False
         x_test, y_test = np.array(x_test), np.array(y_test)
         if len(y_test.shape) != 2:
             raise ValueError("y_test must be 2D.")
@@ -563,6 +572,7 @@ class NeuralNetwork:
         )  # mean of each columns r^2
 
     def categorical_evaluate(self, x_test, y_test):
+        self.training = False
         x_test, y_test = np.array(x_test), np.array(y_test)
         if len(y_test.shape) != 2:
             raise ValueError("y_test must be 2D.")

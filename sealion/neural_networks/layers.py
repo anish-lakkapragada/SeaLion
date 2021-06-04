@@ -6,6 +6,7 @@ This file contains all of the layer classes you'll need to build your models. Yo
 backward() methods to deal with, just really the init. Examples are embedded in the docs because this can get a little complex,
 so bear with me here.
 """
+from sealion.neural_networks.optimizers import Momentum
 import numpy as np
 
 
@@ -101,7 +102,7 @@ class Dropout(Layer):
 
     def backward(self, grad):
         grad[np.where(self.dropped_inputs[self.indices] == 0)] = 0 # set droppped out outputs to 0 
-        grad *= 1/(1-dropout_rate) # everything else scale by * 1/(1-p)
+        grad *= 1/(1-self.dr) # everything else scale by * 1/(1-p)
         return grad
 
 
@@ -193,6 +194,112 @@ class Dense(Layer):
         self.gradients["weights"] = self.inputs[self.indices].T.dot(grad)
         self.gradients["bias"] = np.sum(grad, axis=0)
         return np.dot(grad, (self.parameters["weights"]).T)  # dLdZ2 * dZ2/dA1
+
+class BatchNormalization(Layer): 
+    
+    """
+    Batch Normalization is a frequently used technique in today's models (especially in CNNs). 
+
+    Often times you are told to normalize your data (make it bell-curved shaped) before 
+    you feed it to your model - that's because normalization makes it easier for the model to learn 
+    because the loss curve is smoother (thus getting to the minima is easier and faster.) So, 
+    why don't we apply normalization to the inputs of all of the other layers (aside from the input layer)? 
+    That's what batch normalization does. 
+
+    I got this explanation from CodeEmporium: https://www.youtube.com/watch?v=DtEq44FTPM4
+    
+    In order for a given hidden layer to normalize its inputs it needs to know the mean 
+    and variance (just standard deviation squared) of the inputs it usually gets. Note that 
+    this does change (because the parameters of prior layers change), so the mean and variance
+    is not necessarily the same throughout training. To do this we need to use a moving average 
+    to approximate the mean and variance of the given inputs fed to a B.N. layer we would like to normalize. 
+
+    While the B.N. first uses this mean and variance to normalize its inputs to a standard normal distribution, 
+    where the mean is 0 and the standard deviation is 1, it is not guaranteed that this distribution is optimal 
+    as inputs for the succeeding layer. So the B.N. layer also learns a mean and variance, called beta and gamma respectively, 
+    to adjust the standard normal distribution (it got by normalizing its inputs) before feeding it to the next
+    layer. 
+
+    Onto the parameters: 
+    
+    input_size : number of features the B.N. layer needs to normalize (just output_size of the Dense layer above)
+    
+    momentum : how slowly to change the mean and variance that the B.N. layer uses for normalization. 
+    A higher momentum means that the mean and the variance the B.N. layer uses will change very slowly, 
+    whereas a lower momentum means that the mean and the variance the B.N. layer uses will change very quickly 
+    in response to changes in the B.N.'s inputs (and their mean and variance). Default 0.9. 
+
+    epsilon : tiny value needed in normalization if the variance ever becomes 0 to protect against 0 division errors. Default 0.001. 
+    
+    lr : learning rate for the B.N. layer's learning of the normalized mean and variance. Default 0.01. 
+
+
+
+    To add Batch Normalization to your model simply do: 
+    >>> import sealion as sl 
+    >>> model = sl.neural_networks.models.NeuralNetwork()
+    >>> model.add(...) # add whatever Dense Layers 
+    >>> model.add(sl.neural_networks.layers.BatchNormalization(input_size = 5, momentum = 0.9, lr = 0.01))
+
+    Note you may want to experiment on whether to place a Batch Normalization layer after an activation or before, etc. I don't know 
+    too much about this, but handsonml said this so I might as well too. 
+
+    """
+    def __init__(self, input_size : int, momentum = 0.9, epsilon = 0.001, lr=0.01) -> None: 
+        super().__init__() 
+        self.momentum = momentum 
+        self.epsilon = epsilon
+        self.lr = lr
+        self.first = False 
+        self.training = True # by default we are assuming it is training
+
+        # create mu and sigma 
+        self.mu, self.var = np.zeros(input_size), np.zeros(input_size)
+
+        # create the learnable parameters gamma and beta 
+        self.gamma = np.ones(input_size)
+        self.beta = np.zeros(input_size)
+    
+    def forward(self, inputs): 
+        # first calculate mu and the variance
+        current_mu = np.mean(inputs, axis=0)
+        current_var = np.var(inputs, axis = 0)
+
+        # update mu and variance 
+        if self.first and self.training: 
+            self.mu = current_mu 
+            self.var = current_var
+            self.first = False 
+
+        if not self.first and self.training: 
+            self.mu = self.momentum * self.mu + (1 - self.momentum) * current_mu
+            self.var = self.momentum * self.var + (1 - self.momentum) * current_var
+
+        # only update self.mu and self.var based on inputs in training 
+
+        self.X_hat = (inputs - self.mu) / np.sqrt(self.var + self.epsilon)
+        
+        self.y = self.gamma * self.X_hat + self.beta
+        return self.y 
+    
+    def backward(self, grad):
+        # first find dL/dgamma and dL/dbeta and update params   
+
+        dLdBeta = np.sum(grad, axis = 0)
+        dLdGamma = np.sum(grad * self.X_hat, axis = 0)
+
+
+        # we have to pass back dL/dX
+        N = grad.shape[0] 
+        dLdX_hat = grad * self.gamma
+        
+        dLdX = (N * dLdX_hat - np.sum(dLdX_hat, axis = 0) - self.X_hat * np.sum(dLdX_hat * self.X_hat, axis = 0)) / (N * np.sqrt(self.var + self.epsilon))
+
+        # update last
+        self.beta -= self.lr * dLdBeta
+        self.gamma -= self.lr * dLdGamma
+
+        return dLdX
 
 
 class Activation(Layer):
@@ -330,7 +437,6 @@ class LeakyReLU(Activation):
 
     def backward(self, grad):
         return self.activ_func_prime(self.inputs[self.indices], leak=self.leak) * grad
-
 
 class ELU(Activation):
     """

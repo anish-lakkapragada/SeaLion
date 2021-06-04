@@ -36,7 +36,7 @@ org_dir = os.getcwd()
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
-VERSION_NUMBER = "4.3.9"
+VERSION_NUMBER = "4.4.0"
 PYTHON_RUNNING_VERSION = str(sys.version_info.major) + "." + str(sys.version_info.minor)
 
 
