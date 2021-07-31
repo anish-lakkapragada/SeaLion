@@ -11,6 +11,7 @@ import numpy as np
 
 
 class Layer:
+    """Base Layer class. All layers inherit from this."""
     def __init__(self):
         self.parameters = {}
         self.gradients = {}
@@ -24,8 +25,7 @@ class Layer:
         pass
 
     def backward(self, grad):
-        """This method takes in a gradient (e.x ∂l/∂Z2) and returns its grad (e.x. dL/dA1)"""
-
+        """This method takes in a gradient (e.x ``∂l/∂Z2``) and returns its grad (e.x. ``dL/dA1``)"""
         pass
 
 
@@ -33,20 +33,18 @@ class Flatten(Layer):
     """
     This would be better explained as Image Data Flattener. Let's say your dealing with MNIST (check out the examples
     on github) - you will have data that is 60000 by 28 by 28. Neural networks can't work with data like that - it has
-    to be a matrix. What you could do is take that 60000 * 28 * 28 data and apply this layer to make the data
-    60000 * 784. 784 because 28 * 28 = 784 and we just "squished" this matrix to one layer. If you have data that has colors,
-    it maybe like 60000 * 28 * 28 * 3 so applying this layer would turn it into a 60000 * 2352 matrix. 2352 as 28 * 28 * 3
-    is 2352 here.
+    to be a matrix. What you could do is take that ``60000 * 28 * 28`` data and apply this layer to make the data
+    ``60000 * 784``. 784 because ``28 * 28 = 784`` and we just "squished" this matrix to one layer. If you have data that has colors,
+    e.g. ``60000 * 28 * 28 * 3``, applying this layer would turn it into a ``60000 * 2352`` matrix, ``2352 = 28 * 28 * 3``.
 
-    An example for how this would work with something like MNIST (the grayscale 60k * 28 * 28 dataset) is shown below.
+    An example for how this would work with something like MNIST (the grayscale ``60k * 28 * 28`` dataset) is shown below.
 
-    That would look like :
     >>> from sealion import neural_networks as nn
     >>> from sealion.neural_networks.models import NeuralNetwork
     >>> model = NeuralNetwork()
-    >>> model.add(nn.layers.Flatten()) #always, always add that on the first layer
-    >>> model.add(nn.layers.Dense(784, whatever_output_size, more_args)) #now put that data to 784 as the 28 * 28 is flattened to just 784
-    >>> Do more cool stuff...
+    >>> model.add(nn.layers.Flatten()) # always, always add that on the first layer
+    >>> model.add(nn.layers.Dense(784, whatever_output_size, more_args)) # now put that data to ``28*28 = 784``.
+    >>> # Do more cool stuff...
     """
 
     def forward(self, inputs):
@@ -71,22 +69,24 @@ class Dropout(Layer):
     in training, but then "reverse-applied" in testing. Dropout will make the training accuracy go down a bit, but remember
     in the end it's testing on real-world data that matters.
 
-    There's a parameter dropout_rate on what percent (from 0 - 1 here) you want each neuron in the layer you are at to become 0.
+    There's a parameter dropout_rate on what percent (from 0 to 1 here) you want each neuron in the layer you are at to become 0.
     This is essentially the chance of dropping out any given neuron, or usually what percent of neurons will be dropped out. Typical
-    values range from 0.1 - 0.5. Example below.
+    values range from 0.1 to 0.5. Example below.
 
-    Let's say you've gotten your models up so far :
+    Let's say you've gotten your models up so far:
+
     >>> model.add(nn.layers.Flatten())
     >>> model.add(nn.layers.Dense(128, 64, activation = nn.layers.ReLU()))
 
-    And now you want to add dropout. Well just add that layer like such :
+    And now you want to add dropout. Well just add that layer like such:
+
     >>> dropout_probability = 0.2
     >>> model.add(nn.layers.Dropout(dropout_probability))
 
     This will just mean that about 20% of the neurons coming from this first input layer will be dropped out. A higher dropout rate
     may not always lead to better generalization, but usually will decrease training accuracy.
 
-    In dropout remember 2 things, not just one matter. The probability, and the layers its applied at. Experimentation is key.
+    In dropout remember 2 things, not just one matter. The probability, and the layers its applied at. **Experimentation is key**.
     """
 
     def __init__(self, dropout_rate):
@@ -124,18 +124,19 @@ class Dense(Layer):
     fit you dataset a little better (looking at a graph will help.) The default is no activation (some people call that Linear),
     so you'll need to add that yourself. I'll get to weight init in a bit. Examples below.
 
-    To add a layer, here's how it's done :
+    To add a layer, here's how it's done:
+
     >>> from sealion import neural_networks as nn
     >>> model = nn.models.NeuralNetwork()
-    >>> model.add(nn.layers.Dense(128, 64)) #input_size : 128, output_size : 64
+    >>> model.add(nn.layers.Dense(128, 64)) # input_size = 128, output_size = 64
 
     This sets up a neural network with 128 incoming nodes (that means we have 128 numeric features), and then 64 output nodes.
 
     Let's say we wanted an activation function, like a relu or sigmoid (there are a bunch to choose from this API.)
-    You could add that layer here like such :
+    You could add that layer here like such:
 
-    >>> model = nn.models.NeuralNetwork() #clear all existing layers
-    >>> model.add(nn.layers.Dense(128, 64, activation = nn.layers.Sigmoid())) #all outputs go through the sigmoid function
+    >>> model = nn.models.NeuralNetwork() # clear all existing layers
+    >>> model.add(nn.layers.Dense(128, 64, activation=nn.layers.Sigmoid())) # all outputs go through the sigmoid function
 
     Onto weight initalization! The jargon starts .... now. What weight init does is make the weights come from
     a special distribution (typically Gaussian) with a given standard deviation based on the input and output size.
@@ -147,22 +148,22 @@ class Dense(Layer):
     set as the default. You can choose to also use He for ReLU, LeakyReLU, ELU, or other variants of the ReLU activation.
     For SELU, you may choose to use LeCun weight initalization.
 
-    The possible choices are :
-    >>> "xavier" #for no activation, logistic/sigmoid, softmax, and tanh
-    >>> "he" #for relu + similar variants
-    >>> "lecun" #for selu
-    >>> "none" # if you want to do this
+    The possible choices are:
 
-    To set this you can just do :
-    >>> model = nn.models.NeuralNetwork() #clear all existing layers
-    >>> model.add(nn.layers.Dense(128, 64, activation = nn.layers.ReLU(), weight_init = "he"))
+    >>> "xavier" # no activation, logistic/sigmoid, softmax, and tanh
+    >>> "he"     # relu + similar variants
+    >>> "lecun"  # selu
+    >>> "none"   # if you want to do this
+
+    To set this you can just do:
+
+    >>> model = nn.models.NeuralNetwork() # clear all existing layers
+    >>> model.add(nn.layers.Dense(128, 64, activation=nn.layers.ReLU(), weight_init="he"))
 
     Sorry for so much documentation, but this really is the class you will call the most.
     """
 
-    def __init__(
-        self, input_size: int, output_size: int, activation=None, weight_init="xavier"
-    ) -> None:
+    def __init__(self, input_size: int, output_size: int, activation=None, weight_init="xavier") -> None:
         super().__init__()
 
         weight_init_addition = 1  # no weight init
@@ -196,7 +197,6 @@ class Dense(Layer):
         return np.dot(grad, (self.parameters["weights"]).T)  # dLdZ2 * dZ2/dA1
 
 class BatchNormalization(Layer): 
-    
     """
     Batch Normalization is a frequently used technique in today's models (especially in CNNs). 
 
@@ -206,8 +206,8 @@ class BatchNormalization(Layer):
     why don't we apply normalization to the inputs of all of the other layers (aside from the input layer)? 
     That's what batch normalization does. 
 
-    I got this explanation from CodeEmporium: https://www.youtube.com/watch?v=DtEq44FTPM4
-    
+    I got this explanation from `CodeEmporium <https://www.youtube.com/watch?v=DtEq44FTPM4>`__
+
     In order for a given hidden layer to normalize its inputs it needs to know the mean 
     and variance (just standard deviation squared) of the inputs it usually gets. Note that 
     this does change (because the parameters of prior layers change), so the mean and variance
@@ -221,21 +221,21 @@ class BatchNormalization(Layer):
     layer. 
 
     Onto the parameters: 
-    
-    input_size : number of features the B.N. layer needs to normalize (just output_size of the Dense layer above)
-    
-    momentum : how slowly to change the mean and variance that the B.N. layer uses for normalization. 
+
+    **input_size**: number of features the B.N. layer needs to normalize (just output_size of the Dense layer above)
+
+    **momentum**: how slowly to change the mean and variance that the B.N. layer uses for normalization. 
     A higher momentum means that the mean and the variance the B.N. layer uses will change very slowly, 
     whereas a lower momentum means that the mean and the variance the B.N. layer uses will change very quickly 
     in response to changes in the B.N.'s inputs (and their mean and variance). Default 0.9. 
 
-    epsilon : tiny value needed in normalization if the variance ever becomes 0 to protect against 0 division errors. Default 0.001. 
-    
-    lr : learning rate for the B.N. layer's learning of the normalized mean and variance. Default 0.01. 
+    **epsilon**: tiny value needed in normalization if the variance ever becomes 0 to protect against 0 division errors. Default 0.001. 
+
+    **lr**: learning rate for the B.N. layer's learning of the normalized mean and variance. Default 0.01. 
 
 
+    To add Batch Normalization to your model simply do:
 
-    To add Batch Normalization to your model simply do: 
     >>> import sealion as sl 
     >>> model = sl.neural_networks.models.NeuralNetwork()
     >>> model.add(...) # add whatever Dense Layers 
@@ -243,9 +243,8 @@ class BatchNormalization(Layer):
 
     Note you may want to experiment on whether to place a Batch Normalization layer after an activation or before, etc. I don't know 
     too much about this, but handsonml said this so I might as well too. 
-
     """
-    def __init__(self, input_size : int, momentum = 0.9, epsilon = 0.001, lr=0.01) -> None: 
+    def __init__(self, input_size: int, momentum=0.9, epsilon=0.001, lr=0.01) -> None: 
         super().__init__() 
         self.momentum = momentum 
         self.epsilon = epsilon
@@ -400,7 +399,7 @@ class Sigmoid(Activation):
 
 class Swish(Activation):
     """
-    Uses the swish activation, which is sort of like ReLU and sigmoid combined. It's really just f(x) = x * sigmoid(x).
+    Uses the swish activation, which is sort of like ReLU and sigmoid combined. It's really just ``f(x) = x * sigmoid(x)``.
     Not as used as other activation functions, but give it a try!
     """
 
@@ -411,7 +410,7 @@ class Swish(Activation):
 class ReLU(Activation):
     """
     The most well known activation function and the pseudo-default almost. All it does is turn negative values to 0 and
-    keep the rest.
+    keep the rest. Basically ``f(x) = max(x, 0)``
     """
 
     def __init__(self):
@@ -421,9 +420,9 @@ class ReLU(Activation):
 class LeakyReLU(Activation):
     """
     Variant of the ReLU activation, just allows negatives values to be something more like 0.01 instead of 0, which means
-    the neuron is "dead" as 0 * anything is 0.
+    the neuron is "dead" as ``0 * anything`` is 0.
 
-    The leak is the slope of how low negative values you are willing to tolerate. Usually set from 0.001 - 0.2, but the
+    The leak is the slope of how low negative values you are willing to tolerate. Usually set from 0.001 to 0.2, but the
     default of 0.01 works usually quite well.
     """
 
@@ -470,11 +469,12 @@ class SELU(Activation):
     def __init__(self):
         super().__init__(selu, selu_prime)
 
-class PReLU(Layer) :
+
+class PReLU(Layer):
     """
     The PReLU activation function is essentially the same thing as the LeakyReLU activation, except that the "leak"
     parameter is learnt during training. To learn this parameter, gradient descent is used - so you have a learning rate and momentum parameter.
-    Both are on a scale of 0 - 1. We initialize this "leak" parameter to 0.25 at the first iteration.
+    Both are on a scale of 0 to 1. We initialize this "leak" parameter to 0.25 at the first iteration.
     """
 
     def __init__(self, lr = 0.0001, momentum = 0.9) :
@@ -502,7 +502,7 @@ class PReLU(Layer) :
         self.a += self.delta_a  
  
         return grad * dOutputdInput
-    
+
 
 class Softmax(Layer):
     """
@@ -512,4 +512,3 @@ class Softmax(Layer):
 
     def forward(self, inputs):
         self.inputs = inputs
-
