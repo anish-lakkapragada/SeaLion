@@ -15,6 +15,8 @@ import numpy as np
 
 
 class Optimizer:
+    """Base optimizer class. All optimizers extend from this."""
+
     def __init__(self):
         self.nesterov = False
 
@@ -38,9 +40,10 @@ class GD(Optimizer):
     which just means no clipping - but feel free to change that. You'll have to experiment quite a bit to find a good value.
     This method is known as gradient clipping.
 
-    In the model.finalize() method :
-    >>> model.finalize(loss = ..., optimizer = nn.optimizers.GD(lr = 0.5, clip_threshold = 5)) # here the learning
-    # learning rate is 0.5 and the threshold for clipping is 5.
+    In the ``model.finalize()`` method:
+
+    >>> model.finalize(loss=..., optimizer=nn.optimizers.GD(lr=0.5, clip_threshold=5)) # here the learning
+    >>> # learning rate is 0.5 and the threshold for clipping is 5.
     """
 
     def __init__(self, lr=0.001, clip_threshold=np.inf):
@@ -68,9 +71,10 @@ class Momentum(Optimizer):
     exists so the previous gradients sum don't become too big. There is also a nesterov parameter (default false, but
     set that true!) which sees how the loss landscape will be in the future, and makes its decisions based off of that.
 
-    An example :
-    >>> momentum = nn.optimizers.Momentum(lr = 0.02, momentum = 0.3, nesterov = True) #learning rate is 0.2, momentum at 0.3, and we have nesterov!
-    >>> model.finalize(loss = ..., optimizer = momentum)
+    An example:
+
+    >>> momentum = nn.optimizers.Momentum(lr=0.02, momentum=0.3, nesterov=True) # learning rate is 0.2, momentum at 0.3, and we have nesterov!
+    >>> model.finalize(loss=..., optimizer=momentum)
 
     There's also a clip_threshold argument which you implements gradient clipping, an explanation you can find in the GD()
     class's documentation.
@@ -129,12 +133,12 @@ class SGD(Optimizer):
     to hyperspecific training outliers. By default nesterov is set to False and there is no momentum (set to 0.0), so please
     change that as you please.
 
-    To use this optimizer, just do :
-    >>> model.finalize(loss = ..., optimizer = nn.optimizers.SGD(lr = 0.2, momentum = 0.5, nesterov = True, clip_threshold = 50))
+    To use this optimizer, just do:
+
+    >>> model.finalize(loss=..., optimizer=nn.optimizers.SGD(lr=0.2, momentum=0.5, nesterov=True, clip_threshold=50))
 
     Here we implemented SGD optimization with a learning rate of 0.2, a momentum of 0.5 with nesterov's accelerated gradient, and
     also gradient clipping at 50.
-
     """
 
     def __init__(self, lr=0.001, momentum=0.0, nesterov=False, clip_threshold=np.inf):
@@ -187,12 +191,12 @@ class AdaGrad(Optimizer):
     The only new parameter is e, or this incredibly small value that is meant to prevent division by zero. It's set to
     1e-10 by default, and you probably won't ever need to think about it.
 
-    As an example :
-    >>> model.finalize(loss = ..., optimizer = nn.optimizers.AdaGrad(lr = 0.5, nesterov = True, clip_threshold = 5))
+    As an example:
+
+    >>> model.finalize(loss=..., optimizer=nn.optimizers.AdaGrad(lr=0.5, nesterov=True, clip_threshold=5))
 
     AdaGrad is not used in practice much as often times it stops before reaching the global minima due to the gradients
     being too small to make a difference, but we have it anyways for your enjoyment. Better optimizers await!
-
     """
 
     def __init__(self, lr=0.001, nesterov=False, clip_threshold=np.inf, e=1e-10):
@@ -244,10 +248,11 @@ class RMSProp(Optimizer):
     (does quite well in practice.) A higher beta means that past gradients are more important, and a lower one means current
     gradients are to be valued more.
 
-    An example :
-    >>> model.finalize(loss = ..., optimizer = nn.optimizers.RMSprop(nesterov = True, beta = 0.9))
+    An example:
 
-    Of course there is the nesterov, clipping threshold, and e parameter all for you to tune.
+    >>> model.finalize(loss=..., optimizer=nn.optimizers.RMSprop(nesterov=True, beta=0.9))
+
+    Of course there is the nesterov, clipping threshold, and ``e`` parameter all for you to tune.
     """
 
     def __init__(
@@ -309,8 +314,9 @@ class Adam(Optimizer):
 
     Often times you won't know what works best - so hyperparameter tune.
 
-    As an example :
-    >>> model.finalize(loss = ..., optimizer = nn.optimizers.Adam(lr = 0.1, beta1 = 0.5, beta2 = 0.5))
+    As an example:
+
+    >>> model.finalize(loss=..., optimizer=nn.optimizers.Adam(lr=0.1, beta1=0.5, beta2=0.5))
 
     Adaptive Gradients may not always work as good as SGD or Nesterov + Momentum optimization. For MNIST, I have tried
     both and there's barely a difference. If you are using Adam optimization and it isn't working maybe try using
@@ -386,8 +392,9 @@ class Nadam(Optimizer):
     Nadam optimization is the same thing as Adam, except there's nesterov updating. Basically this class is the same as
     the Adam class, except there is no nesterov parameter (default true.)
 
-    As an example :
-    >>> model.finalize(loss = ..., optimizer = nn.optimizers.Nadam(lr = 0.1, beta1 = 0.5, beta2 = 0.5))
+    As an example:
+
+    >>> model.finalize(loss=..., optimizer=nn.optimizers.Nadam(lr=0.1, beta1=0.5, beta2=0.5))
     """
 
     def __init__(

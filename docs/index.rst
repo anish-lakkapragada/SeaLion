@@ -11,3 +11,4 @@ concepts instead of memorizing class functions.
    install
 
    regression
+   nn

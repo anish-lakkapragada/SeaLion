@@ -13,6 +13,8 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 
 class Loss:
+    """Base loss class."""
+
     def __init__(self):
         self.SGD = False
 
@@ -26,13 +28,13 @@ class Loss:
 class MSE(Loss):
     """
     MSE stands for mean-squared error, and its the loss you'll want to use for regression. To set it in the model.finalize()
-    method just do :
+    method just do:
+
     >>> from sealion import neural_networks as nn
     >>> model = nn.models.NeuralNetwork(layers_list)
-    >>> model.finalize(loss = nn.loss.MSE(), optimizer = ...)
+    >>> model.finalize(loss=nn.loss.MSE(), optimizer=...)
 
     and you're all set!
-
     """
 
     def __init__(self):
@@ -56,17 +58,18 @@ class CrossEntropy(Loss):
     """
     This loss function is for classification problems. I know there's a binary log loss and then a multi-category cross entropy
     loss function for classification, but they're essentially the same thing so I thought using one class would make it easier.
-    Remember to use one-hot encoded data for this to work (check out utils.)
+    Remember to use one-hot encoded data for this to work (check out utils).
 
     If you are using this loss function, make sure your last layer is Softmax and vice versa. Otherwise, annoying error
     messages will occur.
 
-    To set this in the model.finalize() method do :
+    To set this in the ``model.finalize()`` method do:
+
     >>> from sealion import neural_networks as nn
     >>> model = nn.models.NeuralNetwork()
-    ... add the layers ...
-    >>> model.add(nn.layers.Softmax()) #last layer has to be softmax
-    >>> model.finalize(loss = nn.loss.CrossEntropy(), optimizer = ...)
+    >>> # ... add the layers ...
+    >>> model.add(nn.layers.Softmax()) # last layer has to be softmax
+    >>> model.finalize(loss=nn.loss.CrossEntropy(), optimizer=...)
 
     and that's all there is to it.
     """

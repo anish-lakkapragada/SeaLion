@@ -30,84 +30,99 @@ class NeuralNetwork:
     This class is very rich and packed with methods, so I figured it would be best to have this tutorial guide you
     on a tutorial on the "hello world" of machine learning.
 
-    There are two ways to initialize this model with its layers, through the init() or through the .add() function.
+    There are two ways to initialize this model with its layers, through the ``__init__()`` or through the ``add()`` methods.
 
-    The first way :
-    >>> import neural_networks as nn
-    >>> layers = [nn.layers.Flatten(), nn.layers.Dense(784, 64, activation = nn.layers.ReLU()), nn.layers.Dense(64, 32, activation = nn.layers.ReLU()),
-    >>> nn.layers.Dense(32, 10, activation = nn.layers.Softmax())]
+    The first way:
+
+    >>> from sealion import neural_networks as nn
+    >>> layers = [nn.layers.Flatten(), nn.layers.Dense(784, 64, activation=nn.layers.ReLU()),
+    ...     nn.layers.Dense(64, 32, activation=nn.layers.ReLU())]
+    >>> nn.layers.Dense(32, 10, activation=nn.layers.Softmax())]
     >>> model = nn.models.NeuralNetwork(layers)
 
-    Or you can go through the second way :
-    >>> import neural_networks as nn
+    Or you can go through the second way:
+
+    >>> from sealion import neural_networks as nn
     >>> model = nn.models.NeuralNetwork()
     >>> model.add(nn.layers.Flatten())
-    >>> model.add(nn.layers.Dense(784, 64, activation = nn.layers.ReLU()))
-    >>> model.add(nn.layers.Dense(64, 32, activation = nn.layers.ReLU()))
-    >>> model.add(nn.layers.Dense(32, 10, activation = nn.layers.ReLU()))
+    >>> model.add(nn.layers.Dense(784, 64, activation=nn.layers.ReLU()))
+    >>> model.add(nn.layers.Dense(64, 32, activation=nn.layers.ReLU()))
+    >>> model.add(nn.layers.Dense(32, 10, activation=nn.layers.ReLU()))
 
     Either way works just fine.
 
     Next, you will want to perhaps see how complex the model is (having too many parameters means a model can easily
-    overfit), so for that you can just do :
-    >>> num_params = model.num_parameters() #returns an integer
+    overfit), so for that you can just do:
+
+    >>> num_params = model.num_parameters() # returns an integer
     >>> assert num_params == 52650
 
     Looks like our model will be pretty complex. Next up is finalizing and training.
-    >>> model.finalize(loss = nn.loss.CrossEntropy(), optimizer = nn.optimizers.Adam())
+
+    >>> model.finalize(loss=nn.loss.CrossEntropy(), optimizer=nn.optimizers.Adam())
 
     Here we use cross-entropy loss for this classification problem and the Adam optimizer.
 
-    Onto training. Assuming our data is 60k * 28 * 28 (sounds a lot like MNIST) in the variable X_train and we have y_train is
-    a one-hot encoded matrix size 60k * 10 (10 classes) we can do :
+    Onto training. Assuming our data is ``60k * 28 * 28`` (sounds a lot like MNIST) in the variable X_train and we have y_train is
+    a one-hot encoded matrix size ``60k * 10`` (10 classes) we can do :
 
-    >>> model.train(X_train, y_train, epochs = 20) #train for 20 epochs
+    >>> model.train(X_train, y_train, epochs=20) # train for 20 epochs
 
     which will work fine. Here we have a batch_size of 32 (default), and the way we make this run fast is by making
     batch_size datasets, and training them in parallel via multithreading.
 
     If you want to change batch_size to 18 you could do:
-    >>> model.train(X_train, y_train, epochs = 20, batch_size=18) #train for 20 epochs, batch_size 18
 
-    If you want the gradients to be calculated over the entire dataset (this will be much longer) you can do :
-    >>> model.full_batch_train(X_train, y_train, epochs = 20)
+    >>> model.train(X_train, y_train, epochs=20, batch_size=18) # train for 20 epochs, batch_size 18
+
+    If you want the gradients to be calculated over the entire dataset (this will be much longer) you can do:
+
+    >>> model.full_batch_train(X_train, y_train, epochs=20)
 
     Lastly there's also something known as mini-batch gradient descent, which just does gradient descent but randomly chooses
-    a percent of the dataset for gradients to be calculated upon. This cannot be parallelized, but still runs fast :
-    >>> model.mini_batch_train(X_train, y_train, N = 0.1) #here we take 10% of X_train or 6000 data-points randomly selected for calculating gradients at a time
+    a percent of the dataset for gradients to be calculated upon. This cannot be parallelized, but still runs fast:
+
+    >>> model.mini_batch_train(X_train, y_train, N=0.1) # here we take 10% of X_train or 6000 data-points
+    ...                                                 # randomly selected for calculating gradients at a time
 
     All of these methods have a show_loop parameter on whether you want to see the tqdm loop, which is set true by default.
 
     Now that we have trained our model, time to test and use it.
-    To evaluate it, given X_test (shape 10k * 28 * 28) and y_test (shape 10k * 10), we can feed this into
-    our evaluate() function :
+    To evaluate it, given X_test (shape ``10k * 28 * 28``) and y_test (shape ``10k * 10``), we can feed this into
+    our ``evaluate()`` function:
 
     >>> model.evaluate(X_test, y_test)
 
     This gives us the loss, which can be not so interpretable - so we have some other options.
 
-    If you are doing a classification problem as we are here you may do instead :
+    If you are doing a classification problem as we are here you may do instead:
+
     >>> model.categorical_evaluate(X_test, y_test)
 
     which just gives what percent of X_test was classified correctly.
 
-    For regression just do :
+    For regression just do:
+
     >>> model.regression_evaluate(X_test, y_test)
 
-    which gives the r^2 value of the predictions on X_test. If you are doing this make sure that y_test is not one-hot encoded.
+    which gives the ``r^2`` value of the predictions on X_test. If you are doing this make sure that y_test is not one-hot encoded.
 
-    To predict on data we can just do :
+    To predict on data we can just do:
+
     >>> predictions = model.predict(X_test)
 
-    and if we want this in reverted one-hot-encoded form all we need to do is this :
+    and if we want this in reverted one-hot-encoded form all we need to do is this:
+
     >>> from utils import revert_softmax
     >>> predictions = revert_softmax(predictions)
 
     Storing around 53,000 parameters in matrices isn't much, but for good practice let's store it.
-    Using the give_parameters() method we can save our weights in a list :
+    Using the give_parameters() method we can save our weights in a list:
+
     >>> parameters = model.give_parameters()
 
-    Then we may want to pickle this using the given method, into a file called "MNIST_pickled_params" :
+    Then we may want to pickle this using the given method, into a file called "MNIST_pickled_params":
+
     >>> file_name = "MNIST_pickled_params"
     >>> model.pickle_params(FILE_NAME=file_name)
 
@@ -120,20 +135,24 @@ class NeuralNetwork:
     >>> with open('MNIST_pickled_params.pickle', 'rb') as f :
     >>>  params = pickle.load(f)
 
-    Now we can create the model structure (must be the EXACT same) :
+    Now we can create the model structure (must be the EXACT same):
+
     >>> model = nn.models.NeuralNetwork()
     >>> model.add(nn.layers.Flatten())
     >>> model.add(nn.layers.Dense(784, 64, activation = nn.layers.ReLU()))
     >>> model.add(nn.layers.Dense(64, 32, activation = nn.layers.ReLU()))
     >>> model.add(nn.layers.Dense(32, 10, activation = nn.layers.ReLU()))
 
-    Obviously we want to finalize our model for good practice :
+    Obviously we want to finalize our model for good practice:
+
     >>> model.finalize(loss = nn.loss.CrossEntropy(), optimizer = nn.optimizers.Adam())
 
-    and we can enter in the weights & biases using the enter_parameters() :
+    and we can enter in the weights & biases using the enter_parameters():
+
     >>> model.enter_parameters(params) #must be params given from the give_parameters() method
 
-    and train! :
+    and train!
+
     >>> model.train(X_train, y_train, epochs = 100) #let's try 100 epochs this time
 
     The reason this is such a big deal is because we don't have to start training from scratch all over again. The model
