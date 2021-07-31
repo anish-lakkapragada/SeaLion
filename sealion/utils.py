@@ -8,13 +8,12 @@ a one-hot encoder, and a reverse one-hot encoder too.
 import numpy as np
 import pandas as pd
 
-def confusion_matrix(y_pred, y_test, plot = True) :
+def confusion_matrix(y_pred, y_test, plot=True):
     """
-
     Confusion matrices are an often used tool for seeing how well your model did and where it can improve.
 
     A confusion matrix is just a matrix with the number of a certain class classified as another. So if your classifier
-    predicted [0, 1] and the correct answers were [1, 0] - then you would get 1 zero predicted as a 1, 1 one predicted
+    predicted ``[0, 1]`` and the correct answers were ``[1, 0]`` - then you would get 1 zero predicted as a 1, 1 one predicted
     as a 0, and no 0s predicted as 0s and 1s predicted as 1s. By default this method will plot the confusion matrix, but
     if you don't want it just set it to False.
 
@@ -77,15 +76,16 @@ def _change(zeros_and_index) :
     zeros[index] = 1
     return zeros
 
-def one_hot(indices, depth) :
+def one_hot(indices, depth):
     """
     So you've got a feature in a data where a certain value represents a certain category. For example it could be
     that 1 represents sunny, 2 represents rainy, and 0 represents cloudy. Well what's the problem? If you feed this
     to your model - it's going to think that 2 and 1 are similar, because they are just 1 apart - despite the fact
-    that they are really just categories. To fix that you can feed in your features - say it's a list like [2, 2, 1,
-    0, 1, 0] and it will be one hot encoded to whatever depth you please.
+    that they are really just categories. To fix that you can feed in your features - say it's a list like ``[2, 2, 1,
+    0, 1, 0]`` and it will be one hot encoded to whatever depth you please.
 
-    Here's an example (it'll make it very clear) :
+    Here's an example (it'll make it very clear):
+
     >>> features_weather = [1, 2, 2, 2, 1, 0]
     >>> one_hot_features = one_hot(features_weather, depth  = 3) #depth is three here because you have 3 categories - rainy, sunny, cloudy
     >>> one_hot_features
@@ -105,7 +105,6 @@ def one_hot(indices, depth) :
     :return: one-hotted features
     """
 
-
     indices = np.array(indices, dtype = np.int).flatten()
     zeros = np.zeros((len(indices), depth))
     df = pd.DataFrame({'col1' : zeros.tolist(), 'col2' : indices.tolist()})
@@ -113,16 +112,18 @@ def one_hot(indices, depth) :
 
 def revert_one_hot(one_hot_data) :
     '''
-    Say from the one_hot() data you've gotten something like this :
+    Say from the ``one_hot()`` data you've gotten something like this :
 
-    [[0, 0, 1],
-    [1, 0, 0],
-    [0, 1, 0],
-    [0, 0, 1],
-    [1, 0, 0]]
+    .. code-block:: text
+
+        [[0, 0, 1],
+        [1, 0, 0],
+        [0, 1, 0],
+        [0, 0, 1],
+        [1, 0, 0]]
 
     and you want to change it back to its original form. Use this function - it will turn that one-hotted data above to
-    [2, 0, 1, 2, 0] - which is just the index of the one in each data point of the list. Hence it is reverting the
+    ``[2, 0, 1, 2, 0]`` - which is just the index of the one in each data point of the list. Hence it is reverting the
     one_hot transformation.
 
     :param one_hot_data: data in one_hot form. Must be a numpy array (2D)!
@@ -136,18 +137,20 @@ def revert_one_hot(one_hot_data) :
 
     return np.apply_along_axis(np.argmax, 1, one_hot_data)
 
-def revert_softmax(softmax_data) :
+def revert_softmax(softmax_data):
     '''
     Say from the softmax function (in neural networks) you've gotten something like this :
 
-    [[0.2, 0.3, 0.5],
-    [0.8, 0.1, 0.1],
-    [0.15, 0.8, 0.05],
-    [0.3, 0.3, 0.4],
-    [0.7, 0.15, 0.15]]
+    .. code-block:: text
+
+        [[0.2, 0.3, 0.5],
+        [0.8, 0.1, 0.1],
+        [0.15, 0.8, 0.05],
+        [0.3, 0.3, 0.4],
+        [0.7, 0.15, 0.15]]
 
     and you want to change it back to its pre-softmax form. Use this function - it will turn that softmax-ed data above to
-    [2, 0, 1, 2, 0] - which is just the index of the one in each data point of the list. Hence it is reverting the
+    ``[2, 0, 1, 2, 0]`` - which is just the index of the one in each data point of the list. Hence it is reverting the
     softmax transformation.
 
     :param softmax_data: data in one_hot form. Must be a numpy array (2D)!
@@ -158,7 +161,7 @@ def revert_softmax(softmax_data) :
 
     return np.apply_along_axis(np.argmax, 1, softmax_data)
 
-def precision(tp, fp, tn, fn) :
+def precision(tp, fp, tn, fn):
     """
     Precision is simply a measure of how much of the data we said are positive are actually positive. Used mostly
     for binary classification.
@@ -172,7 +175,7 @@ def precision(tp, fp, tn, fn) :
 
     return tp / (tp + fp)
 
-def recall(tp, fp, tn, fn) :
+def recall(tp, fp, tn, fn):
     """
     Recall is a measure of how much of the data that is actually positive was classified to be positive. There's a tradeoff
     between precision and recall, because as you decrease precision by predicting less positives, you increase

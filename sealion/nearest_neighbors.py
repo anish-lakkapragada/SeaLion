@@ -11,7 +11,6 @@ import numpy as np
 
 class KNearestNeighbors:
     """
-
     Arguably the easiest machine learning algorithm to make and understand. Simply looks at the k closest points (you give these points)
     for a data point you want to predict on, and if the majority of the closest k points are class X, it will predict
     back class X. The k number is decided by you, and should be odd (what happens if there's a tie?). If used for regression
@@ -23,29 +22,6 @@ class KNearestNeighbors:
     from scratch.If you can - please send it on GitHub!
 
     Other than that, enjoy!
-
-    ----
-    Methods :
-
-    __init__(k = 5, regression = False) :
-        ->> we set the k-value to 5 by default, but change it if you would like. It is preferred to be odd (to avoid
-        ties.)
-        ->> regression is set to False by default, but if you are performing regression, change that as well too with
-        regression = True
-
-    fit(x_train, y_train) :
-        ->> x_train is your training data, and should be a 2D ([[]] not []) python list/numpy array
-        ->> y_train is your training labels, should be 1D
-    predict(x_test) :
-        ->> x_test is your prediction data, should be 2D
-    evaluate(x_test, y_test) :
-        ->> x_test is your testing data (2D)
-        ->> y_test is your testing labels (1D)
-    visualize_evaluation(y_pred, y_test) :
-        ->> y_pred : predictions from your model (1D)
-        ->> y_test : testing labels (1D)
-        ->> plots the predictions and labels for you to see how well the model did
-
     """
 
     def __init__(self, k=5, regression=False):
@@ -126,4 +102,3 @@ class KNearestNeighbors:
         plt.ylabel("Prediction")
         plt.legend()
         plt.show()
-
