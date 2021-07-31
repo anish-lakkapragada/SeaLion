@@ -20,7 +20,6 @@ PARENT = os.path.dirname(os.path.realpath(__file__))
 CYTHON_RAN_PATH = os.path.join(PARENT, "cython_ran.txt")
 
 VERSION_NUMBER = "4.4.1"
-PYTHON_RUNNING_VERSION = str(sys.version_info.major) + "." + str(sys.version_info.minor)
 
 
 def read_cython():
@@ -61,5 +60,15 @@ from . import neural_networks
 
 check_cython()
 
+del sys
+del os
+del subprocess
+
+del PARENT
+del CYTHON_RAN_PATH
+del VERSION_NUMBER
+
+del read_cython
+del write_cython
 del compile_cython
 del check_cython
