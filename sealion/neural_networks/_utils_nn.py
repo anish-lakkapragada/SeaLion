@@ -31,8 +31,8 @@ def confusion_matrix(y_pred, y_test, plot=True):
     """
 
     y_pred, y_test = (
-        np.array(y_pred, np.int).tolist(),
-        np.array(y_test, np.int).tolist(),
+        np.array(y_pred, int).tolist(),
+        np.array(y_test, int).tolist(),
     )
 
     if len(y_pred) != len(y_test):
@@ -123,7 +123,7 @@ def one_hot(indices, depth):
     :return: one-hotted features
     """
 
-    indices = np.array(indices, dtype=np.int).flatten()
+    indices = np.array(indices, dtype=int).flatten()
     zeros = np.zeros((len(indices), depth))
     df = pd.DataFrame({"col1": zeros.tolist(), "col2": indices.tolist()})
     return np.apply_along_axis(_change, 1, df)

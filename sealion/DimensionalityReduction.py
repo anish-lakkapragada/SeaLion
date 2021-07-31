@@ -94,7 +94,7 @@ class PCA:
         )
         plt.xlabel("# dimensions")
         plt.ylabel("Variance")
-        plt.xticks(np.array([dim for dim in representation_dims], np.int))
+        plt.xticks(np.array([dim for dim in representation_dims], int))
         plt.yticks([])
         plt.title("Variance of PCA with # dimensions")
         plt.legend()
