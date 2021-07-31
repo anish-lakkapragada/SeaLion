@@ -12,6 +12,43 @@ I hope you enjoy it!
 - Anish Lakkapragada 2021
 """
 
+import sys
+import os
+import subprocess
+
+PARENT = os.path.dirname(os.path.realpath(__file__))
+CYTHON_RAN_PATH = os.path.join(PARENT, "cython_ran.txt")
+
+VERSION_NUMBER = "4.4.1"
+PYTHON_RUNNING_VERSION = str(sys.version_info.major) + "." + str(sys.version_info.minor)
+
+
+def read_cython():
+    with open(CYTHON_RAN_PATH, "r") as fp:
+        return fp.read()
+
+def write_cython(data):
+    with open(CYTHON_RAN_PATH, "w") as fp:
+        fp.write(data)
+
+
+def compile_cython():
+    args = ["python", os.path.join(PARENT, "setup.py"), "build_ext", "--inplace"]
+    return subprocess.Popen(args, cwd=PARENT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+def check_cython():
+    if not os.path.isfile(CYTHON_RAN_PATH) or read_cython().strip() != VERSION_NUMBER:
+        # need to recompile cython
+        print("Compiling cython. Please wait...")
+        proc = compile_cython()
+        proc.wait()
+
+        if proc.returncode != 0:
+            raise ValueError(f"Cython compile failed with exit code {proc.returncode}.")
+
+        write_cython(VERSION_NUMBER)
+
+
 from . import regression  # passed
 from . import decision_trees
 from . import DimensionalityReduction
@@ -22,94 +59,7 @@ from . import unsupervised_clustering
 from . import utils
 from . import neural_networks
 
+check_cython()
 
-import time
-import os
-import subprocess
-import pickle
-import shutil
-import sys
-
-start = time.time()
-
-org_dir = os.getcwd()
-dir_path = os.path.dirname(os.path.realpath(__file__))
-os.chdir(dir_path)
-
-VERSION_NUMBER = "4.4.1"
-PYTHON_RUNNING_VERSION = str(sys.version_info.major) + "." + str(sys.version_info.minor)
-
-
-def read_pickle_file(file) :
-    with open(file, 'rb') as f :
-        stuff = pickle.load(f)
-    return stuff
-
-if os.path.exists("cython_ran.pickle") :
-    if read_pickle_file("cython_ran.pickle") == VERSION_NUMBER :
-        # then we are up to date here
-        pass
-    else :
-        # this means that it was a different version
-        var = subprocess.Popen(
-            f"python{PYTHON_RUNNING_VERSION} setup.py build_ext --inplace",
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-        )
-
-        while True:
-            # files are currently being generated
-            try:
-                from . import cython_decision_tree_functions
-                from . import cython_knn
-                from . import cython_naive_bayes
-                from . import cython_unsupervised_clustering
-                from . import cython_tsne
-                from . import cython_ensemble_learning
-                from . import cython_mixtures
-                break
-            except Exception:
-                if time.time() - start > 500:
-                    print(
-                        "Cython compilation files unable to load. Please raise this error on github, "
-                        "and especially include your architecture, OS, and Python version. Thank you!"
-                    )
-
-                    break
-
-        with open("cython_ran.pickle", "wb") as f:
-            pickle.dump(VERSION_NUMBER, f) # save the version number
-else:
-    var = subprocess.Popen(
-        f"python{PYTHON_RUNNING_VERSION} setup.py build_ext --inplace",
-        shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-    )
-
-    while True:
-        # files are currently being generated
-        try:
-            from . import cython_decision_tree_functions
-            from . import cython_knn
-            from . import cython_naive_bayes
-            from . import cython_unsupervised_clustering
-            from . import cython_tsne
-            from . import cython_ensemble_learning
-            from . import cython_mixtures
-            break
-        except Exception:
-            if time.time() - start > 500:
-                print(
-                    "Cython compilation files unable to load. Please raise this error on github, "
-                    "and especially include your architecture, OS, and Python version. Thank you!"
-                )
-
-                break
-
-    with open("cython_ran.pickle", "wb") as f:
-        pickle.dump(VERSION_NUMBER, f)
-
-
-os.chdir(org_dir)
+del compile_cython
+del check_cython

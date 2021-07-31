@@ -3,3 +3,8 @@ venv
 .idea
 
 /docs/_build
+
+/sealion/*.c
+/sealion/*.so
+/sealion/build
+/sealion/cython_ran.txt
