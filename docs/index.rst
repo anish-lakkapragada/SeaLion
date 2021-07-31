@@ -7,3 +7,7 @@ concepts instead of memorizing class functions.
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
+
+   install
+
+   regression
