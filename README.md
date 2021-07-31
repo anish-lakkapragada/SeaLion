@@ -6,6 +6,7 @@
 
 ![python](https://img.shields.io/pypi/pyversions/sealion?color=blueviolet&style=plastic)
 ![License](https://img.shields.io/pypi/l/sealion?color=blue)
+[![Documentation Status](https://readthedocs.org/projects/sealion/badge/?version=latest)](https://sealion.readthedocs.io/en/latest/?badge=latest)
 ![total lines](https://img.shields.io/tokei/lines/github/anish-lakkapragada/SeaLion?color=brightgreen)
 ![issues](https://img.shields.io/github/issues/anish-lakkapragada/SeaLion?color=yellow&style=plastic)
 ![pypi](https://img.shields.io/pypi/v/sealion?color=red&style=plastic)
@@ -106,9 +107,8 @@ roll, the moons dataset, MNIST, etc.
     
 ## Documentation
 
-All documentation is currently being put on a website. However useful it
-may be, I highly recommend you check the examples posted on GitHub here
-to see the usage of the APIs and how it works.
+WE HAVE DOCS NOW! [@Patrick Huang](http://github.com/phuang1024)! All available here: [docs](https://sealion.readthedocs.io/). 
+Also, use the examples to your advantage!
 
 ### Updates for v4.1 and up!
 First things first - thank you for all of the support. The two reddit posts did much better than I expected (1.6k upvotes, about 200 comments) and I got a lot
