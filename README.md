@@ -107,7 +107,7 @@ roll, the moons dataset, MNIST, etc.
     
 ## Documentation
 
-WE HAVE DOCS NOW! [@Patrick Huang](http://github.com/phuang1024)! All available here: [docs](https://sealion.readthedocs.io/). 
+WE HAVE DOCS NOW! Thanks [@Patrick Huang](http://github.com/phuang1024)! All available here: [docs](https://sealion.readthedocs.io/). 
 Also, use the examples to your advantage!
 
 ### Updates for v4.1 and up!
