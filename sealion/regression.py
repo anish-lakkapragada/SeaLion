@@ -27,13 +27,13 @@ class LinearRegression:
     you heard first. You may have used it on a TI-84 before - all it does is it fit a line to the data. It does this through
     the gradient descent algorithm or a neat normal equation. We will use the normal equation as usually it works just the same
     and is faster, but for much larger datasets you should explore neural networks or dimensionality reduction (check the algos there.)
-    The equation in school taught is y = mx + b, but we'll denote it as : y_hat = m1x1 + m2x2 ... mNxN + b.
-    The hat is meant to resemble the predictions, and the reason we do it from m1 ... mN is because our data can be in N
+    The equation in school taught is ``y = mx + b``, but we'll denote it as ``y_hat = m1x1 + m2x2 ... mNxN + b``.
+    The hat is meant to resemble the predictions, and the reason we do it from ``m1...mN`` is because our data can be in N
     dimensions, not necessarily one.
 
-    Some other things to know is that your data for x_train should always be 2D. 2D means that it is [[]]. This doesn't
-    mean the data is necessarily 2D (this could look like [[1, 2], [2, 3]]) - but just means that its lists inside
-    lists. y_train is your labels, or the "correct answers" so it should be in a 1D list, which is just a list. This
+    Some other things to know is that your data for ``x_train`` should always be 2D. 2D means that it is ``[[]]``. This doesn't
+    mean the data is necessarily 2D (this could look like ``[[1, 2], [2, 3]]``) - but just means that its lists inside
+    lists. ``y_train`` is your labels, or the "correct answers" so it should be in a 1D list, which is just a list. This
     library assumes just a bit of knowledge about this - and it isn't too difficult - so feel free to search this up.
 
     Another thing to note here is that for our library you can enter in numpy arrays of python lists, but you will always
@@ -44,31 +44,6 @@ class LinearRegression:
 
     The goal of this module is it for it to be a useful algorithm, but I also hope this is inspiring to your journey
     of machine learning. It isn't nearly as hard as it seems.
-
-    ----
-    Methods
-
-    fit(x_train, y_train) :
-        ->> x_train is your training data (2D)
-        ->> y_train is your training labels (1D)
-
-    predict(x_test) :
-        ->> x_test is your prediction data (2D)
-        ->> you will get back a 1D numpy array of a prediction for every data point in x_test
-
-    evaluate(x_test, y_test) :
-        ->> this method is to evaluate the model on data it hasn't seen/trained on (not in x_train in the fit() method.)
-        ->> reason you do this is because you want to see whether the model can generalize what it learnt on x_train
-        to x_test.
-        ->> x_test is your testing data (2D)
-        ->> y_test is your testing labels (1D)
-        ->> returns the r^2 score
-
-    visualize_evaluation(y_pred, y_test) :
-        ->> y_pred is your predictions (1D) - they must come from the predict() method
-        ->> y_test are the labels (1D)
-        ->> visualize the predictions and labels. This will help you know if your model is predicting too high,
-        too low, etc.
     """
 
     def __init__(self):
@@ -80,7 +55,7 @@ class LinearRegression:
         """
         :param x_train: 2D training data
         :param y_train: 1D training labels
-        :return:
+        :return: None
         """
         x_train, y_train = np.array(x_train), np.array(y_train)
         if len(x_train.shape) != 2:
@@ -98,7 +73,7 @@ class LinearRegression:
     def predict(self, x_test):
         """
         :param x_test: 2D prediction data
-        :return : predictions in a 1D numpy array
+        :return: predictions in a 1D numpy array
         """
         x_test = np.array(x_test)
         if len(x_test.shape) != 2:
@@ -109,7 +84,7 @@ class LinearRegression:
         """
         :param x_test: testing data (2D)
         :param y_test: testing labels (1D)
-        :return: r^2 score
+        :return: ``r^2`` score
         """
         x_test, y_test = np.array(x_test), np.array(y_test)
         if len(x_test.shape) != 2:
@@ -167,51 +142,14 @@ class LogisticRegression:
     Logistic Regression doesn't have a closed form solution, so we'll have to use the gradient descent algorithm. It may
     take longer but we've provided a progress bar for you to see how it's going.
 
-    A few parameters of our model are related to gradient descent, so I'll explain them here :
-    ->> accuracy desired : threshold to when you can stop training (when the accuracy is high enough)
-    ->> learning rate : how fast gradient descent will move (too high - won't learn, too low - too long)
-    ->> max_iters : max number of iterations of gradient descent
-    ->> show_acc : whether or not to show the accuracy while training/gradient descent is performed
-
     A little bit of research you may want to look into is the sigmoid function, it's what really is at the core of
     distinguishing logistic and linear regression. It'll make more sense after you look at the differences in their output
     equations.
 
     With that in mind, we can get started!
-
-    ----
-    Methods
-
-    __init__(accuracy_desired=0.95, learning_rate=0.01, max_iters=1000, show_acc=True) :
-        ->> accuracy_desired : threshold to stop training (setting it to 1 may take too long and may even lead to a worse model)
-        ->> learning_rate : how fast you want gradient descent to happen
-        ->> max_iters : max number of iterations of gradient descent
-        ->> whether or not to show the accuacy during training
-    reset_params() :
-        ->> only can be called after the fit() method
-        ->> resets the weights and biases learnt by the model.
-    fit(x_train, y_train) :
-        ->> performs gradient descent
-        ->> x_train is your training data (2D)
-        ->> y_train is your training labels (1D)
-    predict(x_test) :
-        ->> x_test is your prediction data (2D)
-        ->> returns the predictions (0s and 1s) in a numpy array (1D)
-    evaluate(x_test, y_test) :
-        ->> x_test is your testing data (2D)
-        ->> y_test is your testing labels (1D)
-        ->> will the percent of predictions on x_test it got correct
-    visualize_evaluation(y_pred, y_test) :
-        ->> y_pred is your predictions (1D) - they must come from the predict() method
-        ->> y_test are the labels (1D)
-        ->> visualize the predictions and labels. This will help you know if your model is predicting too high,
-        too low, etc.
-
     """
 
-    def __init__(
-        self, accuracy_desired=0.95, learning_rate=0.01, max_iters=1000, show_acc=True
-    ):
+    def __init__(self, accuracy_desired=0.95, learning_rate=0.01, max_iters=1000, show_acc=True):
         """
         :param accuracy_desired: the accuracy at which the fit() method can stop
         :param learning_rate: how fast gradient descent should run
@@ -351,58 +289,21 @@ class LogisticRegression:
 
 class SoftmaxRegression:
     """
-        Once you know logistic regression, softmax regression is a breeze. Logistic regression is really a specific
-        type of softmax regression, where the number of classes is equal to 2. Whereas logistic regression only can predict
-        for 2 classes (0 and 1), softmax regression can predict for N number of classes. This can be 5, 3, or even a thousand!
-        To define the number of classes in this model, insert the num_classes parameter in the init. ALL parameters in
-        this class are the same as in logistic regression except for that argument.
+    Once you know logistic regression, softmax regression is a breeze. Logistic regression is really a specific
+    type of softmax regression, where the number of classes is equal to 2. Whereas logistic regression only can predict
+    for 2 classes (0 and 1), softmax regression can predict for N number of classes. This can be 5, 3, or even a thousand!
+    To define the number of classes in this model, insert the ``num_classes`` parameter in the init. ALL parameters in
+    this class are the same as in logistic regression except for that argument.
 
-        Another note, if you use softmax regression with 2 classes - you just end up using logistic regression. In general
-        you should use logistic regression if there are only 2 classes as it is faster and optimized as such.
+    Another note, if you use softmax regression with 2 classes - you just end up using logistic regression. In general
+    you should use logistic regression if there are only 2 classes as it is faster and optimized as such.
 
-        If you're interested in the theory, the primary change is from the sigmoid function to the softmax function.
-        Also look into the log loss and crossentropy loss, both of them are at the heart of softmax and logistic regression.
-        Maybe interesting to read up on that.
+    If you're interested in the theory, the primary change is from the sigmoid function to the softmax function.
+    Also look into the log loss and crossentropy loss, both of them are at the heart of softmax and logistic regression.
+    Maybe interesting to read up on that.
+    """
 
-        ----
-        Methods
-
-        __init__(num_classes, accuracy_desired=0.95, learning_rate=0.01, max_iters=1000, show_acc=True) :
-            ->> num_classes : number of classes, or unique labels, your dataset has
-            ->> accuracy_desired : threshold to stop training (setting it to 1 may take too long and may even lead to a worse model)
-            ->> learning_rate : how fast you want gradient descent to happen
-            ->> max_iters : max number of iterations of gradient descent
-            ->> whether or not to show the accuacy during training
-        reset_params() :
-            ->> only can be called after the fit() method
-            ->> resets the weights and biases learnt by the model.
-        fit(x_train, y_train) :
-            ->> performs gradient descent
-            ->> x_train is your training data (2D)
-            ->> y_train is your training labels (1D)
-        predict(x_test) :
-            ->> x_test is your prediction data (2D)
-            ->> returns the predictions (0s and 1s) in a numpy array (1D)
-        evaluate(x_test, y_test) :
-            ->> x_test is your testing data (2D)
-            ->> y_test is your testing labels (1D)
-            ->> will the percent of predictions on x_test it got correct
-        visualize_evaluation(y_pred, y_test) :
-            ->> y_pred is your predictions (1D) - they must come from the predict() method
-            ->> y_test are the labels (1D)
-            ->> visualize the predictions and labels. This will help you know if your model is predicting too high,
-            too low, etc.
-
-        """
-
-    def __init__(
-        self,
-        num_classes,
-        accuracy_desired=0.95,
-        learning_rate=0.01,
-        max_iters=1000,
-        show_acc=True,
-    ):
+    def __init__(self, num_classes, accuracy_desired=0.95, learning_rate=0.01, max_iters=1000, show_acc=True):
         """
         :param num_classes : number of classes your dataset has
         :param accuracy_desired: the accuracy at which the fit() method can stop
@@ -582,39 +483,12 @@ class RidgeRegression:
 
     There's only one parameter you need to worry about, which is alpha. It is simply how much to punish the model for its
     weights (especially unnecessary ones). It's typically set between 0 and 1.
-
-    ----
-    Methods
-
-    __init__(alpha = 0.5) :
-        ->> alpha is the value for how much to punish the model. Remember the higher it is, the smaller the weights.
-        ->> 0.5 default
-    fit(x_train, y_train) :
-        ->> x_train is your training data (2D)
-        ->> y_train is your training labels (1D)
-
-    predict(x_test) :
-        ->> x_test is your prediction data (2D)
-        ->> you will get back a 1D numpy array of a prediction for every data point in x_test
-
-    evaluate(x_test, y_test) :
-        ->> this method is to evaluate the model on data it hasn't seen/trained on (not in x_train in the fit() method.)
-        ->> reason you do this is because you want to see whether the model can generalize what it learnt on x_train
-        to x_test.
-        ->> x_test is your testing data (2D)
-        ->> y_test is your testing labels (1D)
-        ->> returns the r^2 score
-
-    visualize_evaluation(y_pred, y_test) :
-        ->> y_pred is your predictions (1D) - they must come from the predict() method
-        ->> y_test are the labels (1D)
-        ->> visualize the predictions and labels. This will help you know if your model is predicting too high,
-        too low, etc.
     """
 
     def __init__(self, alpha=0.5):
         """
         Set the alpha parameter for the model.
+
         :param alpha: default 0.5, ranges from 0 - 1
         """
         self.alpha = alpha
@@ -645,7 +519,7 @@ class RidgeRegression:
     def predict(self, x_test):
         """
         :param x_test: 2D prediction data
-        :return : predictions in a 1D numpy array
+        :return: predictions in a 1D numpy array
         """
         x_test = np.array(x_test)
         if len(x_test.shape) != 2:
@@ -714,44 +588,12 @@ class LassoRegression:
 
     Another difference is the use of gradient descent instead of a closed form solution like Ridge Regression. It shares
     the same alpha parameter to determine how much you want to "punish" (i.e. reduce) the weights, especially those not needed.
-
-    ----
-    Methods :
-
-    __init__(alpha=0.5, accuracy_desired=0.95, learning_rate=0.01, max_iters=1000, show_acc=True) :
-        ->> alpha is the penalty for the weights
-        ->> check above documentation for all other parameters (recommended your familiar with gradient descent before
-        using Lasso Regression.)
-    reset_params() :
-        ->> resets all weights and biases
-    fit(x_train, y_train) :
-        ->> same rule as any other regression model
-        ->> x_train must be 2D and is your data
-        ->> y_train is your labels and must be 1D
-    predict(x_test) :
-        ->> this method takes in your prediction data (must be 2D) in x_test and returns the predictions in a 1D list/vector
-    evaluate(x_test, y_test) :
-        ->> give your validation set here and you will get back the r^2 score
-        ->> x_test is your testing data (2D)
-        ->> y_test is your testing labels(1D)
-    visualize_evaluation(y_pred, y_test) :
-        ->> y_pred is your predictions (1D) - they must come from the predict() method
-        ->> y_test are the labels (1D)
-        ->> visualize the predictions and labels. This will help you know if your model is predicting too high,
-        too low, etc.
-
     """
 
-    def __init__(
-        self,
-        alpha=0.5,
-        accuracy_desired=0.95,
-        learning_rate=0.01,
-        max_iters=10000,
-        show_acc=True,
-    ):
+    def __init__(self, alpha=0.5, accuracy_desired=0.95, learning_rate=0.01, max_iters=10000, show_acc=True):
         """
         :param alpha: penalty for the weights, applied to both lasso and ridge components
+
         Check above documentation for all other parameters.
         """
 
@@ -888,50 +730,18 @@ class LassoRegression:
 class ElasticNet:
     """
     Elastic Net is a combination of Ridge and Lasso Regression. It implements both penalties, and you just decide how
-    much weight each should have. The parameter l1_r in the __init__ of this class is the amount of "importance" lasso regression
+    much weight each should have. The parameter ``l1_r`` in the ``__init__`` of this class is the amount of "importance" lasso regression
     has (specifically the regularization term), on a scale from 0 - 1. If lasso regression gets an "importance" of 0.7,
     then we give the ridge regression part of this model an "importance" 0.3. Uses gradient descent, as there is no
     closed form solution.
-
-    ----
-    Methods :
-
-    __init__(l1_r = 0.5,  alpha=0.5, accuracy_desired=0.95, learning_rate=0.01, max_iters=1000, show_acc=True) :
-        ->> l1_r is how important lasso regression will be in this mix of lasso and ridge regression
-        ->> alpha is the penalty for the weights, and is applied to both the lasso and ridge penalty
-        ->> check lasso documentation for alpha, and above documentation for the other parameters
-    reset_params() :
-        ->> resets all weights and biases
-    fit(x_train, y_train) :
-        ->> same rule as any other regression model
-        ->> x_train must be 2D and is your data
-        ->> y_train is your labels and must be 1D
-    predict(x_test) :
-        ->> this method takes in your prediction data (must be 2D) in x_test and returns the predictions in a 1D list/vector
-    evaluate(x_test, y_test) :
-        ->> give your validation set here and you will get back the r^2 score
-        ->> x_test is your testing data (2D)
-        ->> y_test is your testing labels(1D)
-    visualize_evaluation(y_pred, y_test) :
-        ->> y_pred is your predictions (1D) - they must come from the predict() method
-        ->> y_test are the labels (1D)
-        ->> visualize the predictions and labels. This will help you know if your model is predicting too high,
-        too low, etc.
     """
 
-    def __init__(
-        self,
-        l1_r=0.5,
-        alpha=0.5,
-        accuracy_desired=0.95,
-        learning_rate=0.01,
-        max_iters=1000,
-        show_acc=True,
-    ):
+    def __init__(self, l1_r=0.5, alpha=0.5, accuracy_desired=0.95, learning_rate=0.01, max_iters=1000, show_acc=True):
         """
         :param l1_r: The weight that lasso regression gets in this model. Default 0.5, but setting it higher tips the
-        scale. Setting it to 0 or 1 makes it just ridge or lasso regression.
+            scale. Setting it to 0 or 1 makes it just ridge or lasso regression.
         :param alpha: penalty for the weights, applied to both lasso and ridge components
+
         Check above documentation for all other parameters.
         """
         self.l1_r = l1_r
@@ -1086,37 +896,8 @@ class ExponentialRegression:
 
     Say you've got some curved data. How can a line possibly fit that data? Glad you ask - that's why this class exists.
     Exponential Regression does something very simple. All it does is just take the log transformation of exponential data,
-    so it becomes a line and model that. Because now we can find y_transformed_log = mx + b, we can turn that y_transformed_log
-    back into y by raising it to power e.
-
-    ----
-    Methods
-    __init__( accuracy_desired = 0.95, learning_rate = 0.01, max_iters = 1000, show_acc = True) :
-        ->> accuracy_desired : simply how well you want this model to do on a scale of 0 -1. Setting to 1 may mean that
-        it will have to run through all iters in max_iters.
-        ->> learning_rate : just how gradient descent performs.
-        ->> max_iters : max number of iterations of gradient descent allowed for the model
-        ->> show_acc : whether or not you want the accuracy, or evaluation, of the model to be shown
-        when the fit() method is being run.
-    reset_params() :
-        ->> resets all parameters
-        -> must be done after the fit() method has been run at least 1x
-    fit(x_train,y_train) :
-        ->> x_train is your training data, which is 2D in a python list/numpy array
-        ->> y_train is your training labels, and should be 1D
-        ->> please experiment with the learning_rate parameter in the __init__, as that could make training faster or slower!
-    predict(x_test) :
-        ->> x_test is your 2D prediction data
-        ->> returns the predictions in a 1D vector/list
-    evaluate(x_test, y_test) :
-        ->> x_test is your testing data (2D)
-        ->> y_test is your testing labels (1D)
-        ->> returns an accuracy score
-    visualize_evaluation(y_pred, y_test) :
-        ->> y_pred is your predictions (1D) - they must come from the predict() method
-        ->> y_test are the labels (1D)
-        ->> visualize the predictions and labels. This will help you know if your model is predicting too high,
-        too low, etc.
+    so it becomes a line and model that. Because now we can find ``y_transformed_log = mx + b``, we can turn that ``y_transformed_log``
+    back into ``y`` by raising it to power ``e``.
     """
 
     def __init__(self):
@@ -1213,28 +994,6 @@ class PolynomialRegression:
     dividing by the maximum value. This will help with faster convergence.
 
     Not as famous as some other regression algorithms, so may you need a bit of experimentation.
-
-    ----
-    Methods
-    reset_params() :
-        ->> only can be called after the fit() method
-        ->> resets the weights and biases learnt by the model.
-    fit(x_train, y_train) :
-        ->> performs gradient descent
-        ->> x_train is your training data (2D)
-        ->> y_train is your training labels (1D)
-    predict(x_test) :
-        ->> x_test is your prediction data (2D)
-        ->> returns the predictions (0s and 1s) in a numpy array (1D)
-    evaluate(x_test, y_test) :
-        ->> x_test is your testing data (2D)
-        ->> y_test is your testing labels (1D)
-        ->> will the percent of predictions on x_test it got correct
-    visualize_evaluation(y_pred, y_test) :
-        ->> y_pred is your predictions (1D) - they must come from the predict() method
-        ->> y_test are the labels (1D)
-        ->> visualize the predictions and labels. This will help you know if your model is predicting too high,
-        too low, etc.
     """
 
     def fit(self, x_train, y_train):
@@ -1261,7 +1020,8 @@ class PolynomialRegression:
 
     def predict(self, x_test):
         """
-        :param x_test: points to be predicted on. Has to be stored in 2D array, even if just one data point. Ex. : [[1, 1]] or [[1, 1], [2, 2], [3, 3]]
+        :param x_test: points to be predicted on. Has to be stored in 2D array, even if just one data point.
+            Ex. ``[[1, 1]]`` or ``[[1, 1], [2, 2], [3, 3]]``
         :return: flattened numpy array of your data going through the forward pass (that's rounded as it's either 0 or 1)
         """
 
