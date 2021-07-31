@@ -1,10 +1,5 @@
-import pathlib
-import sys
-from distutils.core import setup
-from os import path
-
+import os
 import setuptools
-from setuptools import setup
 
 with open("README.md", "r") as fh:
     read_me_description = fh.read()
@@ -22,10 +17,9 @@ non_python_files = [
     "cython_mixtures.pyx"
 ]
 
-version_name = sys.argv[1].replace("refs/tags/", "")
-del sys.argv[1]
+version_name = os.path.basename(os.environ["PYPI_VERSION"])
 
-setup(
+setuptools.setup(
     name="sealion",
     packages=setuptools.find_packages(),
     package_data={"": non_python_files},
