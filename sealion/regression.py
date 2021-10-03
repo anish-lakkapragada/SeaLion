@@ -67,7 +67,7 @@ class LinearRegression:
         # Weights = (XT X)^-1 XT y
         # Intercept_vector = y_train - weights * mean(x_train)
 
-        self.weights = np.linalg.inv(x_train.T.dot(x_train)).dot(x_train.T.dot(y_train))
+        self.weights = np.linalg.inv(x_train.T.dot(x_train)).dot(x_train.T).dot(y_train)
         self.bias = np.mean(y_train, axis=0) - np.dot(np.mean(x_train, axis=0), self.weights)
 
     def predict(self, x_test):
@@ -142,7 +142,7 @@ class LogisticRegression:
     Logistic Regression doesn't have a closed form solution, so we'll have to use the gradient descent algorithm. It may
     take longer but we've provided a progress bar for you to see how it's going.
 
-    A little bit of research you may want to look into is the sigmoid function, it's what really is at the core of
+    You may want to look into is the sigmoid function, it's what really is at the core of
     distinguishing logistic and linear regression. It'll make more sense after you look at the differences in their output
     equations.
 
