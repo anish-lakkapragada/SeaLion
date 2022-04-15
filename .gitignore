@@ -2,6 +2,10 @@ __pycache__
 venv
 .idea
 
+/build
+/dist
+/*.egg-info
+
 /docs/_build
 
 /sealion/*.c
