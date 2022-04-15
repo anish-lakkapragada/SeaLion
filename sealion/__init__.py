@@ -22,6 +22,8 @@ __version__ = "4.4.3"
 ROOT = Path(__file__).parent
 VERSION_PATH = ROOT / "cython_ran.txt"
 
+PYTHON = sys.executable
+
 
 def read_cython():
     with open(VERSION_PATH.as_posix(), "r") as fp:
@@ -33,7 +35,7 @@ def write_cython(data):
 
 
 def compile_cython():
-    args = ["python", (ROOT / "setup.py").as_posix(), "build_ext", "--inplace"]
+    args = [PYTHON, (ROOT / "setup.py").as_posix(), "build_ext", "--inplace"]
     return Popen(args, cwd=ROOT.as_posix(), stdout=DEVNULL, stderr=DEVNULL)
 
 def check_cython():
