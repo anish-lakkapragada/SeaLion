@@ -12,40 +12,41 @@ I hope you enjoy it!
 - Anish Lakkapragada 2021
 """
 
-import sys
 import os
-import subprocess
+import sys
+from pathlib import Path
+from subprocess import Popen, DEVNULL
 
-PARENT = os.path.dirname(os.path.realpath(__file__))
-CYTHON_RAN_PATH = os.path.join(PARENT, "cython_ran.txt")
+__version__ = "4.4.3"
 
-VERSION_NUMBER = "4.4.1"
+ROOT = Path(__file__).parent
+VERSION_PATH = ROOT / "cython_ran.txt"
 
 
 def read_cython():
-    with open(CYTHON_RAN_PATH, "r") as fp:
-        return fp.read()
+    with open(VERSION_PATH.as_posix(), "r") as fp:
+        return fp.read().strip()
 
 def write_cython(data):
-    with open(CYTHON_RAN_PATH, "w") as fp:
+    with open(VERSION_PATH.as_posix(), "w") as fp:
         fp.write(data)
 
 
 def compile_cython():
-    args = ["python", os.path.join(PARENT, "setup.py"), "build_ext", "--inplace"]
-    return subprocess.Popen(args, cwd=PARENT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    args = ["python", (ROOT / "setup.py").as_posix(), "build_ext", "--inplace"]
+    return Popen(args, cwd=ROOT.as_posix(), stdout=DEVNULL, stderr=DEVNULL)
 
 def check_cython():
-    if not os.path.isfile(CYTHON_RAN_PATH) or read_cython().strip() != VERSION_NUMBER:
+    if not VERSION_PATH.is_file() or read_cython() != __version__:
         # need to recompile cython
-        print("Compiling cython. Please wait...")
+        #print("Compiling cython. Please wait...")
         proc = compile_cython()
         proc.wait()
 
         if proc.returncode != 0:
-            raise ValueError(f"Cython compile failed with exit code {proc.returncode}.")
+            raise ValueError(f"SeaLion: Cython compile failed with exit code {proc.returncode}.")
 
-        write_cython(VERSION_NUMBER)
+        write_cython(__version__)
 
 
 from . import regression  # passed
@@ -62,11 +63,12 @@ check_cython()
 
 del sys
 del os
-del subprocess
+del Popen
+del DEVNULL
+del Path
 
-del PARENT
-del CYTHON_RAN_PATH
-del VERSION_NUMBER
+del ROOT
+del VERSION_PATH
 
 del read_cython
 del write_cython
