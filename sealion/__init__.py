@@ -19,7 +19,7 @@ import subprocess
 PARENT = os.path.dirname(os.path.realpath(__file__))
 CYTHON_RAN_PATH = os.path.join(PARENT, "cython_ran.txt")
 
-VERSION_NUMBER = "4.4.3"
+VERSION_NUMBER = "4.4.4"
 
 
 def read_cython():
@@ -42,7 +42,7 @@ def check_cython():
         proc = compile_cython()
         proc.wait()
 
-        if not proc.returncode:
+        if proc.returncode:
             raise ValueError(f"Cython compile failed with exit code {proc.returncode}.")
 
         write_cython(VERSION_NUMBER)
