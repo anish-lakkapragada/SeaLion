@@ -78,7 +78,7 @@ can comfortably use SeaLion. Of course, none of the source code uses other ML fr
 
 Stats : 
    -   [**1,700+ downloads**](https://pypistats.org/packages/sealion)
-   -   **250+ stars**
+   -   **300+ stars**
    -   **15,000 views on GitHub**
    -   **100+ forks/clones**
 
