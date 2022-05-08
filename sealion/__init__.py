@@ -19,7 +19,7 @@ import subprocess
 PARENT = os.path.dirname(os.path.realpath(__file__))
 CYTHON_RAN_PATH = os.path.join(PARENT, "cython_ran.txt")
 
-VERSION_NUMBER = "4.4.4"
+VERSION_NUMBER = "4.4.5"
 
 
 def read_cython():
@@ -30,9 +30,9 @@ def write_cython(data):
     with open(CYTHON_RAN_PATH, "w") as fp:
         fp.write(data)
 
-
 def compile_cython():
-    args = ["python3", os.path.join(PARENT, "setup.py"), "build_ext", "--inplace"]
+    version_info = sys.version_info
+    args = [f"python{version_info[0]}.{version_info[1]}", os.path.join(PARENT, "setup.py"), "build_ext", "--inplace"]
     return subprocess.Popen(args, cwd=PARENT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 def check_cython():
@@ -41,7 +41,7 @@ def check_cython():
         print("Compiling cython. Please wait...")
         proc = compile_cython()
         proc.wait()
-
+        
         if proc.returncode:
             raise ValueError(f"Cython compile failed with exit code {proc.returncode}.")
 

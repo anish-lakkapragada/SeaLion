@@ -23,8 +23,6 @@ def setup_indiv(file_name):
     setup(ext_modules=cythonize(extension))
 
 
-from joblib import parallel_backend, delayed, Parallel
-
 for file_name in files :
     setup_indiv(file_name)
 
