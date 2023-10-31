@@ -82,8 +82,6 @@ Stats :
    -   **15,000 views on GitHub**
    -   **100+ forks/clones**
 
-[r/Python Post](https://www.reddit.com/r/Python/comments/lf59bw/machine_learning_library_by_14year_old_sealion/)
-
 [r/learningmachinelearning Post](https://www.reddit.com/r/learnmachinelearning/comments/lfv72l/a_set_of_jupyter_notebooks_to_help_you_understand/)
     
 ## Installation
