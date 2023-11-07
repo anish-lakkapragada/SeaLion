@@ -15,7 +15,7 @@
 
 SeaLion is designed to teach today's aspiring ml-engineers the popular
 machine learning concepts of today in a way that gives both intuition and
-ways of application. We do this through concise algorithms that do the job 
+ways of application. We do this through concise algorithms that do the job z
 in the least jargon possible and examples to guide you through every step 
 of the way. 
 
