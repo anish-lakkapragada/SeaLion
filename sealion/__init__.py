@@ -12,41 +12,16 @@ I hope you enjoy it!
 - Anish Lakkapragada 2021
 """
 
-import sys
-import os
-import subprocess
+__version__ = "4.4.5"
 
-PARENT = os.path.dirname(os.path.realpath(__file__))
-CYTHON_RAN_PATH = os.path.join(PARENT, "cython_ran.txt")
-
-VERSION_NUMBER = "4.4.5"
-
-
-def read_cython():
-    with open(CYTHON_RAN_PATH, "r") as fp:
-        return fp.read()
-
-def write_cython(data):
-    with open(CYTHON_RAN_PATH, "w") as fp:
-        fp.write(data)
-
-def compile_cython():
-    version_info = sys.version_info
-    args = [f"python{version_info[0]}.{version_info[1]}", os.path.join(PARENT, "setup.py"), "build_ext", "--inplace"]
-    return subprocess.Popen(args, cwd=PARENT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-def check_cython():
-    if not os.path.isfile(CYTHON_RAN_PATH) or read_cython().strip() != VERSION_NUMBER:
-        # need to recompile cython
-        print("Compiling cython. Please wait...")
-        proc = compile_cython()
-        proc.wait()
-        
-        if proc.returncode:
-            raise ValueError(f"Cython compile failed with exit code {proc.returncode}.")
-
-        write_cython(VERSION_NUMBER)
-
+# Cython extensions are built at install time (see setup.py) and are
+# imported lazily by the modules that use them, e.g.
+# sealion/decision_trees.py imports cython_decision_tree_functions
+# inside the method that needs it. Importing sealion itself must
+# never compile anything: no subprocess, no build_ext, and no
+# cython_ran.txt marker file. If an extension is missing, the
+# method that needs it raises ImportError; rebuild with
+# `pip install .` or `python setup.py build_ext --inplace`.
 
 from . import regression  # passed
 from . import decision_trees
@@ -57,18 +32,3 @@ from . import nearest_neighbors
 from . import unsupervised_clustering
 from . import utils
 from . import neural_networks
-
-check_cython()
-
-del sys
-del os
-del subprocess
-
-del PARENT
-del CYTHON_RAN_PATH
-del VERSION_NUMBER
-
-del read_cython
-del write_cython
-del compile_cython
-del check_cython

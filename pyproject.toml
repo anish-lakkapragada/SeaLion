@@ -1,0 +1,7 @@
+# Build-time dependencies for setup.py's Cython extensions.
+# Without this, pip's isolated build environment would run setup.py
+# without numpy/Cython installed, even though requirements.txt lists
+# them as runtime dependencies.
+[build-system]
+requires = ["setuptools", "wheel", "numpy", "Cython"]
+build-backend = "setuptools.build_meta"
